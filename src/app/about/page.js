@@ -85,6 +85,67 @@ export default function About() {
     { src: "/img/sklearn.png", alt: "SKLearn", tag: "SKLearn", link: "#" },
   ];
 
+    const experience = [
+    { src: "/img/java.png", alt: "Java", tag: "Java", link: "#" },
+    { src: "/img/python.webp", alt: "Python", tag: "Python", link: "#" },
+    { src: "/img/cplusplus.png", alt: "C++", tag: "C++", link: "#" },
+    { src: "/img/html.png", alt: "HTML", tag: "HTML", link: "#" },
+    {
+      src: "/img/javascript.png",
+      alt: "JavaScript",
+      tag: "JavaScript",
+      link: "#",
+    },
+    {
+      src: "/img/typescript.png",
+      alt: "TypeScript",
+      tag: "TypeScript",
+      link: "#",
+    },
+    { src: "/img/css.png", alt: "CSS", tag: "CSS", link: "#" },
+    { src: "/img/react.png", alt: "React", tag: "React", link: "#" },
+    { src: "/img/nodejs.png", alt: "Node.js", tag: "Node.js", link: "#" },
+    {
+      src: "/img/express.png",
+      alt: "Express.js",
+      tag: "Express.js",
+      link: "#",
+    },
+    { src: "/img/mongodb.png", alt: "MongoDB", tag: "MongoDB", link: "#" },
+    { src: "/img/mysql.png", alt: "MySQL", tag: "MySQL", link: "#" },
+    { src: "/img/nextjs.png", alt: "Next.js", tag: "Next.js", link: "#" },
+    { src: "/img/redux.png", alt: "Redux", tag: "Redux", link: "#" },
+    { src: "/img/zustand.jpeg", alt: "Zustand", tag: "Zustand", link: "#" },
+    {
+      src: "/img/tailwind.png",
+      alt: "TailwindCSS",
+      tag: "TailwindCSS",
+      link: "#",
+    },
+    {
+      src: "/img/bootstrap.png",
+      alt: "Bootstrap",
+      tag: "BootStrap",
+      link: "#",
+    },
+    {
+      src: "/img/springboot.png",
+      alt: "SpringBoot",
+      tag: "SpringBoot",
+      link: "#",
+    },
+    { src: "/img/npm.png", alt: "npm", tag: "npm", link: "#" },
+    { src: "/img/postman.png", alt: "Postman", tag: "Postman", link: "#" },
+    { src: "/img/vscode.png", alt: "VsCode", tag: "Vscode", link: "#" },
+    { src: "/img/git.png", alt: "Git", tag: "Git", link: "#" },
+    { src: "/img/GitHub.png", alt: "GitHub", tag: "GitHub", link: "#" },
+    { src: "/img/linux.jpeg", alt: "Linux", tag: "Linux", link: "#" },
+    { src: "/img/numpy.png", alt: "Numpy", tag: "Numpy", link: "#" },
+    { src: "/img/pandas.png", alt: "Pandas", tag: "Pandas", link: "#" },
+    { src: "/img/pytorch.png", alt: "Pytorch", tag: "Pytorch", link: "#" },
+    { src: "/img/sklearn.png", alt: "SKLearn", tag: "SKLearn", link: "#" },
+  ];
+
   const layout = [2, 2, 3, 4, , 4, 3, 2, 2];
 
   let skillIndex = 0;
