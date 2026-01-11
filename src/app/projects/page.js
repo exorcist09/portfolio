@@ -1,5 +1,9 @@
 "use client";
 
+
+// TODO : Also add -->Ignis(mention under development(to be completed by May-2026)) solarnerd, caseflow, JournalWebApp, Credit approval system, Onebox-email(change the name of project to something better)
+// TODO --> put Kairo and ignis as featured
+
 import {
   UserIcon,
   ExternalLinkIcon,
