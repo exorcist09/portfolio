@@ -17,7 +17,7 @@ export function Hero() {
             <span className="block text-5xl text-gradient-green sm:text-6xl md:text-7xl">Verma</span>
           </h1>
           <div className="mt-7 flex items-center gap-2">
-            <a href="#contact" className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium transition hover:bg-gradient-to-tr hover:from-primary/10 hover:to-transparent hover:text-primary">
+            <a className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium transition hover:bg-gradient-to-tr hover:from-primary/10 hover:to-transparent hover:text-primary">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />

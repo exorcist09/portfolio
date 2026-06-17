@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink, Github, Plus } from "lucide-react";
 
 type Project = {
   title: string;
@@ -9,84 +9,94 @@ type Project = {
   tags: string[];
   live?: string;
   github?: string;
+  gradientClass?: string;
 };
 
 const projects: Project[] = [
   {
     title: "Kairo",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80",
+    image: "/kairo.png",
     description: "Visual workflow automation platform for automating processes through a visual interface. Built with a focus on scalability, reliability, and user experience.",
     tags: ["Next.js", "Node.js", "PostgreSQL", "AWS", "Docker", "Redis"],
     live: "https://example.com",
     github: "https://github.com/exorcist09/kairo-v2",
+    gradientClass: "from-black/10 to-black/30",
   },
   {
     title: "Fyn",
-    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&q=80",
+    image: "/fyn.png",
     description: "Finance management webapp that helps users track expenses, monitor spending habits, and manage budgets through a simple, intuitive interface.",
     tags: ["Springboot", "MySQL", "JPA", "Git"],
     live: "https://example.com",
     github: "https://github.com/exorcist09/fyn",
+    gradientClass: "from-white/10 to-white/30",
   },
   {
     title: "Caseflow",
-    image: "https://images.unsplash.com/photo-1559028012-481c04fa702d?w=1200&q=80",
+    image: "/caseflow.png",
     description: "High-performance case management platform that enables teams to import, validate, edit, clean, and bulk-create cases from large CSV datasets.",
     tags: ["React.js", "Express.js", "PostgreSQL", "Playwright"],
     live: "https://example.com",
     github: "https://github.com/exorcist09/caseflow",
+    gradientClass: "from-white/10 to-white/30",
   },
   {
     title: "Natter",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=80",
+    image: "/natter.png",
     description: "Real-time chat platform supporting instant messaging, media sharing, and live user presence through WebSockets and modern web technologies.",
     tags: ["React.js", "Node.js", "WebSockets", "Zustand", "MongoDB"],
     live: "https://example.com",
     github: "https://github.com/exorcist09/Natter",
+    gradientClass: "from-zinc-900/10 to-zinc-500/20",
   },
   {
     title: "Credit Approval System",
-    image: "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?w=1200&q=80",
+    image: "/creditApprovalsystem.png",
     description: "Rule-based credit assessment engine that calculates creditworthiness from user purchase behavior and approves loans accordingly.",
     tags: ["Python", "Django/DRF", "Redis", "Celery", "Pandas"],
     github: "https://github.com/exorcist09/credit-approval-system",
+    gradientClass: "from-zinc-900/10 to-zinc-500/20",
   },
   {
     title: "Onebox - Email",
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&q=80",
+    image: "/onebox.png",
     description: "Unified email management platform that aggregates emails from multiple accounts, provides  synchronization, and supports AI-powered search and email categorization.",
     tags: ["Node.js", "Docker", "OpenAI"],
     github: "https://github.com/exorcist09/onebox-email",
+    gradientClass: "from-white/10 to-white/30",
   },
   {
     title: "OVOR",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80",
-    description: "Civic awareness platform with multi language localisation and accessibility.",
+    image: "/ovor.png",
+    description: "Civic engagement platform that empowers citizens through multilingual access, inclusive design, and community participation.",
     tags: ["React.js", "Tailwind CSS", "Localization"],
     github: "https://github.com/exorcist09/our-voice-our-rights",
+    gradientClass: "from-white/10 to-white/30",
   },
   {
     title: "Streampod",
-    image: "https://images.unsplash.com/photo-1639762681485-074b7f4ec651?w=1200&q=80",
+    image: "/streampod.png",
     description: "Video streaming platform that enables users to watch movies, web series through a seamless and responsive viewing experience.",
     tags: ["React.js", "Redux", "TailwindCSS", "MUI", "Sass"],
     live: "https://streampod-black.vercel.app/",
     github: "https://github.com/exorcist09/Stream-pod",
+    gradientClass: "from-zinc-900/10 to-zinc-500/20",
   },
   {
     title: "Cruzo",
-    image: "https://images.unsplash.com/photo-1639762681485-074b7f4ec651?w=1200&q=80",
-    description: "A ride-hailing platform that connects passengers with nearby drivers, enabling real-time ride booking, and secure trip management.",
+    image: "/cruzo.png",
+    description: "Ride-hailing platform that connects passengers with nearby drivers, enabling real-time ride booking, and secure trip management.",
     tags: ["Node.js", "MongoDB", "React.js", "MUI"],
     github: "https://github.com/exorcist09/Cruzo",
+    gradientClass: "from-zinc-900/10 to-zinc-500/20",
   },
-  
   {
     title: "Nimonic ML",
-    image: "https://images.unsplash.com/photo-1639762681485-074b7f4ec651?w=1200&q=80",
-    description: "A machine learning system that predicts machining performance for Nimonic 263 alloy using simulation and experimental data, enabling faster process optimization and decision-making.",
+    image: "/nimonic.png",
+    description: "ML system that predicts machining performance for Nimonic 263 alloy using simulation and experimental data, enabling faster process optimization and decision-making.",
     tags: ["Pandas", "Numpy", "Scikit-learn", "Jupyter Notebook/"],
     github: "https://github.com/exorcist09/nimonic_ml",
+    gradientClass: "from-zinc-900/10 to-zinc-500/20",
   }
 ];
 
@@ -168,7 +178,7 @@ export function Projects() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.2 }}
-                  className="pointer-events-auto absolute left-4 top-1/2 z-30 w-[320px] -translate-y-1/2 overflow-hidden rounded-[2rem] bg-gradient-to-b from-primary/5 to-primary/20 backdrop-blur-2xl border border-primary/20 shadow-2xl flex flex-col"
+                  className="pointer-events-auto absolute left-4 top-1/2 z-30 w-[320px] -translate-y-1/2 overflow-hidden rounded-xl bg-gradient-to-b from-primary/20 to-primary/10 backdrop-blur-2xl shadow-2xl flex flex-col"
                   onMouseEnter={() => {
                     if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
                     setCardHover(true);
@@ -183,15 +193,19 @@ export function Projects() {
                       : undefined,
                   }}
                 >
-                  <div className="relative h-48 w-full overflow-hidden shrink-0">
+                  <div className="absolute -right-16 -bottom-16 z-0">
+                    <Plus className="absolute right-0 bottom-0 h-40 w-40 text-foreground/5" strokeWidth={1} />
+                    <Plus className="absolute right-8 bottom-8 h-40 w-40 text-foreground/5" strokeWidth={1} />
+                  </div>
+                  <div className="relative h-48 w-full overflow-hidden shrink-0 z-10">
                     <motion.img
                       key={active.image}
                       src={active.image}
                       alt=""
                       className="absolute inset-0 h-full w-full object-cover"
                       style={{
-                        maskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
-                        WebkitMaskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
+                        maskImage: "linear-gradient(to bottom, black 40%, transparent 90%)",
+                        WebkitMaskImage: "linear-gradient(to bottom, black 40%, transparent 90%)",
                       }}
                       initial={{ scale: 1.05 }}
                       animate={{ scale: cardHover ? 1.08 : 1 }}
