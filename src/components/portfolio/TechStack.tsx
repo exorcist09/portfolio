@@ -1,21 +1,30 @@
-type Tech = { 
-  name: string; 
-  slug: string; 
-  color?: string; 
+import { Cloud, Database, Coffee } from "lucide-react";
+
+type Tech = {
+  name: string;
+  slug: string;
+  color?: string;
   alwaysWhite?: boolean;
   colorUrlOverride?: string;
+  icon?: React.ElementType;
 };
+
+const ApiIcon = ({ className, color }: { className?: string; color?: string }) => (
+  <div className={`flex items-center justify-center font-black text-[10px] ${className}`} style={{ color }}>
+    API
+  </div>
+);
 
 const groups: { label: string; items: Tech[] }[] = [
   {
     label: "Languages",
     items: [
-      { name: "Java", slug: "openjdk", alwaysWhite: true },
+      { name: "Java", slug: "java", icon: Coffee, color: "#FF0000" },
       { name: "JavaScript", slug: "javascript", color: "#F7DF1E" },
       { name: "TypeScript", slug: "typescript", color: "#3178C6" },
       { name: "SQL", slug: "postgresql", color: "#4169E1" },
       { name: "HTML", slug: "html5", color: "#E34F26" },
-      { name: "CSS", slug: "css3", alwaysWhite: true },
+      { name: "CSS", slug: "css", color: "#663399" },
     ],
   },
   {
@@ -37,10 +46,10 @@ const groups: { label: string; items: Tech[] }[] = [
       { name: "Node.js", slug: "nodedotjs", color: "#5FA04E" },
       { name: "Express.js", slug: "express", alwaysWhite: true },
       { name: "Spring Boot", slug: "springboot", color: "#6DB33F" },
-      { name: "REST APIs", slug: "fastapi", color: "#009688" },
+      { name: "REST APIs", slug: "api", icon: ApiIcon, color: "#009688" },
       { name: "GraphQL", slug: "graphql", color: "#E10098" },
       { name: "WebSockets", slug: "socketdotio", alwaysWhite: true },
-      { name: "JWT / OAuth 2.0", slug: "jsonwebtokens", colorUrlOverride: "https://jwt.io/img/icon.svg" },
+      { name: "JWT / OAuth 2.0", slug: "jsonwebtokens", alwaysWhite: true },
       { name: "Redis", slug: "redis", color: "#FF4438" },
       { name: "RabbitMQ", slug: "rabbitmq", color: "#FF6600" },
       { name: "Kafka", slug: "apachekafka", alwaysWhite: true },
@@ -60,7 +69,7 @@ const groups: { label: string; items: Tech[] }[] = [
   {
     label: "DevOps & Cloud",
     items: [
-      { name: "AWS", slug: "amazonaws", alwaysWhite: true },
+      { name: "AWS", slug: "aws", icon: Cloud, color: "#E34F26" },
       { name: "Docker", slug: "docker", color: "#2496ED" },
       { name: "Nginx", slug: "nginx", color: "#009639" },
       { name: "Linux", slug: "linux", color: "#FCC624" },
@@ -71,10 +80,10 @@ const groups: { label: string; items: Tech[] }[] = [
     label: "AI / LLM",
     items: [
       { name: "LangChain", slug: "langchain", color: "#1C3C3C" },
-      { name: "LangGraph", slug: "langchain", color: "#1C3C3C" },
+      { name: "LangGraph", slug: "langgraph", color: "#1C3C3C" },
       { name: "Hugging Face", slug: "huggingface", color: "#FFD21E" },
-      { name: "RAG", slug: "langchain", color: "#1C3C3C" },
-      { name: "Vector DBs", slug: "pinecone", alwaysWhite: true },
+      { name: "RAG", slug: "flickr", alwaysWhite: true },
+      { name: "Vector DBs", slug: "vectordb", icon: Database, color: "#009639" },
       { name: "Agentic AI", slug: "dependabot", color: "#0366D6" },
     ],
   },
@@ -83,17 +92,26 @@ const groups: { label: string; items: Tech[] }[] = [
 function Pill({ t }: { t: Tech }) {
   const whiteUrl = `https://cdn.simpleicons.org/${t.slug}/ffffff`;
   const colorUrl = t.colorUrlOverride ? t.colorUrlOverride : t.alwaysWhite ? whiteUrl : `https://cdn.simpleicons.org/${t.slug}`;
-  
+
   return (
     <div className="glass group relative flex items-center gap-2 rounded-md px-2.5 py-1.5 text-xs transition hover:-translate-y-0.5">
       <span className="relative grid h-3.5 w-3.5 place-items-center">
-        <img src={whiteUrl} alt="" className="h-3.5 w-3.5 transition group-hover:opacity-0" loading="lazy" />
-        <img src={colorUrl} alt="" className="absolute inset-0 h-3.5 w-3.5 opacity-0 transition group-hover:opacity-100" loading="lazy" />
+        {t.icon ? (
+          <>
+            <t.icon className="h-3.5 w-3.5 transition group-hover:opacity-0 text-foreground" />
+            <t.icon className="absolute inset-0 h-3.5 w-3.5 opacity-0 transition group-hover:opacity-100 text-foreground" color={t.alwaysWhite ? "currentColor" : (t.color || "currentColor")} />
+          </>
+        ) : (
+          <>
+            <img src={whiteUrl} alt="" className="h-3.5 w-3.5 transition group-hover:opacity-0 invert dark:invert-0" loading="lazy" />
+            <img src={colorUrl} alt="" className={`absolute inset-0 h-3.5 w-3.5 opacity-0 transition group-hover:opacity-100 ${t.alwaysWhite ? 'invert dark:invert-0' : ''}`} loading="lazy" />
+          </>
+        )}
       </span>
       <span className="text-foreground/80 transition group-hover:text-foreground">{t.name}</span>
       <span
         className="pointer-events-none absolute inset-0 rounded-md opacity-0 transition group-hover:opacity-100"
-        style={{ boxShadow: t.alwaysWhite ? `0 0 24px -6px rgba(255,255,255,0.4)` : `0 0 24px -6px ${t.color || '#ffffff'}66` }}
+        style={{ boxShadow: t.alwaysWhite ? `0 0 24px -6px color-mix(in oklab, var(--foreground) 40%, transparent)` : `0 0 24px -6px ${t.color || '#ffffff'}66` }}
       />
     </div>
   );

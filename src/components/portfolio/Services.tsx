@@ -4,12 +4,12 @@ import { MonitorSmartphone, Server, Rocket, Sparkles } from "lucide-react";
 const services = [
   {
     title: "Backend Development",
-    desc: "Building robust, scalable, and secure APIs and microservices using Node.js and PostgreSQL.",
+    desc: "Building robust, scalable and secure APIs and microservices using Node.js and PostgreSQL.",
     icon: Server,
   },
   {
     title: "Frontend Development",
-    desc: "Crafting beautiful, responsive, and interactive UI with modern frameworks like React and Next.js.",
+    desc: "Crafting beautiful, responsive and interactive UI with modern frameworks like React and Next.js.",
     icon: MonitorSmartphone,
   },
   {
@@ -43,7 +43,7 @@ function ServiceCard({ title, desc, icon: Icon }: { title: string, desc: string,
       onMouseLeave={() => setIsHovered(false)}
       className="relative flex-1 overflow-hidden rounded-2xl p-[1px] transition-transform duration-300 hover:-translate-y-1 group/svc"
     >
-      <div className="absolute inset-0 bg-border/40 transition-opacity duration-300 group-hover/svc:opacity-0" />
+      <div className="absolute inset-0 bg-border/50 transition-opacity duration-300 group-hover/svc:opacity-20" />
       {/* Outer glow (Border illumination) */}
       <div
         className="absolute inset-0 transition-opacity duration-500 ease-out"
@@ -54,11 +54,11 @@ function ServiceCard({ title, desc, icon: Icon }: { title: string, desc: string,
       />
 
       {/* Inner card content */}
-      <div className="relative z-10 h-full w-full rounded-[15px] glass border-0 p-6 text-left flex flex-col items-start gap-4">
+      <div className="relative z-10 h-full w-full rounded-2xl glass border-0 p-6 text-left flex flex-col items-start gap-4">
 
         {/* Hover inner glow */}
         <div
-          className="pointer-events-none absolute inset-0 z-0 opacity-0 transition-opacity duration-500 ease-out rounded-[15px]"
+          className="pointer-events-none absolute inset-0 z-0 opacity-0 transition-opacity duration-500 ease-out rounded-2xl"
           style={{
             background: `radial-gradient(300px circle at ${mousePos.x}px ${mousePos.y}px, color-mix(in oklab, var(--primary) 5%, transparent), transparent 100%)`,
             opacity: isHovered ? 1 : 0
