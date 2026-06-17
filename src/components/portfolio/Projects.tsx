@@ -15,7 +15,7 @@ const projects: Project[] = [
   {
     title: "Kairo",
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80",
-    description: "A scalable task & workflow platform with real-time sync, queues and role based access.",
+    description: "Visual workflow automation platform for automating processes through a visual interface. Built with a focus on scalability, reliability, and user experience.",
     tags: ["Next.js", "Node.js", "PostgreSQL", "AWS", "Docker", "Redis"],
     live: "https://example.com",
     github: "https://github.com/exorcist09/kairo-v2",
@@ -23,7 +23,7 @@ const projects: Project[] = [
   {
     title: "Fyn",
     image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&q=80",
-    description: "Personal finance tracker with budgeting, categorisation and clean analytics.",
+    description: "Finance management webapp that helps users track expenses, monitor spending habits, and manage budgets through a simple, intuitive interface.",
     tags: ["Springboot", "MySQL", "JPA", "Git"],
     live: "https://example.com",
     github: "https://github.com/exorcist09/fyn",
@@ -31,7 +31,7 @@ const projects: Project[] = [
   {
     title: "Caseflow",
     image: "https://images.unsplash.com/photo-1559028012-481c04fa702d?w=1200&q=80",
-    description: "Legal case management with automated document flows and end-to-end tests.",
+    description: "High-performance case management platform that enables teams to import, validate, edit, clean, and bulk-create cases from large CSV datasets.",
     tags: ["React.js", "Express.js", "PostgreSQL", "Playwright"],
     live: "https://example.com",
     github: "https://github.com/exorcist09/caseflow",
@@ -39,7 +39,7 @@ const projects: Project[] = [
   {
     title: "Natter",
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=80",
-    description: "Realtime chat app with websockets, presence and lightweight state.",
+    description: "Real-time chat platform supporting instant messaging, media sharing, and live user presence through WebSockets and modern web technologies.",
     tags: ["React.js", "Node.js", "WebSockets", "Zustand", "MongoDB"],
     live: "https://example.com",
     github: "https://github.com/exorcist09/Natter",
@@ -47,14 +47,14 @@ const projects: Project[] = [
   {
     title: "Credit Approval System",
     image: "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?w=1200&q=80",
-    description: "Rule based credit scoring engine with async ingestion and background jobs.",
+    description: "Rule-based credit assessment engine that calculates creditworthiness from user purchase behavior and approves loans accordingly.",
     tags: ["Python", "Django/DRF", "Redis", "Celery", "Pandas"],
-    live: "https://github.com/exorcist09/credit-approval-system",
+    github: "https://github.com/exorcist09/credit-approval-system",
   },
   {
     title: "Onebox - Email",
     image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&q=80",
-    description: "Unified email inbox with AI categorisation and smart suggested replies.",
+    description: "Unified email management platform that aggregates emails from multiple accounts, provides  synchronization, and supports AI-powered search and email categorization.",
     tags: ["Node.js", "Docker", "OpenAI"],
     github: "https://github.com/exorcist09/onebox-email",
   },
@@ -63,19 +63,28 @@ const projects: Project[] = [
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80",
     description: "Civic awareness platform with multi language localisation and accessibility.",
     tags: ["React.js", "Tailwind CSS", "Localization"],
-    live: "https://github.com/exorcist09/our-voice-our-rights",
+    github: "https://github.com/exorcist09/our-voice-our-rights",
+  },
+  {
+    title: "Streampod",
+    image: "https://images.unsplash.com/photo-1639762681485-074b7f4ec651?w=1200&q=80",
+    description: "Video streaming platform that enables users to watch movies, web series through a seamless and responsive viewing experience.",
+    tags: ["React.js", "Redux", "TailwindCSS", "MUI", "Sass"],
+    live: "https://streampod-black.vercel.app/",
+    github: "https://github.com/exorcist09/Stream-pod",
   },
   {
     title: "Cruzo",
     image: "https://images.unsplash.com/photo-1639762681485-074b7f4ec651?w=1200&q=80",
-    description: "Travel companion app to plan, share and split trips with friends.",
+    description: "A ride-hailing platform that connects passengers with nearby drivers, enabling real-time ride booking, and secure trip management.",
     tags: ["Node.js", "MongoDB", "React.js", "MUI"],
     github: "https://github.com/exorcist09/Cruzo",
   },
+  
   {
     title: "Nimonic ML",
     image: "https://images.unsplash.com/photo-1639762681485-074b7f4ec651?w=1200&q=80",
-    description: "Exploratory ML notebooks predicting alloy properties from compositional data.",
+    description: "A machine learning system that predicts machining performance for Nimonic 263 alloy using simulation and experimental data, enabling faster process optimization and decision-making.",
     tags: ["Pandas", "Numpy", "Scikit-learn", "Jupyter Notebook/"],
     github: "https://github.com/exorcist09/nimonic_ml",
   }
@@ -87,6 +96,7 @@ export function Projects() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [listOverflow, setListOverflow] = useState(0);
 
   const [cardHover, setCardHover] = useState(false);
@@ -158,39 +168,49 @@ export function Projects() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.2 }}
-                  className="pointer-events-auto absolute left-4 top-1/2 z-30 w-[260px] -translate-y-1/2 overflow-hidden rounded-xl glass border border-primary/30 shadow-2xl"
-                  onMouseEnter={() => setCardHover(true)}
-                  onMouseLeave={() => setCardHover(false)}
+                  className="pointer-events-auto absolute left-4 top-1/2 z-30 w-[320px] -translate-y-1/2 overflow-hidden rounded-[2rem] bg-gradient-to-b from-primary/5 to-primary/20 backdrop-blur-2xl border border-primary/20 shadow-2xl flex flex-col"
+                  onMouseEnter={() => {
+                    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+                    setCardHover(true);
+                  }}
+                  onMouseLeave={() => {
+                    setCardHover(false);
+                    setHoveredIdx(null);
+                  }}
                   style={{
                     boxShadow: cardHover
-                      ? "0 20px 60px -10px color-mix(in oklab, var(--primary) 40%, transparent)"
+                      ? "0 15px 35px -5px color-mix(in oklab, var(--primary) 25%, transparent)"
                       : undefined,
                   }}
                 >
-                  <div className="overflow-hidden border-b border-primary/20">
+                  <div className="relative h-48 w-full overflow-hidden shrink-0">
                     <motion.img
                       key={active.image}
                       src={active.image}
                       alt=""
-                      className="h-36 w-full object-cover"
+                      className="absolute inset-0 h-full w-full object-cover"
+                      style={{
+                        maskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
+                        WebkitMaskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
+                      }}
                       initial={{ scale: 1.05 }}
                       animate={{ scale: cardHover ? 1.08 : 1 }}
                       transition={{ duration: 0.4, ease: "easeOut" }}
                     />
                   </div>
-                  <div className="p-3">
-                    <p className="text-[11px] leading-snug text-muted-foreground">
+                  <div className="flex flex-col px-6 pb-6 pt-2 relative z-10 -mt-6">
+                    <p className="text-[13px] leading-relaxed text-muted-foreground mb-8 mt-2">
                       {active.description}
                     </p>
-                    <div className="mt-3 flex gap-2">
+                    <div className="flex items-center gap-3 mt-auto">
                       {active.live && (
                         <a
                           href={active.live}
                           target="_blank"
                           rel="noreferrer"
-                          className="flex flex-1 items-center justify-center gap-1.5 rounded-md bg-primary/15 px-2 py-1.5 text-[11px] font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+                          className="flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform hover:scale-110 shadow-lg"
                         >
-                          <ExternalLink className="h-3 w-3" /> Live
+                          <ExternalLink className="h-4 w-4" />
                         </a>
                       )}
                       {active.github && (
@@ -198,9 +218,9 @@ export function Projects() {
                           href={active.github}
                           target="_blank"
                           rel="noreferrer"
-                          className="flex flex-1 items-center justify-center gap-1.5 rounded-md bg-foreground/10 px-2 py-1.5 text-[11px] font-medium text-foreground transition-colors hover:bg-foreground hover:text-background"
+                          className="flex h-11 w-11 items-center justify-center rounded-full bg-foreground/10 text-foreground transition-all hover:bg-foreground hover:text-background hover:scale-110 shadow-lg"
                         >
-                          <Github className="h-3 w-3" /> GitHub
+                          <Github className="h-4 w-4" />
                         </a>
                       )}
                     </div>
@@ -233,8 +253,15 @@ export function Projects() {
                         ? "opacity-20 grayscale"
                         : "opacity-100"
                         }`}
-                      onMouseEnter={() => setHoveredIdx(i)}
-                      onMouseLeave={() => setHoveredIdx(null)}
+                      onMouseEnter={() => {
+                        if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+                        setHoveredIdx(i);
+                      }}
+                      onMouseLeave={() => {
+                        hoverTimeoutRef.current = setTimeout(() => {
+                          setHoveredIdx(null);
+                        }, 300);
+                      }}
                     >
                       {i !== projects.length - 1 && (
                         <div className="absolute bottom-0 left-0 h-px w-full bg-gradient-to-r from-transparent to-foreground/10" />

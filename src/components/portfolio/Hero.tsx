@@ -38,7 +38,7 @@ export function Hero() {
 
         <div className="text-xs leading-relaxed text-muted-foreground sm:text-sm"  >
           <p>
-           Software Engineer focused on building reliable, scalable web products. I work across the full stack — designing systems, developing features, and crafting intuitive user experiences.
+           Software Engineer focused on building reliable, scalable products. I work across the full stack — designing systems, developing features, and crafting intuitive user experiences.
           </p>
           <p className="mt-3">
             Currently exploring distributed systems, cloud infrastructure, and AI-powered applications. Always learning, building, and refining my craft as an engineer.

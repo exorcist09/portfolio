@@ -43,7 +43,7 @@ export function Contact() {
           </svg>
           <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 scale-110">
             <div className="glass rounded-full px-5 py-2 text-sm font-medium">
-              adarshverma<span className="text-primary">.me</span>
+              adarshverma<span className="text-primary">.xyz</span>
             </div>
           </div>
         </div>
