@@ -82,7 +82,7 @@ export function Navbar() {
       <header
         className={`fixed inset-x-0 top-4 z-50 flex justify-center px-4 transition-transform duration-300 ${hidden ? "-translate-y-32" : "translate-y-0"}`}
       >
-        <nav className={`relative flex w-full max-w-4xl items-center justify-between gap-3 rounded-full transition-all duration-500 ${scrolled ? 'px-2 py-1' : ''}`}>
+        <nav ref={ddRef} className={`relative flex w-full max-w-4xl items-center justify-between gap-1 md:gap-3 rounded-full transition-all duration-500 ${scrolled ? 'px-2 py-1' : ''}`}>
 
           {scrolled && (
             <motion.div
@@ -92,8 +92,7 @@ export function Navbar() {
             />
           )}
 
-          {/* Left: logo + Let's Chat + theme toggle */}
-          <div className="relative flex items-center gap-24 px-4 py-1.5">
+          <div className="relative flex items-center justify-between w-full md:w-auto gap-12 md:gap-24 px-2 md:px-4 py-1.5">
             {!scrolled && (
               <motion.div
                 layoutId="nav-glass"
@@ -101,21 +100,34 @@ export function Navbar() {
                 transition={{ type: "spring", stiffness: 250, damping: 25 }}
               />
             )}
+            
+            {/* Logo */}
             <a href="#home" className="font-hero pl-2 pr-1 text-sm tracking-tight">
               adarsh<span className="text-primary">.</span>
             </a>
+
+            {/* Actions */}
             <div className="flex items-center gap-1.5">
               <a
                 href="#contact"
                 className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full bg-foreground/10 px-3 py-1.5 text-xs font-medium transition-colors hover:text-background"
               >
                 <span className="absolute left-1/2 top-1/2 z-0 h-32 w-32 -translate-x-[120%] translate-y-[80%] rounded-full bg-foreground transition-transform duration-500 ease-out group-hover:-translate-x-1/2 group-hover:-translate-y-1/2" />
-                <span className="relative z-10 flex items-center gap-1.5">
+                <span className="relative z-10 flex items-center gap-1.5 whitespace-nowrap">
                   Let's Chat
                   <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </span>
               </a>
-              <div className="relative" ref={ddRef}>
+
+              <a href="https://www.linkedin.com/in/adarsh-verma-exorcist09/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="grid h-8 w-8 place-items-center rounded-full bg-foreground/10 text-foreground transition hover:bg-foreground hover:text-background md:hidden">
+                <Linkedin className="h-4 w-4" />
+              </a>
+
+              <a href="https://github.com/exorcist09" target="_blank" rel="noreferrer" aria-label="GitHub" className="grid h-8 w-8 place-items-center rounded-full bg-foreground/10 text-foreground transition hover:bg-foreground hover:text-background md:hidden">
+                <Github className="h-4 w-4" />
+              </a>
+
+              <div className="relative">
                 <button
                   onClick={() => setOpen((o) => !o)}
                   aria-label="Settings"
@@ -124,7 +136,7 @@ export function Navbar() {
                   <Settings className="h-4 w-4" />
                 </button>
                 {open && (
-                  <div className="glass absolute left-0 top-11 z-50 w-56 rounded-2xl p-3 shadow-2xl">
+                  <div className="glass absolute right-0 md:right-auto md:left-0 top-11 z-50 w-56 rounded-2xl p-3 shadow-2xl">
                     <p className="mb-2 px-1 text-[10px] uppercase tracking-widest text-muted-foreground">Theme</p>
                     <div className="relative flex w-full rounded-full bg-secondary/50 p-1">
                       <button onClick={() => setMode("dark")}
@@ -155,28 +167,33 @@ export function Navbar() {
 
                     <p className="mb-2 mt-4 px-1 text-[10px] uppercase tracking-widest text-muted-foreground">Cursor</p>
                     <div className="flex flex-col gap-1">
-                      <button onClick={() => setCursorMode("normal")}
-                        className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${cursorMode === "normal" ? "bg-foreground text-background" : "hover:bg-foreground/10"}`}>
-                        <MousePointer2 className="h-3 w-3" /> Normal Mode
-                      </button>
-                      <button onClick={() => setCursorMode("trail")}
-                        className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${cursorMode === "trail" ? "bg-foreground text-background" : "hover:bg-foreground/10"}`}>
-                        <Wand2 className="h-3 w-3" /> Trail Mode
-                      </button>
-                      <button onClick={() => setCursorMode("follower")}
-                        className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${cursorMode === "follower" ? "bg-foreground text-background" : "hover:bg-foreground/10"}`}>
-                        <Navigation className="h-3 w-3" /> Follower Mode
-                      </button>
-                      <button onClick={() => setCursorMode("invert")}
-                        className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${cursorMode === "invert" ? "bg-foreground text-background" : "hover:bg-foreground/10"}`}>
-                        <Contrast className="h-3 w-3" /> Invert Color Mode
-                      </button>
-                      <button onClick={() => setCursorMode("magnifying")}
-                        className={`group relative flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${cursorMode === "magnifying" ? "bg-foreground text-background" : "hover:bg-foreground/10"}`}>
-                        <Search className="h-3 w-3" /> 
-                        <span className="block group-hover:hidden">Magnifying Mode</span>
-                        <span className="hidden group-hover:block text-muted-foreground">Under Development</span>
-                      </button>
+                      <p className="text-[10px] text-muted-foreground px-1 leading-relaxed md:hidden">
+                        Switch to a mouse-based screen in order to use cursor modes.
+                      </p>
+                      <div className="hidden md:flex flex-col gap-1">
+                        <button onClick={() => setCursorMode("normal")}
+                          className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${cursorMode === "normal" ? "bg-foreground text-background" : "hover:bg-foreground/10"}`}>
+                          <MousePointer2 className="h-3 w-3" /> Normal Mode
+                        </button>
+                        <button onClick={() => setCursorMode("trail")}
+                          className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${cursorMode === "trail" ? "bg-foreground text-background" : "hover:bg-foreground/10"}`}>
+                          <Wand2 className="h-3 w-3" /> Trail Mode
+                        </button>
+                        <button onClick={() => setCursorMode("follower")}
+                          className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${cursorMode === "follower" ? "bg-foreground text-background" : "hover:bg-foreground/10"}`}>
+                          <Navigation className="h-3 w-3" /> Follower Mode
+                        </button>
+                        <button onClick={() => setCursorMode("invert")}
+                          className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${cursorMode === "invert" ? "bg-foreground text-background" : "hover:bg-foreground/10"}`}>
+                          <Contrast className="h-3 w-3" /> Invert Color Mode
+                        </button>
+                        <button onClick={() => setCursorMode("magnifying")}
+                          className={`group relative flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${cursorMode === "magnifying" ? "bg-foreground text-background" : "hover:bg-foreground/10"}`}>
+                          <Search className="h-3 w-3" /> 
+                          <span className="block group-hover:hidden">Magnifying Mode</span>
+                          <span className="hidden group-hover:block text-muted-foreground">Under Dev</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )}

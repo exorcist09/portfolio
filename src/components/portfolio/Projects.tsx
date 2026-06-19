@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
-import { ExternalLink, Github, Plus } from "lucide-react";
+import { ExternalLink, Github, Plus, X } from "lucide-react";
 
 type Project = {
   title: string;
@@ -172,14 +172,26 @@ export function Projects() {
             {/* Fixed preview card — near the left of the list area, close to heading */}
             <AnimatePresence>
               {active && (
-                <motion.div
-                  key="preview-card"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.2 }}
-                  className="pointer-events-auto absolute left-4 top-1/2 z-30 w-[320px] -translate-y-1/2 overflow-hidden rounded-xl bg-gradient-to-b from-primary/20 to-primary/10 backdrop-blur-2xl shadow-2xl flex flex-col"
-                  onMouseEnter={() => {
+                <>
+                  {/* Mobile Backdrop */}
+                  <motion.div
+                    key="preview-backdrop"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-40 bg-background/40 backdrop-blur-md md:hidden"
+                    onClick={() => setHoveredIdx(null)}
+                  />
+                  
+                  {/* Project Card */}
+                  <motion.div
+                    key="preview-card"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    className="pointer-events-auto fixed md:absolute top-1/2 left-1/2 md:left-4 z-50 md:z-30 w-[85vw] md:w-[320px] max-w-[360px] -translate-x-1/2 md:translate-x-0 -translate-y-1/2 overflow-hidden rounded-xl bg-gradient-to-b from-primary/20 to-primary/10 backdrop-blur-2xl shadow-2xl flex flex-col"
+                    onMouseEnter={() => {
                     if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
                     setCardHover(true);
                   }}
@@ -197,6 +209,16 @@ export function Projects() {
                     <Plus className="absolute right-0 bottom-0 h-40 w-40 text-foreground/5" strokeWidth={1} />
                     <Plus className="absolute right-8 bottom-8 h-40 w-40 text-foreground/5" strokeWidth={1} />
                   </div>
+                  
+                  {/* Mobile Close Button */}
+                  <button 
+                    onClick={() => setHoveredIdx(null)}
+                    className="absolute top-3 right-3 z-50 flex h-8 items-center gap-1.5 justify-center rounded-full bg-background/50 backdrop-blur-md pl-2 pr-3 text-xs font-medium text-foreground transition-transform hover:scale-105 md:hidden"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                    Close
+                  </button>
+
                   <div className="relative h-48 w-full overflow-hidden shrink-0 z-10">
                     <motion.img
                       key={active.image}
@@ -213,7 +235,10 @@ export function Projects() {
                     />
                   </div>
                   <div className="flex flex-col px-6 pb-6 pt-2 relative z-10 -mt-6">
-                    <p className="text-[13px] leading-relaxed text-muted-foreground mb-8 mt-2">
+                    <h3 className="font-hero text-2xl font-bold text-foreground mb-2 mt-4 md:hidden">
+                      {active.title}
+                    </h3>
+                    <p className="text-[13px] leading-relaxed text-muted-foreground mb-8 md:mt-2">
                       {active.description}
                     </p>
                     <div className="flex items-center gap-3 mt-auto">
@@ -239,7 +264,8 @@ export function Projects() {
                       )}
                     </div>
                   </div>
-                </motion.div>
+                  </motion.div>
+                </>
               )}
             </AnimatePresence>
 
