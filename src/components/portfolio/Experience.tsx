@@ -4,7 +4,9 @@ import { motion } from "framer-motion";
 
 type TimelineItem = {
   role: string;
+  roleMobile?: string;
   company: string;
+  companyMobile?: string;
   period: string;
   type: "exp" | "edu";
 };
@@ -30,7 +32,9 @@ const experience: TimelineItem[] = [
   },
   { 
     role: "Indian Institute of Information Technology, Design and Manufacturing, Jabalpur", 
+    roleMobile: "IIITDMJ",
     company: "Bachelor of Technology", 
+    companyMobile: "B.Tech",
     period: "Nov 2022 — May 2026",
     type: "edu" 
   },
@@ -109,8 +113,22 @@ export function Experience() {
                           <div className={`transition-all duration-500 ease-in-out overflow-hidden ${activeIndex === i ? 'max-h-10 opacity-100 mb-2' : 'max-h-0 opacity-0 mb-0'}`}>
                             <p className="text-[10px] uppercase tracking-widest text-muted-foreground/60">{e.period}</p>
                           </div>
-                          <h3 className="font-display text-base font-semibold text-foreground">{e.role}</h3>
-                          <p className="text-sm text-muted-foreground mt-1">{e.company}</p>
+                          <h3 className="font-display text-base font-semibold text-foreground">
+                            {e.roleMobile ? (
+                              <>
+                                <span className="hidden sm:inline">{e.role}</span>
+                                <span className="sm:hidden">{e.roleMobile}</span>
+                              </>
+                            ) : e.role}
+                          </h3>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            {e.companyMobile ? (
+                              <>
+                                <span className="hidden sm:inline">{e.company}</span>
+                                <span className="sm:hidden">{e.companyMobile}</span>
+                              </>
+                            ) : e.company}
+                          </p>
                         </div>
                       </div>
                       <div />
@@ -124,8 +142,22 @@ export function Experience() {
                           <div className={`transition-all duration-500 ease-in-out overflow-hidden ${activeIndex === i ? 'max-h-10 opacity-100 mb-2' : 'max-h-0 opacity-0 mb-0'}`}>
                             <p className="text-[10px] uppercase tracking-widest text-muted-foreground/60">{e.period}</p>
                           </div>
-                          <h3 className="font-display text-base font-semibold text-foreground">{e.role}</h3>
-                          <p className="text-sm text-muted-foreground mt-1">{e.company}</p>
+                          <h3 className="font-display text-base font-semibold text-foreground">
+                            {e.roleMobile ? (
+                              <>
+                                <span className="hidden sm:inline">{e.role}</span>
+                                <span className="sm:hidden">{e.roleMobile}</span>
+                              </>
+                            ) : e.role}
+                          </h3>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            {e.companyMobile ? (
+                              <>
+                                <span className="hidden sm:inline">{e.company}</span>
+                                <span className="sm:hidden">{e.companyMobile}</span>
+                              </>
+                            ) : e.company}
+                          </p>
                         </div>
                       </div>
                     </>

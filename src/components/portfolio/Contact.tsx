@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Github, Linkedin, Mail, ArrowUpRight } from "lucide-react";
+import { CommitsGrid } from "@/components/ui/commits-grid";
 
 type Key = "mail" | "linkedin" | "github";
 
@@ -90,6 +91,34 @@ export function Contact() {
             );
           })}
         </div>
+
+        {/* Adarsh / GitHub Chart Grid */}
+        {/* GitHub / Commits Grid section is temporarily disabled
+        <div className="mt-24 flex w-full flex-col items-center relative z-10">
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-50" />
+           <div 
+             className="w-full flex justify-center pt-6 translate-y-px"
+             style={{ 
+               maskImage: "linear-gradient(to right, transparent 2%, black 15%, black 85%, transparent 98%)", 
+               WebkitMaskImage: "linear-gradient(to right, transparent 2%, black 15%, black 85%, transparent 98%)" 
+             }}
+           >
+             <CommitsGrid 
+               text="ADARSH" 
+               username="exorcist09"
+               className="w-full max-w-5xl bg-transparent p-0 sm:p-0 gap-[3px] sm:gap-[4px] border-none"
+               noBorders={true}
+               colors={[
+                 "transparent",
+                 "color-mix(in srgb, var(--primary) 40%, transparent)",
+                 "color-mix(in srgb, var(--primary) 60%, transparent)",
+                 "color-mix(in srgb, var(--primary) 80%, transparent)",
+                 "var(--primary)"
+               ]}
+             />
+           </div>
+        </div> 
+        */}
 
         <footer className="mt-32 flex items-center justify-between border-t border-border pt-6 text-[11px] text-muted-foreground">
           <span>© {new Date().getFullYear()} Adarsh Verma</span>

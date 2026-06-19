@@ -16,9 +16,18 @@ export function CustomCursor() {
   const followerX = useSpring(cursorX, springConfig);
   const followerY = useSpring(cursorY, springConfig);
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   useEffect(() => {
     // Hide default cursor conditionally
-    if (cursorMode !== "normal" && cursorMode !== "trail") {
+    if (!isMobile && cursorMode !== "normal" && cursorMode !== "trail") {
       document.body.style.cursor = "none";
     } else {
       document.body.style.cursor = "auto";
@@ -54,7 +63,7 @@ export function CustomCursor() {
     return () => clearInterval(interval);
   }, [cursorMode]);
 
-  if (cursorMode === "normal") return null;
+  if (cursorMode === "normal" || isMobile) return null;
 
   return (
     <>

@@ -34,6 +34,19 @@
   --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-hero: "Krona One", "Space Grotesk", ui-sans-serif, sans-serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --animate-highlight: highlight 0.6s ease forwards;
+  --animate-flash: flash 0.6s ease forwards;
+}
+
+@keyframes highlight {
+  0% { background-color: transparent; }
+  100% { background-color: var(--highlight); }
+}
+
+@keyframes flash {
+  0% { background-color: var(--card); }
+  50% { background-color: var(--highlight); }
+  100% { background-color: var(--card); }
 }
 
 :root {

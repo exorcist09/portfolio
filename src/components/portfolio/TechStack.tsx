@@ -1,4 +1,5 @@
 import { Cloud, Database, Coffee } from "lucide-react";
+import { motion } from "framer-motion";
 
 type Tech = {
   name: string;
@@ -108,7 +109,7 @@ function Pill({ t }: { t: Tech }) {
           </>
         )}
       </span>
-      <span className="text-foreground/80 transition group-hover:text-foreground">{t.name}</span>
+      <span className="text-foreground/80 transition group-hover:text-foreground whitespace-nowrap">{t.name}</span>
       <span
         className="pointer-events-none absolute inset-0 rounded-md opacity-0 transition group-hover:opacity-100"
         style={{ boxShadow: t.alwaysWhite ? `0 0 24px -6px color-mix(in oklab, var(--foreground) 40%, transparent)` : `0 0 24px -6px ${t.color || '#ffffff'}66` }}
@@ -131,7 +132,8 @@ export function TechStack() {
           Tools and technologies I reach for to build fast, scalable, delightful products.
         </p>
 
-        <div className="mt-12 space-y-5">
+        {/* Desktop View */}
+        <div className="mt-12 hidden md:block space-y-5">
           {groups.map((g) => (
             <div key={g.label} className="flex flex-wrap items-center justify-center gap-2">
               <span className="mr-1 text-[10px] uppercase tracking-widest text-muted-foreground">{g.label}</span>
@@ -147,6 +149,29 @@ export function TechStack() {
               ))}
             </div>
           ))}
+        </div>
+
+        {/* Mobile View: Marquee */}
+        <div className="mt-12 flex flex-col gap-6 md:hidden">
+          {groups.map((g, groupIndex) => {
+            const direction = groupIndex % 2 === 0 ? ["0%", "-50%"] : ["-50%", "0%"];
+            return (
+              <div key={g.label} className="flex flex-col items-center">
+                <span className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">{g.label}</span>
+                <div className="relative flex w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+                  <motion.div
+                    className="flex w-max shrink-0 gap-3 px-1.5 hover:[animation-play-state:paused]"
+                    animate={{ x: direction }}
+                    transition={{ repeat: Infinity, duration: 120, ease: "linear" }}
+                  >
+                    {[...g.items, ...g.items, ...g.items, ...g.items].map((t, i) => (
+                      <Pill key={g.label + t.name + i} t={t} />
+                    ))}
+                  </motion.div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
