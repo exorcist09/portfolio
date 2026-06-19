@@ -13,7 +13,7 @@ const experience: TimelineItem[] = [
   { 
     role: "Software Engineer", 
     company: "Intern • Skyclad Ventures", 
-    period: "Dec 2025 — Present",
+    period: "Dec 2025 — June 2026",
     type: "exp" 
   },
   { 
@@ -106,7 +106,9 @@ export function Experience() {
                       <div className={`relative overflow-hidden glass rounded-2xl p-6 text-right border-[0.5px] border-border/20 shadow-none transition-all duration-500 ${activeIndex === i ? 'border-primary/30' : ''}`}>
                         <div className={`pointer-events-none absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-primary/15 to-transparent transition-opacity duration-500 ${activeIndex === i ? 'opacity-100' : 'opacity-0'}`} />
                         <div className="relative z-10">
-                          <p className="mb-2 text-[10px] uppercase tracking-widest text-muted-foreground/60">{e.period}</p>
+                          <div className={`transition-all duration-500 ease-in-out overflow-hidden ${activeIndex === i ? 'max-h-10 opacity-100 mb-2' : 'max-h-0 opacity-0 mb-0'}`}>
+                            <p className="text-[10px] uppercase tracking-widest text-muted-foreground/60">{e.period}</p>
+                          </div>
                           <h3 className="font-display text-base font-semibold text-foreground">{e.role}</h3>
                           <p className="text-sm text-muted-foreground mt-1">{e.company}</p>
                         </div>
@@ -119,7 +121,9 @@ export function Experience() {
                       <div className={`relative overflow-hidden glass rounded-2xl p-6 text-left border-[0.5px] border-border/20 shadow-none transition-all duration-500 ${activeIndex === i ? 'border-primary/30' : ''}`}>
                         <div className={`pointer-events-none absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-primary/15 to-transparent transition-opacity duration-500 ${activeIndex === i ? 'opacity-100' : 'opacity-0'}`} />
                         <div className="relative z-10">
-                          <p className="mb-2 text-[10px] uppercase tracking-widest text-muted-foreground/60">{e.period}</p>
+                          <div className={`transition-all duration-500 ease-in-out overflow-hidden ${activeIndex === i ? 'max-h-10 opacity-100 mb-2' : 'max-h-0 opacity-0 mb-0'}`}>
+                            <p className="text-[10px] uppercase tracking-widest text-muted-foreground/60">{e.period}</p>
+                          </div>
                           <h3 className="font-display text-base font-semibold text-foreground">{e.role}</h3>
                           <p className="text-sm text-muted-foreground mt-1">{e.company}</p>
                         </div>
