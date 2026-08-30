@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { PufferFish, type FishAnimationState } from "./PufferFish";
 import { PufferBubbles, type BubbleTrigger } from "./PufferBubbles";
@@ -16,27 +16,36 @@ export const PufferScene: React.FC<PufferSceneProps> = ({
 }) => {
   return (
     <Canvas
-      camera={{ position: [0, 0.3, 4.2], fov: 48 }}
+      camera={{ position: [0, 0.2, 4.6], fov: 46 }}
       dpr={[1, typeof window !== "undefined" ? Math.min(window.devicePixelRatio || 1, 2) : 1]}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
     >
-      {/* Studio-lit lighting matching snippet's reference look */}
-      <ambientLight intensity={0.8} />
-      <directionalLight position={[5, 10, 7]} intensity={1.2} />
-      <directionalLight position={[-5, 5, 2]} intensity={0.5} color="#ffebd6" />
-      <directionalLight position={[0, -4, 4]} intensity={0.25} color="#ffffff" />
+      {/* ── Studio 3-Point Lighting Setup ── */}
+      {/* Soft natural ambient fill */}
+      <ambientLight intensity={1.3} color="#fff8f0" />
 
-      {/* Bubbles instanced pool */}
-      <PufferBubbles triggerRef={bubbleTriggerRef} />
+      {/* Main key light: warm sunny highlight from top-front-right */}
+      <directionalLight position={[4, 6, 5]} intensity={2.2} color="#ffffff" />
 
-      {/* Procedural fish */}
-      <PufferFish
-        animState={animState}
-        onFishClick={onFishClick}
-        triggerBubbles={(x, y, z, count, spread, speed) =>
-          bubbleTriggerRef.current?.(x, y, z, count, spread, speed)
-        }
-      />
+      {/* Cool blue-cyan rim backlight: highlights spikes, fins, and body silhouette */}
+      <directionalLight position={[-4, 3, -4]} intensity={2.4} color="#38bdf8" />
+
+      {/* Soft warm bottom bounce light: illuminates the crème belly */}
+      <directionalLight position={[0, -4, 2]} intensity={1.2} color="#ffedd5" />
+
+      {/* Top subtle rim highlight */}
+      <pointLight position={[0, 4, 0]} intensity={1.1} color="#ffffff" distance={10} />
+
+      <Suspense fallback={null}>
+        <PufferFish
+          animState={animState}
+          onFishClick={onFishClick}
+          triggerBubbles={(x, y, z, count, spread, speed) => {
+            bubbleTriggerRef.current?.(x, y, z, count, spread, speed);
+          }}
+        />
+        <PufferBubbles triggerRef={bubbleTriggerRef} />
+      </Suspense>
     </Canvas>
   );
 };

@@ -59,7 +59,7 @@ export function PufferCompanion({
   const bubbleTriggerRef = useRef<BubbleTrigger | null>(null);
   const prevAccent = useRef(accent);
   const isFirstMount = useRef(true);
-  const hasTriggered80Swim = useRef(false);
+  const hasTriggered60Swim = useRef(false);
 
   // Check prefers-reduced-motion & mobile
   useEffect(() => {
@@ -97,25 +97,26 @@ export function PufferCompanion({
     }
   }, [accent, pufferEnabled]);
 
-  // Loading 80% threshold: start swim to bottom-right corner with bubbles
+  // Loading 60% threshold: start smooth swim to bottom-right corner
   useEffect(() => {
-    if (progress >= 80 && !hasTriggered80Swim.current) {
-      hasTriggered80Swim.current = true;
+    if (progress >= 60 && !hasTriggered60Swim.current) {
+      hasTriggered60Swim.current = true;
       setIsTransitioning(true);
 
       // Swimming bubble trail burst
-      bubbleTriggerRef.current?.(0, 0, 0.8, 12, 0.4, 1.4);
+      bubbleTriggerRef.current?.(0, 0, 0.8, 14, 0.45, 1.4);
 
+      // 1.3s smooth transit to corner
       const timer = setTimeout(() => {
         setIsTransitioning(false);
         setSettledInCorner(true);
-      }, 700);
+      }, 1300);
 
       return () => clearTimeout(timer);
     }
   }, [progress]);
 
-  // Handle final completion if progress didn't tick through 80% (e.g. reload)
+  // Handle final completion if progress didn't tick through 60%
   useEffect(() => {
     if (!loading && !settledInCorner) {
       setIsTransitioning(true);
@@ -124,7 +125,7 @@ export function PufferCompanion({
       const timer = setTimeout(() => {
         setIsTransitioning(false);
         setSettledInCorner(true);
-      }, 500);
+      }, 600);
 
       return () => clearTimeout(timer);
     }
@@ -141,8 +142,8 @@ export function PufferCompanion({
     return null;
   }
 
-  // Centered while loading and before 80% progress
-  const isCentered = loading && progress < 80 && !hasTriggered80Swim.current;
+  // Centered while loading and before 60% progress
+  const isCentered = loading && progress < 60 && !hasTriggered60Swim.current;
 
   const animState: FishAnimationState = {
     isHovered,
@@ -159,54 +160,43 @@ export function PufferCompanion({
       className="pointer-events-none select-none"
     >
       <motion.div
-        layout
-        initial={
-          isCentered
-            ? {
-                top: "38%",
-                left: "50%",
-                x: "-50%",
-                y: "-50%",
-                bottom: "auto",
-                right: "auto",
-                width: isMobile ? 230 : 290,
-                height: isMobile ? 230 : 290,
-                zIndex: 102,
-              }
-            : false
-        }
+        initial={{
+          top: "46vh",
+          left: "50vw",
+          x: "-50%",
+          y: "-50%",
+          width: isMobile ? 300 : 380,
+          height: isMobile ? 300 : 380,
+          zIndex: 150,
+        }}
         animate={
           isCentered
             ? {
-                top: "38%",
-                left: "50%",
+                top: "46vh",
+                left: "50vw",
                 x: "-50%",
                 y: "-50%",
-                bottom: "auto",
-                right: "auto",
-                width: isMobile ? 230 : 290,
-                height: isMobile ? 230 : 290,
-                zIndex: 102,
+                width: isMobile ? 300 : 380,
+                height: isMobile ? 300 : 380,
+                zIndex: 150,
               }
             : {
-                top: "auto",
-                left: "auto",
-                x: "0%",
-                y: "0%",
-                bottom: isMobile ? 28 : 42,
-                right: isMobile ? 28 : 48,
-                width: isMobile ? 165 : 215,
-                height: isMobile ? 165 : 215,
-                zIndex: 40,
+                top: isMobile ? "calc(100vh - 120px)" : "calc(100vh - 145px)",
+                left: isMobile ? "calc(100vw - 120px)" : "calc(100vw - 150px)",
+                x: "-50%",
+                y: "-50%",
+                width: isMobile ? 180 : 240,
+                height: isMobile ? 180 : 240,
+                zIndex: 150,
               }
         }
         transition={{
           type: "spring",
-          stiffness: 120,
-          damping: 18,
-          mass: 0.7,
+          stiffness: 38,
+          damping: 14,
+          mass: 1.15,
         }}
-        className="fixed pointer-events-none"
+        className="fixed pointer-events-none overflow-visible"
       >
         {/* Personality Speech Bubble */}
         <AnimatePresence>
@@ -215,7 +205,7 @@ export function PufferCompanion({
           )}
         </AnimatePresence>
 
-        {/* Interactive 3D Canvas Scene with Grab to Spin */}
+        {/* Interactive 3D Canvas Scene with ample bounds */}
         <div
           onPointerEnter={() => {
             if (!isMobile) {
@@ -226,7 +216,7 @@ export function PufferCompanion({
           onPointerLeave={() => {
             if (!isMobile) setIsHovered(false);
           }}
-          className="relative h-full w-full pointer-events-auto cursor-pointer"
+          className="relative h-full w-full pointer-events-auto cursor-pointer overflow-visible"
           title="Click to puff!"
         >
           <PufferScene
