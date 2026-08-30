@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useCallback, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
-const MAX_BUBBLES = 48;
+const MAX_BUBBLES = 24;
 
 export interface BubbleData {
   active: boolean;
@@ -31,33 +31,33 @@ export const PufferBubbles: React.FC<PufferBubblesProps> = ({ triggerRef }) => {
       active: false,
       x: 0, y: 0, z: 0,
       vx: 0, vy: 0, vz: 0,
-      scale: 0, baseScale: 0.1,
-      life: 0, maxLife: 1.5,
+      scale: 0, baseScale: 0.12,
+      life: 0, maxLife: 1.4,
       wobbleSpeed: 3, wobbleOffset: 0,
     }))
   );
 
   const spawnBubbles: BubbleTrigger = useCallback(
-    (x = 0, y = 0, z = 0.8, count = 1, spread = 0.35, speed = 1.0) => {
+    (x = 0, y = 0, z = 0.8, count = 2, spread = 0.35, speed = 1.0) => {
       let spawned = 0;
       for (let i = 0; i < MAX_BUBBLES && spawned < count; i++) {
         const b = bubbles.current[i];
         if (!b.active) {
           b.active = true;
-          // Spawn scattered around the fish center
+          // Spawn position around fish
           b.x = x + (Math.random() - 0.5) * spread * 2;
           b.y = y + (Math.random() - 0.5) * spread;
           b.z = z + (Math.random() - 0.5) * spread;
-          // Rise up, slight random horizontal drift
-          b.vx = (Math.random() - 0.5) * 0.3 * speed;
-          b.vy = (0.6 + Math.random() * 0.8) * speed;
+          // Buoyant upward motion with gentle drift
+          b.vx = (Math.random() - 0.5) * 0.35 * speed;
+          b.vy = (0.7 + Math.random() * 0.7) * speed;
           b.vz = (Math.random() - 0.5) * 0.25 * speed;
-          // Bubbles are clearly visible — min size 0.08
-          b.baseScale = 0.08 + Math.random() * 0.1;
-          b.scale = b.baseScale * 0.4;
+          // Subtle size
+          b.baseScale = 0.09 + Math.random() * 0.08;
+          b.scale = 0;
           b.life = 0;
-          b.maxLife = 1.0 + Math.random() * 0.8;
-          b.wobbleSpeed = 2 + Math.random() * 3;
+          b.maxLife = 1.0 + Math.random() * 0.6;
+          b.wobbleSpeed = 2.5 + Math.random() * 2.5;
           b.wobbleOffset = Math.random() * Math.PI * 2;
           spawned++;
         }
@@ -79,7 +79,7 @@ export const PufferBubbles: React.FC<PufferBubblesProps> = ({ triggerRef }) => {
     for (let i = 0; i < MAX_BUBBLES; i++) {
       const b = bubbles.current[i];
       if (!b.active) {
-        dummy.position.set(0, -999, 0);
+        dummy.position.set(0, 0, -100);
         dummy.scale.setScalar(0);
         dummy.updateMatrix();
         meshRef.current.setMatrixAt(i, dummy.matrix);
@@ -90,7 +90,7 @@ export const PufferBubbles: React.FC<PufferBubblesProps> = ({ triggerRef }) => {
 
       if (b.life >= b.maxLife) {
         b.active = false;
-        dummy.position.set(0, -999, 0);
+        dummy.position.set(0, 0, -100);
         dummy.scale.setScalar(0);
         dummy.updateMatrix();
         meshRef.current.setMatrixAt(i, dummy.matrix);
@@ -99,16 +99,16 @@ export const PufferBubbles: React.FC<PufferBubblesProps> = ({ triggerRef }) => {
 
       const t = b.life / b.maxLife;
 
-      // Drift upward + sinusoidal wobble
+      // Buoyancy drift upward + organic wobble
       b.x += (b.vx + Math.sin(time * b.wobbleSpeed + b.wobbleOffset) * 0.12) * dt;
       b.y += b.vy * dt;
       b.z += b.vz * dt;
 
-      // Grow in, then pop at the end
+      // Pop in & out curve
       const sc = b.baseScale * Math.sin(t * Math.PI) * (1 + t * 0.3);
 
       dummy.position.set(b.x, b.y, b.z);
-      dummy.scale.setScalar(Math.max(sc, 0));
+      dummy.scale.setScalar(Math.max(sc, 0.001));
       dummy.updateMatrix();
       meshRef.current.setMatrixAt(i, dummy.matrix);
     }
@@ -117,14 +117,20 @@ export const PufferBubbles: React.FC<PufferBubblesProps> = ({ triggerRef }) => {
   });
 
   return (
-    <instancedMesh ref={meshRef} args={[undefined, undefined, MAX_BUBBLES]}>
-      <sphereGeometry args={[1, 12, 12]} />
+    <instancedMesh
+      ref={meshRef}
+      args={[undefined, undefined, MAX_BUBBLES]}
+      frustumCulled={false}
+    >
+      <sphereGeometry args={[1, 16, 16]} />
       <meshStandardMaterial
-        color="#d8f4ff"
-        roughness={0.05}
+        color="#0284c7"
+        emissive="#0284c7"
+        emissiveIntensity={0.65}
+        roughness={0.1}
         metalness={0.15}
         transparent
-        opacity={0.82}
+        opacity={0.8}
         depthWrite={false}
       />
     </instancedMesh>

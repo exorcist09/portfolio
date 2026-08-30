@@ -127,9 +127,9 @@ export function TechStack() {
 
       <div className="relative mx-auto max-w-3xl text-center">
         <p className="mb-3 text-xs tracking-widest text-muted-foreground">— TECH —</p>
-        <h2 className="font-display text-3xl font-bold sm:text-4xl">Arsenal</h2>
+        <h2 className="font-display text-3xl font-bold sm:text-4xl">Dive Gear</h2>
         <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
-          Tools and technologies I reach for to build fast, scalable, delightful products.
+          The tools I take into the deep.
         </p>
 
         {/* Desktop View */}

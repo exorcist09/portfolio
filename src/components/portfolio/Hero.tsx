@@ -1,6 +1,12 @@
-import { FileText } from "lucide-react";
+import { FileText, Sparkles } from "lucide-react";
 
 export function Hero() {
+  const handleTalkWithPuffer = () => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("talk-with-puffer"));
+    }
+  };
+
   return (
     <section id="home" className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-28">
       {/* Green gradient blobs */}
@@ -16,14 +22,23 @@ export function Hero() {
             <span className="block text-4xl sm:text-5xl">Adarsh</span>
             <span className="block text-5xl text-gradient-green sm:text-6xl md:text-7xl">Verma</span>
           </h1>
-          <div className="mt-7 flex items-center gap-2">
-            <a className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium transition hover:bg-gradient-to-tr hover:from-primary/10 hover:to-transparent hover:text-primary">
+          <div className="mt-7 flex flex-wrap items-center gap-2.5">
+            {/* <a className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium transition hover:bg-gradient-to-tr hover:from-primary/10 hover:to-transparent hover:text-primary">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
               </span>
               Open to contribute
-            </a>
+            </a> */}
+
+            <button
+              onClick={handleTalkWithPuffer}
+              className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium transition hover:bg-gradient-to-tr hover:from-primary/10 hover:to-transparent hover:text-primary group cursor-pointer"
+            >
+              <Sparkles className="h-3.5 w-3.5 text-primary transition-transform duration-300 group-hover:scale-125" />
+              <span>Talk with Puffer</span>
+            </button>
+
             <a
               href="/AdarshVermaResume.pdf"
               target="_blank"
@@ -36,7 +51,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="text-xs leading-relaxed text-muted-foreground sm:text-sm"  >
+        <div className="text-xs leading-relaxed text-muted-foreground sm:text-sm">
           <p>
             Software Engineer focused on building reliable, scalable products. I work across the full stack — designing systems, developing features, and crafting intuitive user experiences.
           </p>
