@@ -28,6 +28,105 @@ function PufferAvatarIcon({ className }: { className?: string }) {
   );
 }
 
+function MarkdownMessage({ text, isPuffer }: { text: string; isPuffer: boolean }) {
+  const lines = text.split("\n");
+
+  const parseInline = (str: string) => {
+    const parts: (string | React.ReactNode)[] = [];
+    const regex = /(\*\*([^*]+)\*\*|\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s]+))/g;
+    let match: RegExpExecArray | null;
+    let lastIndex = 0;
+    let key = 0;
+
+    while ((match = regex.exec(str)) !== null) {
+      if (match.index > lastIndex) {
+        parts.push(str.slice(lastIndex, match.index));
+      }
+
+      if (match[2]) {
+        // **bold**
+        parts.push(
+          <strong
+            key={key++}
+            className={
+              isPuffer
+                ? "font-semibold text-foreground"
+                : "font-bold text-primary-foreground"
+            }
+          >
+            {match[2]}
+          </strong>
+        );
+      } else if (match[3] && match[4]) {
+        // [title](url)
+        parts.push(
+          <a
+            key={key++}
+            href={match[4]}
+            target="_blank"
+            rel="noreferrer"
+            className={`underline underline-offset-2 transition-opacity hover:opacity-80 font-medium ${
+              isPuffer ? "text-primary" : "text-primary-foreground"
+            }`}
+          >
+            {match[3]}
+          </a>
+        );
+      } else if (match[5]) {
+        // raw url
+        parts.push(
+          <a
+            key={key++}
+            href={match[5]}
+            target="_blank"
+            rel="noreferrer"
+            className={`underline underline-offset-2 transition-opacity hover:opacity-80 font-medium ${
+              isPuffer ? "text-primary" : "text-primary-foreground"
+            }`}
+          >
+            {match[5]}
+          </a>
+        );
+      }
+      lastIndex = regex.lastIndex;
+    }
+
+    if (lastIndex < str.length) {
+      parts.push(str.slice(lastIndex));
+    }
+
+    return parts.length > 0 ? parts : str;
+  };
+
+  return (
+    <div className="space-y-1.5 leading-relaxed">
+      {lines.map((line, idx) => {
+        const trimmed = line.trim();
+        if (!trimmed) {
+          return <div key={idx} className="h-1" />;
+        }
+
+        // Bullet point: starts with * or -
+        if (/^(\*|-)\s+/.test(trimmed)) {
+          const content = trimmed.replace(/^(\*|-)\s+/, "");
+          return (
+            <div key={idx} className="flex items-start gap-2 pl-0.5">
+              <span
+                className={`inline-block h-1.5 w-1.5 rounded-full mt-1.5 shrink-0 ${
+                  isPuffer ? "bg-primary" : "bg-primary-foreground"
+                }`}
+              />
+              <span className="flex-1">{parseInline(content)}</span>
+            </div>
+          );
+        }
+
+        return <p key={idx}>{parseInline(line)}</p>;
+      })}
+    </div>
+  );
+}
+
 interface PufferAssistantProps {
   isOpen: boolean;
   onClose: () => void;
@@ -84,7 +183,7 @@ export function PufferAssistant({ isOpen, onClose }: PufferAssistantProps) {
     setIsTyping(true);
 
     try {
-      const responseText = await getPufferResponse(text);
+      const responseText = await getPufferResponse(text, messages);
 
       const pufferMsg: Message = {
         id: `puffer-${Date.now()}`,
@@ -182,13 +281,13 @@ export function PufferAssistant({ isOpen, onClose }: PufferAssistantProps) {
                       )}
 
                       <div
-                        className={`rounded-2xl px-4 py-2.5 max-w-[82%] whitespace-pre-line ${
+                        className={`rounded-2xl px-4 py-2.5 max-w-[84%] ${
                           isPuffer
                             ? "glass bg-white/[0.04] text-foreground border border-white/10 shadow-sm"
                             : "bg-primary text-primary-foreground font-medium shadow-md"
                         }`}
                       >
-                        {m.text}
+                        <MarkdownMessage text={m.text} isPuffer={isPuffer} />
                       </div>
                     </div>
                   );
@@ -255,7 +354,7 @@ export function PufferAssistant({ isOpen, onClose }: PufferAssistantProps) {
                   onClick={handleSubmit}
                   disabled={!inputVal.trim() || isTyping}
                   aria-label="Send message"
-                  title="Send message"
+                  title="Send message (Enter)"
                   className={`grid h-8 w-8 sm:h-9 sm:w-9 shrink-0 place-items-center rounded-full transition-all duration-200 shadow-md ${
                     inputVal.trim() && !isTyping
                       ? "bg-primary text-primary-foreground hover:scale-105 active:scale-95 cursor-pointer shadow-primary/30"
