@@ -191,7 +191,7 @@ export function Navbar({ onOpenResume }: NavbarProps) {
               </div>
 
               {/* Settings Button */}
-              <div ref={ddRef} className="relative">
+              <div ref={ddRef} className="relative hidden sm:block">
                 <button
                   onClick={() => {
                     setOpen((o) => !o);

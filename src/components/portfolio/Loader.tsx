@@ -59,6 +59,19 @@ export function Loader({
         </h1>
       </div>
 
+      {/* ── Center Loading Percentage (Visible ONLY on small screens / mobile) ── */}
+      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none sm:hidden">
+        <div className="flex flex-col items-center gap-1.5">
+          <span className="font-mono text-5xl font-bold tracking-tight text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)] select-none">
+            {progress}
+            <span className="text-2xl text-[#22c55e] font-semibold ml-0.5">%</span>
+          </span>
+          <span className="text-[10px] font-medium uppercase tracking-widest text-sky-200/75">
+            Diving In...
+          </span>
+        </div>
+      </div>
+
       {/* ── Rising Water with Prominent Dynamic Fluid Waves ── */}
       <div
         className="absolute inset-x-0 bottom-0 z-10 overflow-visible transition-[height] duration-150 ease-out pointer-events-none"

@@ -292,11 +292,11 @@ export function PufferCompanion({
                 onClose={() => setIsAssistantOpen(false)}
             />
 
-            {/* ── Puffer 3D Companion Layer (Three.js Canvas Layer) ── */}
+            {/* ── Puffer 3D Companion Layer (Three.js Canvas Layer - Hidden on small screens) ── */}
             <div
                 aria-label="Puffer fish mascot companion"
                 role="region"
-                className="pointer-events-none select-none"
+                className="pointer-events-none select-none hidden sm:block"
             >
                 <motion.div
                     initial={{

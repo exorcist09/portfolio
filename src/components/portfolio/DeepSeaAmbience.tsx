@@ -2,7 +2,7 @@ import React from "react";
 
 export function DeepSeaAmbience() {
   return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none" aria-hidden>
+    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none hidden sm:block" aria-hidden>
       
       {/* ── Ambient Caustic Ocean Rays ── */}
       <div
