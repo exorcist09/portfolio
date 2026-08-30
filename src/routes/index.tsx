@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/portfolio/Navbar";
 import { Hero } from "@/components/portfolio/Hero";
 import { TechStack } from "@/components/portfolio/TechStack";
@@ -11,6 +11,8 @@ import { Loader } from "@/components/portfolio/Loader";
 import { ThemeProvider } from "@/components/portfolio/ThemeContext";
 import { CustomCursor } from "@/components/portfolio/CustomCursor";
 import { PufferCompanion } from "@/components/puffer/Puffer";
+import { DeepSeaAmbience } from "@/components/portfolio/DeepSeaAmbience";
+import { ResumeModal } from "@/components/portfolio/ResumeModal";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -25,6 +27,13 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [loaded, setLoaded] = useState(false);
   const [loadProgress, setLoadProgress] = useState(0);
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
+
+  useEffect(() => {
+    const handleOpen = () => setIsResumeOpen(true);
+    window.addEventListener("open-resume-modal", handleOpen);
+    return () => window.removeEventListener("open-resume-modal", handleOpen);
+  }, []);
 
   return (
     <ThemeProvider>
@@ -39,17 +48,16 @@ function Index() {
         />
       )}
       <PufferCompanion loading={!loaded} progress={loadProgress} />
-      <main className="relative min-h-screen bg-background text-foreground" style={{ overflowX: "clip" }}>
-        {/* Global side dot flows */}
-        <div aria-hidden className="pointer-events-none fixed inset-y-0 left-0 z-0 w-28 opacity-[0.10] sm:w-40">
-          <div className="dot-flow h-full w-full" />
-        </div>
-        <div aria-hidden className="pointer-events-none fixed inset-y-0 right-0 z-0 w-28 opacity-[0.10] sm:w-40">
-          <div className="dot-flow h-full w-full" />
-        </div>
+      
+      {/* Resume Modal View */}
+      <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
 
-        <Navbar />
-        <Hero />
+      <main className="relative min-h-screen bg-background text-foreground" style={{ overflowX: "clip" }}>
+        {/* Deep sea floating margins (bioluminescent jellyfish, marine snow, micro-bubbles) */}
+        <DeepSeaAmbience />
+
+        <Navbar onOpenResume={() => setIsResumeOpen(true)} />
+        <Hero onOpenResume={() => setIsResumeOpen(true)} />
         <TechStack />
         <Projects />
         <Services />

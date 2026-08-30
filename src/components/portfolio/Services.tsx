@@ -78,7 +78,7 @@ function ServiceCard({ title, desc, icon: Icon }: { title: string, desc: string,
 
 export function Services() {
   return (
-    <section id="services" className="relative px-6 py-20 z-0 overflow-hidden">
+    <section id="services" className="relative px-6 pt-20 pb-36 sm:pb-44 z-0 overflow-hidden">
       {/* Center gradient */}
       <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full blur-3xl opacity-40 -z-10"
         style={{ background: "radial-gradient(circle, color-mix(in oklab, var(--primary) 40%, transparent), transparent 70%)" }} />

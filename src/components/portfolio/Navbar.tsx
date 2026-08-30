@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { Github, Linkedin, FileText, Moon, Sun, ArrowUpRight, Settings, MousePointer2, Wand2, Contrast, Search, Navigation, Palette } from "lucide-react";
+import { Github, Linkedin, FileText, Moon, Sun, ArrowUpRight, Settings, MousePointer2, Wand2, Contrast, Navigation, Palette } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme, ACCENTS, type Accent } from "./ThemeContext";
 
-export function Navbar() {
+interface NavbarProps {
+  onOpenResume?: () => void;
+}
+
+export function Navbar({ onOpenResume }: NavbarProps) {
   const { mode, setMode, accent, setAccent, cursorMode, setCursorMode, pufferEnabled, setPufferEnabled } = useTheme();
   const [open, setOpen] = useState(false);
   const [accentOpen, setAccentOpen] = useState(false);
@@ -157,9 +161,9 @@ export function Navbar() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 4, scale: 0.95 }}
                       transition={{ duration: 0.15 }}
-                      className="glass absolute right-0 md:right-auto md:left-0 top-11 z-50 rounded-2xl p-2.5 shadow-2xl backdrop-blur-xl border border-white/10"
+                      className="glass absolute right-0 md:right-auto md:left-0 top-11 z-50 rounded-2xl p-3.5 shadow-2xl backdrop-blur-xl border border-white/10"
                     >
-                      <div className="flex items-center gap-1.5">
+                      <div className="flex items-center gap-3.5 sm:gap-4">
                         {(Object.keys(ACCENTS) as Accent[]).map((k) => (
                           <button
                             key={k}
@@ -218,16 +222,6 @@ export function Navbar() {
                         )}
                       </button>
                     </div>
-                    <p className="mb-2 px-1 text-[10px] uppercase tracking-widest text-muted-foreground">Accent</p>
-                    <div className="flex items-center justify-between gap-1">
-                      {(Object.keys(ACCENTS) as Accent[]).map((k) => (
-                        <button key={k} onClick={() => setAccent(k)} aria-label={ACCENTS[k].name}
-                          className={`grid h-7 w-7 place-items-center rounded-full transition ${accent === k ? "ring-2 ring-offset-2 ring-offset-background" : ""}`}
-                          style={{ background: ACCENTS[k].swatch, ["--tw-ring-color" as string]: ACCENTS[k].swatch }}>
-                          {accent === k && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
-                        </button>
-                      ))}
-                    </div>
 
                     <p className="mb-2 mt-4 px-1 text-[10px] uppercase tracking-widest text-muted-foreground">Interactions</p>
                     <div className="flex flex-col gap-1">
@@ -250,12 +244,6 @@ export function Navbar() {
                         <button onClick={() => setCursorMode("invert")}
                           className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${cursorMode === "invert" ? "bg-foreground text-background" : "hover:bg-foreground/10"}`}>
                           <Contrast className="h-3 w-3" /> Invert Color Mode
-                        </button>
-                        <button onClick={() => setCursorMode("magnifying")}
-                          className={`group relative flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${cursorMode === "magnifying" ? "bg-foreground text-background" : "hover:bg-foreground/10"}`}>
-                          <Search className="h-3 w-3" />
-                          <span className="block group-hover:hidden">Magnifying Mode</span>
-                          <span className="hidden group-hover:block text-muted-foreground">Under Dev</span>
                         </button>
                       </div>
                     </div>
@@ -307,9 +295,19 @@ export function Navbar() {
               <a href="https://github.com/exorcist09" target="_blank" rel="noreferrer" aria-label="GitHub" className="hover:text-foreground transition">
                 <Github className="h-4 w-4" />
               </a>
-              <a href="/AdarshVermaResume.pdf" target="_blank" rel="noreferrer" aria-label="AdarshVermaResume" className="hover:text-foreground transition">
+              <button
+                onClick={() => {
+                  if (onOpenResume) onOpenResume();
+                  else if (typeof window !== "undefined") {
+                    window.dispatchEvent(new CustomEvent("open-resume-modal"));
+                  }
+                }}
+                aria-label="AdarshVermaResume"
+                title="View Resume"
+                className="hover:text-foreground transition cursor-pointer"
+              >
                 <FileText className="h-4 w-4" />
-              </a>
+              </button>
             </div>
           </div>
         </nav>
