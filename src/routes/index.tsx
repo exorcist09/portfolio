@@ -10,6 +10,7 @@ import { Contact } from "@/components/portfolio/Contact";
 import { Loader } from "@/components/portfolio/Loader";
 import { ThemeProvider } from "@/components/portfolio/ThemeContext";
 import { CustomCursor } from "@/components/portfolio/CustomCursor";
+import { PufferCompanion } from "@/components/puffer/Puffer";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -27,6 +28,7 @@ function Index() {
     <ThemeProvider>
       <CustomCursor />
       {!loaded && <Loader onDone={() => setLoaded(true)} />}
+      <PufferCompanion loading={!loaded} />
       <main className="relative min-h-screen bg-background text-foreground" style={{ overflowX: "clip" }}>
         {/* Global side dot flows */}
         <div aria-hidden className="pointer-events-none fixed inset-y-0 left-0 z-0 w-28 opacity-[0.10] sm:w-40">

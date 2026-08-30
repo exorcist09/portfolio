@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useTheme, ACCENTS, type Accent } from "./ThemeContext";
 
 export function Navbar() {
-  const { mode, setMode, accent, setAccent, cursorMode, setCursorMode } = useTheme();
+  const { mode, setMode, accent, setAccent, cursorMode, setCursorMode, pufferEnabled, setPufferEnabled } = useTheme();
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -100,7 +100,7 @@ export function Navbar() {
                 transition={{ type: "spring", stiffness: 250, damping: 25 }}
               />
             )}
-            
+
             {/* Logo */}
             <a href="#home" className="font-hero pl-2 pr-1 text-sm tracking-tight">
               adarsh<span className="text-primary">.</span>
@@ -165,7 +165,7 @@ export function Navbar() {
                       ))}
                     </div>
 
-                    <p className="mb-2 mt-4 px-1 text-[10px] uppercase tracking-widest text-muted-foreground">Cursor</p>
+                    <p className="mb-2 mt-4 px-1 text-[10px] uppercase tracking-widest text-muted-foreground">Interactions</p>
                     <div className="flex flex-col gap-1">
                       <p className="text-[10px] text-muted-foreground px-1 leading-relaxed md:hidden">
                         Switch to a mouse-based screen in order to use cursor modes.
@@ -189,9 +189,34 @@ export function Navbar() {
                         </button>
                         <button onClick={() => setCursorMode("magnifying")}
                           className={`group relative flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${cursorMode === "magnifying" ? "bg-foreground text-background" : "hover:bg-foreground/10"}`}>
-                          <Search className="h-3 w-3" /> 
+                          <Search className="h-3 w-3" />
                           <span className="block group-hover:hidden">Magnifying Mode</span>
                           <span className="hidden group-hover:block text-muted-foreground">Under Dev</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <p className="mb-2 mt-4 px-1 text-[10px] uppercase tracking-widest text-muted-foreground">Companion</p>
+                    <div className="flex items-center justify-between px-1 py-0.5">
+                      <span className="text-xs text-foreground/80 font-medium">Puffer</span>
+                      <div className="relative flex rounded-full bg-secondary/50 p-0.5">
+                        <button
+                          onClick={() => setPufferEnabled(true)}
+                          className={`relative z-10 px-2.5 py-1 text-xs transition-colors duration-300 ${pufferEnabled ? "text-background font-medium" : "text-muted-foreground hover:text-foreground"}`}
+                        >
+                          ON
+                          {pufferEnabled && (
+                            <motion.div layoutId="puffer-tab" className="absolute inset-0 -z-10 rounded-full bg-foreground" transition={{ type: "spring", stiffness: 400, damping: 30 }} />
+                          )}
+                        </button>
+                        <button
+                          onClick={() => setPufferEnabled(false)}
+                          className={`relative z-10 px-2.5 py-1 text-xs transition-colors duration-300 ${!pufferEnabled ? "text-background font-medium" : "text-muted-foreground hover:text-foreground"}`}
+                        >
+                          OFF
+                          {!pufferEnabled && (
+                            <motion.div layoutId="puffer-tab" className="absolute inset-0 -z-10 rounded-full bg-foreground" transition={{ type: "spring", stiffness: 400, damping: 30 }} />
+                          )}
                         </button>
                       </div>
                     </div>

@@ -51,9 +51,11 @@ type Ctx = {
   mode: Mode;
   accent: Accent;
   cursorMode: CursorMode;
+  pufferEnabled: boolean;
   setMode: (m: Mode) => void;
   setAccent: (a: Accent) => void;
   setCursorMode: (c: CursorMode) => void;
+  setPufferEnabled: (enabled: boolean) => void;
 };
 
 const ThemeCtx = createContext<Ctx | null>(null);
@@ -62,6 +64,22 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [mode, setMode] = useState<Mode>("dark");
   const [accent, setAccent] = useState<Accent>("green");
   const [cursorMode, setCursorMode] = useState<CursorMode>("normal");
+  const [pufferEnabled, setPufferEnabledState] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("portfolio-puffer-enabled");
+      if (saved !== null) {
+        return saved === "true";
+      }
+    }
+    return true;
+  });
+
+  const setPufferEnabled = (enabled: boolean) => {
+    setPufferEnabledState(enabled);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("portfolio-puffer-enabled", String(enabled));
+    }
+  };
 
   useEffect(() => {
     const root = document.documentElement;
@@ -78,7 +96,22 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     root.style.setProperty("--accent-glow", a.glow);
   }, [accent]);
 
-  return <ThemeCtx.Provider value={{ mode, accent, cursorMode, setMode, setAccent, setCursorMode }}>{children}</ThemeCtx.Provider>;
+  return (
+    <ThemeCtx.Provider
+      value={{
+        mode,
+        accent,
+        cursorMode,
+        pufferEnabled,
+        setMode,
+        setAccent,
+        setCursorMode,
+        setPufferEnabled,
+      }}
+    >
+      {children}
+    </ThemeCtx.Provider>
+  );
 }
 
 export function useTheme() {
