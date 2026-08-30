@@ -6,12 +6,12 @@ export type CursorMode = "normal" | "magnifying" | "trail" | "invert" | "followe
 
 export const ACCENTS: Record<Accent, { name: string; swatch: string; primary: string; primaryFg: string; ring: string; glow: string }> = {
   darkgreen: {
-    name: "Dark Green",
-    swatch: "#15803d",
-    primary: "oklch(0.55 0.18 150)",
-    primaryFg: "oklch(0.98 0.01 150)",
-    ring: "oklch(0.55 0.18 150)",
-    glow: "oklch(0.55 0.18 150 / 0.45)",
+    name: "Light Green",
+    swatch: "#4ade80",
+    primary: "oklch(0.85 0.21 145)",
+    primaryFg: "oklch(0.08 0.04 160)",
+    ring: "oklch(0.85 0.21 145)",
+    glow: "oklch(0.85 0.21 145 / 0.5)",
   },
   blue: {
     name: "Abyss Blue",

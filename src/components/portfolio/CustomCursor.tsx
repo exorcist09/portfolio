@@ -4,11 +4,11 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export function CustomCursor() {
   const { cursorMode } = useTheme();
-  
+
   const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
   const [trail, setTrail] = useState<{ x: number, y: number, id: number }[]>([]);
   const trailId = useRef(0);
-  
+
   // Follower physics
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -67,7 +67,7 @@ export function CustomCursor() {
 
   return (
     <>
-      
+
       {/* Trail Mode: Windows 95 style mouse trails */}
       {cursorMode === "trail" && trail.map((pt, i) => (
         <div

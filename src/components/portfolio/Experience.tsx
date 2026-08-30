@@ -31,7 +31,7 @@ const experience: TimelineItem[] = [
     type: "exp",
   },
   {
-    role: "Indian Institute of Information Technology, Design and Manufacturing, Jabalpur",
+    role: "Indian Institute of Information Technology, Jabalpur",
     roleMobile: "IIITDMJ",
     company: "Bachelor of Technology",
     companyMobile: "B.Tech",
