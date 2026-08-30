@@ -24,11 +24,21 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const [loaded, setLoaded] = useState(false);
+  const [loadProgress, setLoadProgress] = useState(0);
+
   return (
     <ThemeProvider>
       <CustomCursor />
-      {!loaded && <Loader onDone={() => setLoaded(true)} />}
-      <PufferCompanion loading={!loaded} />
+      {!loaded && (
+        <Loader
+          onProgress={(p) => setLoadProgress(p)}
+          onDone={() => {
+            setLoadProgress(100);
+            setLoaded(true);
+          }}
+        />
+      )}
+      <PufferCompanion loading={!loaded} progress={loadProgress} />
       <main className="relative min-h-screen bg-background text-foreground" style={{ overflowX: "clip" }}>
         {/* Global side dot flows */}
         <div aria-hidden className="pointer-events-none fixed inset-y-0 left-0 z-0 w-28 opacity-[0.10] sm:w-40">
