@@ -36,14 +36,9 @@ export const PufferFish: React.FC<PufferFishProps> = ({
   const puffCooldown = useRef(false);
   const [visualPuff, setVisualPuff] = useState(0);
 
-  // Drag-to-spin
-  const isDragging = useRef(false);
-  const lastPointer = useRef({ x: 0, y: 0 });
-  const userSpinOffset = useRef({ x: 0, y: 0 });
-
   // Smooth transforms
   const currentScale = useRef(1.0);
-  const currentRotY = useRef(0);
+  const currentRotY = useRef(-0.78);
   const currentRotX = useRef(0);
   const currentRotZ = useRef(0);
   const currentY = useRef(0);
@@ -55,27 +50,6 @@ export const PufferFish: React.FC<PufferFishProps> = ({
   const swimBubbleTimer = useRef(0);
 
   const { pointer } = useThree();
-
-  /* ── pointer drag for spinning ── */
-  const handlePointerDown = useCallback((e: THREE.Event) => {
-    // @ts-expect-error native event
-    const ne = e.nativeEvent as PointerEvent;
-    isDragging.current = true;
-    lastPointer.current = { x: ne.clientX, y: ne.clientY };
-  }, []);
-
-  const handlePointerUp = useCallback(() => { isDragging.current = false; }, []);
-
-  const handlePointerMove = useCallback((e: THREE.Event) => {
-    if (!isDragging.current) return;
-    // @ts-expect-error native event
-    const ne = e.nativeEvent as PointerEvent;
-    const dx = ne.clientX - lastPointer.current.x;
-    const dy = ne.clientY - lastPointer.current.y;
-    lastPointer.current = { x: ne.clientX, y: ne.clientY };
-    userSpinOffset.current.y += dx * 0.013;
-    userSpinOffset.current.x += dy * 0.009;
-  }, []);
 
   /* ── click → puff + BIG visible bubble burst ── */
   const handleClick = useCallback(() => {
@@ -106,17 +80,11 @@ export const PufferFish: React.FC<PufferFishProps> = ({
 
     /* 2 ── scale */
     const hoverBonus = animState.isHovered && !animState.isMobile ? 0.05 : 0;
-    const targetScale = 1.08 * (1 + puffProgress.current * 0.18 + hoverBonus);
+    const targetScale = 0.95 * (1 + puffProgress.current * 0.18 + hoverBonus);
     currentScale.current = THREE.MathUtils.lerp(currentScale.current, targetScale, 10 * dt);
     rootGroupRef.current.scale.setScalar(currentScale.current);
 
-    /* 3 ── spin inertia decay */
-    if (!isDragging.current) {
-      userSpinOffset.current.x = THREE.MathUtils.lerp(userSpinOffset.current.x, 0, 3.5 * dt);
-      userSpinOffset.current.y = THREE.MathUtils.lerp(userSpinOffset.current.y, 0, 3.5 * dt);
-    }
-
-    /* 4 ── loading dive from top → center */
+    /* 3 ── loading dive from top → center */
     if (animState.isSwimmingDown) {
       entryTimer.current += dt;
       const t = Math.min(entryTimer.current / 1.1, 1.0);
@@ -124,8 +92,8 @@ export const PufferFish: React.FC<PufferFishProps> = ({
       currentY.current = (1 - ease) * 5.0;
       currentX.current = THREE.MathUtils.lerp(currentX.current, 0, 8 * dt);
 
-      // Face right while falling
-      currentRotY.current = THREE.MathUtils.lerp(currentRotY.current, 0.65, 8 * dt);
+      // Face left-profile while falling
+      currentRotY.current = THREE.MathUtils.lerp(currentRotY.current, -0.65, 8 * dt);
       currentRotX.current = THREE.MathUtils.lerp(currentRotX.current, (1 - ease) * -0.22, 8 * dt);
       currentRotZ.current = THREE.MathUtils.lerp(currentRotZ.current, (1 - ease) * 0.12, 8 * dt);
 
@@ -133,47 +101,47 @@ export const PufferFish: React.FC<PufferFishProps> = ({
       if (Math.random() < 0.35) triggerBubbles(0, currentY.current - 0.3, 0.4, 1, 0.25, 0.9);
 
     } else if (animState.isTransitioningToCorner) {
-      /* 5 ── swim to corner — continuous bubble trail */
+      /* 4 ── swim to corner — continuous bubble trail */
       swimBubbleTimer.current += dt;
       if (swimBubbleTimer.current > 0.08) {
         swimBubbleTimer.current = 0;
-        // Emit from behind the fish (z negative = back, relative)
-        triggerBubbles(0, 0, -0.6, 3, 0.22, 0.85);
+        triggerBubbles(-0.4, 0, -0.6, 3, 0.22, 0.85);
       }
-      currentRotZ.current = THREE.MathUtils.lerp(currentRotZ.current, -0.32, 10 * dt);
-      currentRotY.current = THREE.MathUtils.lerp(currentRotY.current, -0.52, 8 * dt);
+      currentRotZ.current = THREE.MathUtils.lerp(currentRotZ.current, -0.24, 10 * dt);
+      currentRotY.current = THREE.MathUtils.lerp(currentRotY.current, -0.78, 8 * dt);
 
     } else {
-      /* 6 ── idle bob */
+      /* 5 ── idle bob */
       const bobAmp = animState.reducedMotion ? 0.01 : 0.06;
       const bobY = Math.sin(time * 2.0) * bobAmp;
       currentY.current = THREE.MathUtils.lerp(currentY.current, bobY, 8 * dt);
       currentX.current = THREE.MathUtils.lerp(currentX.current, 0, 8 * dt);
 
-      // Idle bubble every ~10 s
+      // Continuous ambient bubbles floating up around fish
       idleBubbleTimer.current += dt;
-      if (idleBubbleTimer.current > 10) {
-        if (!animState.reducedMotion && Math.random() < 0.4)
-          triggerBubbles(0, 0.2, 0.6, 2, 0.12, 0.55);
+      if (idleBubbleTimer.current > 0.65) {
         idleBubbleTimer.current = 0;
+        if (!animState.reducedMotion) {
+          triggerBubbles(0.35 + Math.random() * 0.4, -0.3 + Math.random() * 0.5, 0.4 + Math.random() * 0.4, 2, 0.35, 0.75);
+        }
       }
 
-      /* 7 ── resting rotation: face LEFT + pointer tracking */
-      const baseY = -0.72;
+      /* 6 ── resting rotation: opposite side (face RIGHT showing LEFT profile) */
+      const baseY = -0.78;
       if (!animState.reducedMotion && !animState.isMobile) {
-        const lookX = THREE.MathUtils.clamp(pointer.x * 0.3, -0.28, 0.28);
-        const lookY = THREE.MathUtils.clamp(-pointer.y * 0.2, -0.2, 0.2);
+        const lookX = THREE.MathUtils.clamp(pointer.x * 0.25, -0.25, 0.25);
+        const lookY = THREE.MathUtils.clamp(-pointer.y * 0.18, -0.18, 0.18);
         const swayY = Math.sin(time * 1.1) * 0.03;
         const swayX = Math.cos(time * 1.6) * 0.018;
 
         currentRotY.current = THREE.MathUtils.lerp(
           currentRotY.current,
-          baseY + lookX + swayY + userSpinOffset.current.y,
+          baseY + lookX + swayY,
           6 * dt
         );
         currentRotX.current = THREE.MathUtils.lerp(
           currentRotX.current,
-          lookY + swayX + userSpinOffset.current.x,
+          lookY + swayX,
           6 * dt
         );
         currentRotZ.current = THREE.MathUtils.lerp(
@@ -188,16 +156,8 @@ export const PufferFish: React.FC<PufferFishProps> = ({
           pointer.y * 0.038
         );
       } else {
-        currentRotY.current = THREE.MathUtils.lerp(
-          currentRotY.current,
-          baseY + userSpinOffset.current.y,
-          5 * dt
-        );
-        currentRotX.current = THREE.MathUtils.lerp(
-          currentRotX.current,
-          userSpinOffset.current.x,
-          5 * dt
-        );
+        currentRotY.current = THREE.MathUtils.lerp(currentRotY.current, baseY, 5 * dt);
+        currentRotX.current = THREE.MathUtils.lerp(currentRotX.current, 0, 5 * dt);
         currentRotZ.current = THREE.MathUtils.lerp(currentRotZ.current, 0, 5 * dt);
         eyesRef.current?.setPupilOffset(-0.015, 0);
       }
@@ -210,7 +170,7 @@ export const PufferFish: React.FC<PufferFishProps> = ({
     /* Fin speed */
     let spd = 1.0, amp = 1.0;
     if (animState.isTransitioningToCorner || animState.isSwimmingDown) { spd = 2.2; amp = 1.5; }
-    else if (animState.isHovered || isDragging.current) { spd = 1.8; amp = 1.3; }
+    else if (animState.isHovered) { spd = 1.8; amp = 1.3; }
     if (animState.reducedMotion) { spd = 0.4; amp = 0.3; }
     finsRef.current?.animateFins(time, spd, amp);
   });
@@ -218,9 +178,6 @@ export const PufferFish: React.FC<PufferFishProps> = ({
   return (
     <group
       ref={rootGroupRef}
-      onPointerDown={handlePointerDown}
-      onPointerUp={handlePointerUp}
-      onPointerMove={handlePointerMove}
       onClick={(e) => { e.stopPropagation(); handleClick(); }}
     >
       <PufferBody puffProgress={visualPuff} />

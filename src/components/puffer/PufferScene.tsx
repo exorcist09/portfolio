@@ -16,7 +16,7 @@ export const PufferScene: React.FC<PufferSceneProps> = ({
 }) => {
   return (
     <Canvas
-      camera={{ position: [0, 0.2, 3.8], fov: 48 }}
+      camera={{ position: [0, 0.3, 4.2], fov: 48 }}
       dpr={[1, typeof window !== "undefined" ? Math.min(window.devicePixelRatio || 1, 2) : 1]}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
     >

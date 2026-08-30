@@ -5,7 +5,7 @@ interface PufferBodyProps {
   puffProgress: number;
 }
 
-// Organic freckle positions across Top Crown, Forehead, Temples, Cheeks, and Flanks (Mouth area completely cleared)
+// 85+ Organic freckle positions across Forehead, Temples, Cheeks, and Flanks
 const FRECKLE_POSITIONS: [number, number, number][] = [
   // ── Top Crown ──
   [0, 1.04, 0.20],
@@ -19,7 +19,7 @@ const FRECKLE_POSITIONS: [number, number, number][] = [
   [-0.15, 0.94, 0.35],
   [0.15, 0.94, 0.35],
 
-  // ── High Forehead & Upper Brow (Away from mouth) ──
+  // ── High Forehead & Upper Brow ──
   [-0.12, 0.74, 0.72],
   [0.15, 0.72, 0.74],
   [0.02, 0.80, 0.66],
@@ -50,7 +50,7 @@ const FRECKLE_POSITIONS: [number, number, number][] = [
   [-0.48, 0.38, 0.72],
   [0.46, 0.40, 0.71],
 
-  // ── Left Flank & Heavy Cluster Above Left Fin ──
+  // ── Left Flank & Above Fin ──
   [-0.92, 0.48, 0.32],
   [-0.85, 0.58, 0.22],
   [-1.02, 0.35, 0.18],
@@ -70,7 +70,7 @@ const FRECKLE_POSITIONS: [number, number, number][] = [
   [-1.00, 0.20, 0.35],
   [-0.72, 0.55, 0.36],
 
-  // ── Right Flank & Heavy Cluster Above Right Fin ──
+  // ── Right Flank & Above Fin ──
   [0.92, 0.48, 0.32],
   [0.85, 0.58, 0.22],
   [1.02, 0.35, 0.18],
@@ -118,7 +118,7 @@ export const PufferBody = forwardRef<THREE.Group, PufferBodyProps>(({ puffProgre
     ctx.fillStyle = "#e64a19";
     ctx.fillRect(0, 0, 1024, 1024);
 
-    // 2. Rich darker baked freckles on canvas texture (mouth area cleared)
+    // 2. Rich darker baked freckles on canvas texture
     ctx.fillStyle = "rgba(155, 52, 16, 0.78)";
     const randomSeedDots = [
       { x: 256, y: 280, r: 6.5 }, { x: 220, y: 260, r: 5.5 }, { x: 290, y: 265, r: 6 },
@@ -157,6 +157,35 @@ export const PufferBody = forwardRef<THREE.Group, PufferBodyProps>(({ puffProgre
     return tex;
   }, []);
 
+  // Anatomical Pufferfish body geometry: Chubby round front belly, tapered peduncle rear
+  const bodyGeometry = useMemo(() => {
+    const geo = new THREE.SphereGeometry(1, 64, 64);
+    const pos = geo.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+      let x = pos.getX(i);
+      let y = pos.getY(i);
+      let z = pos.getZ(i);
+
+      // Taper towards rear (z < 0): slender rear peduncle
+      if (z < 0) {
+        const t = -z; // 0 to 1
+        const taper = 1.0 - t * 0.28;
+        x *= taper;
+        y *= (1.0 - t * 0.22);
+      }
+
+      // Chubby cheeks and saggy round belly in front-bottom
+      if (z > 0 && y < 0.2) {
+        y *= 1.08; // slightly deeper saggy cute belly
+        x *= 1.05; // chubby cheeks
+      }
+
+      pos.setXYZ(i, x, y, z);
+    }
+    geo.computeVertexNormals();
+    return geo;
+  }, []);
+
   // Broader, clean smooth cartoon smile curve
   const smileGeometry = useMemo(() => {
     const curve = new THREE.CatmullRomCurve3([
@@ -169,16 +198,15 @@ export const PufferBody = forwardRef<THREE.Group, PufferBodyProps>(({ puffProgre
     return new THREE.TubeGeometry(curve, 44, 0.055, 18, false);
   }, []);
 
-  // Broad, plump 3D proportions
+  // Volumetric scale
   const scaleX = (1.18 + puffProgress * 0.18);
   const scaleY = (1.04 + puffProgress * 0.18);
-  const scaleZ = (1.12 + puffProgress * 0.18);
+  const scaleZ = (1.14 + puffProgress * 0.18);
 
   return (
     <group ref={ref}>
-      {/* ── Main Body: Broad & Plump 3D Geometry ── */}
-      <mesh position={[0, 0, 0]} scale={[scaleX, scaleY, scaleZ]}>
-        <sphereGeometry args={[1, 64, 64]} />
+      {/* ── Main Sculpted Pufferfish Body (Chubby front belly, tapered tail transition) ── */}
+      <mesh geometry={bodyGeometry} position={[0, 0, 0]} scale={[scaleX, scaleY, scaleZ]}>
         <meshStandardMaterial
           map={bodyTexture ?? undefined}
           color="#ffffff"
@@ -187,7 +215,17 @@ export const PufferBody = forwardRef<THREE.Group, PufferBodyProps>(({ puffProgre
         />
       </mesh>
 
-      {/* ── 3D Sphere Freckle Dots (Clean Around Mouth) ── */}
+      {/* ── Cute Gill Arch Creases behind cheeks ── */}
+      <mesh position={[-1.02, 0.18, 0.42]} rotation={[0, 0.35, 0.12]}>
+        <torusGeometry args={[0.16, 0.022, 12, 24, Math.PI * 0.7]} />
+        <meshStandardMaterial color="#b8340d" roughness={0.4} />
+      </mesh>
+      <mesh position={[1.02, 0.18, 0.42]} rotation={[0, -0.35, -0.12]}>
+        <torusGeometry args={[0.16, 0.022, 12, 24, Math.PI * 0.7]} />
+        <meshStandardMaterial color="#b8340d" roughness={0.4} />
+      </mesh>
+
+      {/* ── 3D Sphere Freckle Dots ── */}
       {FRECKLE_POSITIONS.map((pos, i) => (
         <mesh key={`freckle-${i}`} position={pos}>
           <sphereGeometry args={[0.02, 10, 10]} />
@@ -197,7 +235,7 @@ export const PufferBody = forwardRef<THREE.Group, PufferBodyProps>(({ puffProgre
 
       {/* ── Cute Cartoon Pink Smile ── */}
       <group
-        position={[0, 0.14, 1.13]}
+        position={[0, 0.14, 1.15]}
         rotation={[0.06, 0, 0]}
         scale={1.0 + puffProgress * 0.1}
       >

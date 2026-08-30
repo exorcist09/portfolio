@@ -169,8 +169,8 @@ export function PufferCompanion({
                 y: "-50%",
                 bottom: "auto",
                 right: "auto",
-                width: isMobile ? 260 : 330,
-                height: isMobile ? 260 : 330,
+                width: isMobile ? 230 : 290,
+                height: isMobile ? 230 : 290,
                 zIndex: 102,
               }
             : false
@@ -184,8 +184,8 @@ export function PufferCompanion({
                 y: "-50%",
                 bottom: "auto",
                 right: "auto",
-                width: isMobile ? 260 : 330,
-                height: isMobile ? 260 : 330,
+                width: isMobile ? 230 : 290,
+                height: isMobile ? 230 : 290,
                 zIndex: 102,
               }
             : {
@@ -195,8 +195,8 @@ export function PufferCompanion({
                 y: "0%",
                 bottom: isMobile ? 28 : 42,
                 right: isMobile ? 28 : 48,
-                width: isMobile ? 190 : 250,
-                height: isMobile ? 190 : 250,
+                width: isMobile ? 165 : 215,
+                height: isMobile ? 165 : 215,
                 zIndex: 40,
               }
         }
@@ -226,8 +226,8 @@ export function PufferCompanion({
           onPointerLeave={() => {
             if (!isMobile) setIsHovered(false);
           }}
-          className="relative h-full w-full pointer-events-auto cursor-grab active:cursor-grabbing"
-          title="Click to puff, drag to spin!"
+          className="relative h-full w-full pointer-events-auto cursor-pointer"
+          title="Click to puff!"
         >
           <PufferScene
             animState={animState}
