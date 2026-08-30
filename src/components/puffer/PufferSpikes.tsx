@@ -1,19 +1,19 @@
 import React, { useMemo } from "react";
 import * as THREE from "three";
 
-// Exactly 8 spikes: 4 top and 4 bottom
+// Exactly 8 pointed spikes: 4 top and 4 bottom
 const RAW_SPIKE_POSITIONS: [number, number, number][] = [
   // ── 4 Top Spikes ──
-  [0, 1.06, 0.25],       // Top Front Crown
-  [0, 1.02, -0.42],      // Top Back Spine
-  [-0.62, 0.92, -0.05],  // Top Left
-  [0.62, 0.92, -0.05],   // Top Right
+  [0, 1.02, 0.25],       // Top Front Crown
+  [0, 0.98, -0.42],      // Top Back Spine
+  [-0.58, 0.88, -0.05],  // Top Left
+  [0.58, 0.88, -0.05],   // Top Right
 
   // ── 4 Bottom Spikes ──
-  [0, -1.04, 0.25],      // Bottom Front
-  [0, -0.98, -0.42],     // Bottom Back
-  [-0.62, -0.92, -0.05], // Bottom Left
-  [0.62, -0.92, -0.05],  // Bottom Right
+  [0, -1.0, 0.25],       // Bottom Front
+  [0, -0.95, -0.42],     // Bottom Back
+  [-0.58, -0.88, -0.05], // Bottom Left
+  [0.58, -0.88, -0.05],  // Bottom Right
 ];
 
 interface PufferSpikesProps {
@@ -32,7 +32,7 @@ export const PufferSpikes: React.FC<PufferSpikesProps> = ({ puffProgress }) => {
   }, []);
 
   const ext = 1.0 + puffProgress * 0.14;
-  const sc  = 0.96 + puffProgress * 0.55;
+  const sc  = 0.85 + puffProgress * 0.55;
 
   return (
     <group>
@@ -43,7 +43,8 @@ export const PufferSpikes: React.FC<PufferSpikesProps> = ({ puffProgress }) => {
           rotation={euler}
           scale={sc}
         >
-          <coneGeometry args={[0.088, 0.28, 16]} />
+          {/* Classic pointed cone spike */}
+          <coneGeometry args={[0.075, 0.22, 16]} />
           <meshStandardMaterial color="#d84315" roughness={0.35} metalness={0.02} />
         </mesh>
       ))}
