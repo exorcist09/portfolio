@@ -39,8 +39,8 @@ export const PufferFins = forwardRef<PufferFinsHandle>((_, ref) => {
 
   return (
     <group>
-      {/* ── Left Fin: Ribbed Paddle with Darker Body-Shade Design ── */}
-      <group ref={leftRef} position={[-0.92, 0.18, 0.22]} rotation={[0, 0.35, Math.PI / 4.5]}>
+      {/* ── Left Fin: Ribbed Paddle anchored on broader flank ── */}
+      <group ref={leftRef} position={[-1.08, 0.18, 0.24]} rotation={[0, 0.35, Math.PI / 4.5]}>
         {/* Main Base Blade */}
         <mesh position={[-0.2, 0, 0]} scale={[1, 0.16, 0.92]}>
           <sphereGeometry args={[0.24, 32, 32]} />
@@ -66,8 +66,8 @@ export const PufferFins = forwardRef<PufferFinsHandle>((_, ref) => {
         </mesh>
       </group>
 
-      {/* ── Right Fin: Ribbed Paddle with Darker Body-Shade Design ── */}
-      <group ref={rightRef} position={[0.92, 0.18, 0.22]} rotation={[0, -0.35, -Math.PI / 4.5]}>
+      {/* ── Right Fin: Ribbed Paddle anchored on broader flank ── */}
+      <group ref={rightRef} position={[1.08, 0.18, 0.24]} rotation={[0, -0.35, -Math.PI / 4.5]}>
         {/* Main Base Blade */}
         <mesh position={[0.2, 0, 0]} scale={[1, 0.16, 0.92]}>
           <sphereGeometry args={[0.24, 32, 32]} />
@@ -94,10 +94,10 @@ export const PufferFins = forwardRef<PufferFinsHandle>((_, ref) => {
       </group>
 
       {/* ── Fan Tail with Darker Body-Shade Design Rays ── */}
-      <group position={[0, 0.05, -1.05]}>
+      <group position={[0, 0.05, -1.14]}>
         {/* Peduncle Base */}
         <mesh position={[0, 0, -0.06]} rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[0.1, 0.18, 0.18, 16]} />
+          <cylinderGeometry args={[0.11, 0.2, 0.2, 16]} />
           <meshStandardMaterial color={finBaseColor} roughness={0.38} metalness={0.02} />
         </mesh>
 

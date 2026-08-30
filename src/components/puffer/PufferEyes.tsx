@@ -15,7 +15,7 @@ interface EyeProps {
   pupilRef: React.RefObject<THREE.Group>;
 }
 
-// 3D spherical eyes with low-profile depth (cleanly embedded, not protruding excessively)
+// 3D spherical eyes with low-profile depth, symmetrically placed on broader face
 const EyeMesh: React.FC<EyeProps> = ({ position, rotation, pupilRef }) => (
   <group position={position} rotation={rotation}>
     {/* Pink Outer Ring */}
@@ -24,7 +24,7 @@ const EyeMesh: React.FC<EyeProps> = ({ position, rotation, pupilRef }) => (
       <meshStandardMaterial color="#ff7eb3" roughness={0.3} />
     </mesh>
 
-    {/* White Eyeball Sphere (subtly flattened on Z to prevent excess protrusion) */}
+    {/* White Eyeball Sphere */}
     <mesh scale={[1, 1, 0.55]}>
       <sphereGeometry args={[0.25, 32, 32]} />
       <meshStandardMaterial color="#ffffff" roughness={0.1} metalness={0.02} />
@@ -71,15 +71,15 @@ export const PufferEyes = forwardRef<PufferEyesHandle, PufferEyesProps>(
 
     return (
       <group scale={es}>
-        {/* Sits naturally embedded in the face without sticking out too far */}
+        {/* Sits naturally on the broader chubby face */}
         <EyeMesh
-          position={[-0.4, 0.25, 0.8]}
-          rotation={[0.02, -0.14, 0]}
+          position={[-0.46, 0.25, 0.88]}
+          rotation={[0.02, -0.15, 0]}
           pupilRef={leftPupilRef}
         />
         <EyeMesh
-          position={[0.4, 0.25, 0.8]}
-          rotation={[0.02, 0.14, 0]}
+          position={[0.46, 0.25, 0.88]}
+          rotation={[0.02, 0.15, 0]}
           pupilRef={rightPupilRef}
         />
       </group>

@@ -5,54 +5,107 @@ interface PufferBodyProps {
   puffProgress: number;
 }
 
-// 40+ 3D sphere freckle positions: Forehead, Temples, and large clusters above/around Fins
+// Organic freckle positions across Top Crown, Forehead, Temples, Cheeks, and Flanks (Mouth area completely cleared)
 const FRECKLE_POSITIONS: [number, number, number][] = [
-  // ── Forehead & Brow Center ──
-  [-0.08, 0.65, 0.76], [0.08, 0.65, 0.76], [0, 0.72, 0.70],
-  [-0.14, 0.54, 0.84], [0.14, 0.54, 0.84], [0, 0.58, 0.86],
-  [-0.06, 0.46, 0.90], [0.06, 0.46, 0.90], [0, 0.48, 0.91],
-  [-0.20, 0.62, 0.74], [0.20, 0.62, 0.74],
-  [-0.12, 0.72, 0.66], [0.12, 0.72, 0.66],
+  // ── Top Crown ──
+  [0, 1.04, 0.20],
+  [-0.14, 1.02, 0.22],
+  [0.14, 1.02, 0.22],
+  [-0.08, 1.05, 0.05],
+  [0.08, 1.05, 0.05],
+  [-0.22, 0.98, 0.15],
+  [0.22, 0.98, 0.15],
+  [0, 1.0, 0.38],
+  [-0.15, 0.94, 0.35],
+  [0.15, 0.94, 0.35],
 
-  // ── Left Temple & Upper Flank ──
-  [-0.45, 0.60, 0.64],
-  [-0.55, 0.52, 0.60],
-  [-0.38, 0.68, 0.58],
+  // ── High Forehead & Upper Brow (Away from mouth) ──
+  [-0.12, 0.74, 0.72],
+  [0.15, 0.72, 0.74],
+  [0.02, 0.80, 0.66],
+  [-0.05, 0.77, 0.68],
+  [0.08, 0.78, 0.68],
+  [-0.22, 0.66, 0.76],
+  [0.20, 0.68, 0.74],
+  [-0.16, 0.70, 0.72],
+  [0.14, 0.71, 0.72],
 
-  // ── Right Temple & Upper Flank ──
-  [0.45, 0.60, 0.64],
-  [0.55, 0.52, 0.60],
-  [0.38, 0.68, 0.58],
+  // ── Temples & Cheeks ──
+  [-0.38, 0.68, 0.60],
+  [0.36, 0.70, 0.58],
+  [-0.52, 0.65, 0.55],
+  [0.48, 0.68, 0.52],
+  [-0.45, 0.58, 0.66],
+  [0.44, 0.60, 0.64],
+  [-0.68, 0.48, 0.52],
+  [0.65, 0.52, 0.50],
+  [-0.60, 0.42, 0.62],
+  [0.58, 0.45, 0.60],
+  [-0.72, 0.35, 0.58],
+  [0.70, 0.38, 0.56],
+  [-0.54, 0.32, 0.70],
+  [0.52, 0.34, 0.68],
+  [-0.35, 0.45, 0.78],
+  [0.34, 0.46, 0.77],
+  [-0.48, 0.38, 0.72],
+  [0.46, 0.40, 0.71],
 
-  // ── Heavy Cluster Above & Around Left Fin ──
-  [-0.82, 0.45, 0.36],
-  [-0.75, 0.55, 0.42],
-  [-0.88, 0.36, 0.24],
-  [-0.72, 0.40, 0.56],
-  [-0.80, 0.52, 0.22],
-  [-0.68, 0.60, 0.35],
-  [-0.90, 0.30, 0.38],
-  [-0.78, 0.35, 0.48],
-  [-0.85, 0.48, 0.12],
-  [-0.70, 0.45, 0.45],
-  [-0.92, 0.22, 0.28],
+  // ── Left Flank & Heavy Cluster Above Left Fin ──
+  [-0.92, 0.48, 0.32],
+  [-0.85, 0.58, 0.22],
+  [-1.02, 0.35, 0.18],
+  [-0.88, 0.42, 0.45],
+  [-0.78, 0.52, 0.12],
+  [-0.96, 0.25, 0.32],
+  [-0.82, 0.32, 0.52],
+  [-0.98, 0.42, 0.22],
+  [-0.76, 0.46, 0.38],
+  [-0.90, 0.54, 0.30],
+  [-1.04, 0.28, 0.25],
+  [-0.84, 0.22, 0.48],
+  [-0.75, 0.60, 0.28],
+  [-0.88, 0.62, 0.18],
+  [-0.80, 0.38, 0.42],
+  [-0.94, 0.50, 0.16],
+  [-1.00, 0.20, 0.35],
+  [-0.72, 0.55, 0.36],
 
-  // ── Heavy Cluster Above & Around Right Fin ──
-  [0.82, 0.45, 0.36],
-  [0.75, 0.55, 0.42],
-  [0.88, 0.36, 0.24],
-  [0.72, 0.40, 0.56],
-  [0.80, 0.52, 0.22],
-  [0.70, 0.60, 0.35],
-  [0.90, 0.30, 0.38],
-  [0.78, 0.35, 0.48],
-  [0.85, 0.48, 0.12],
-  [0.70, 0.45, 0.45],
-  [0.92, 0.22, 0.28],
+  // ── Right Flank & Heavy Cluster Above Right Fin ──
+  [0.92, 0.48, 0.32],
+  [0.85, 0.58, 0.22],
+  [1.02, 0.35, 0.18],
+  [0.88, 0.42, 0.45],
+  [0.78, 0.52, 0.12],
+  [0.96, 0.25, 0.32],
+  [0.82, 0.32, 0.52],
+  [0.98, 0.42, 0.22],
+  [0.76, 0.46, 0.38],
+  [0.90, 0.54, 0.30],
+  [1.04, 0.28, 0.25],
+  [0.84, 0.22, 0.48],
+  [0.75, 0.60, 0.28],
+  [0.88, 0.62, 0.18],
+  [0.80, 0.38, 0.42],
+  [0.94, 0.50, 0.16],
+  [1.00, 0.20, 0.35],
+  [0.72, 0.55, 0.36],
+
+  // ── Rear Flanks ──
+  [-0.55, 0.55, -0.52],
+  [0.58, 0.52, -0.50],
+  [-0.42, 0.64, -0.58],
+  [0.40, 0.65, -0.56],
+  [0.05, 0.68, -0.85],
+  [-0.18, 0.55, -0.88],
+  [0.16, 0.52, -0.88],
+  [-0.32, 0.45, -0.82],
+  [0.30, 0.46, -0.80],
+  [-0.48, 0.48, -0.72],
+  [0.46, 0.50, -0.70],
 ];
 
 export const PufferBody = forwardRef<THREE.Group, PufferBodyProps>(({ puffProgress }, ref) => {
-  // Procedural texture: deep orange body with soft subtle freckles + yellowish-crème belly
+  // Procedural texture: deep orange body with freckles + yellowish-crème belly
   const bodyTexture = useMemo(() => {
     if (typeof document === "undefined") return null;
     const canvas = document.createElement("canvas");
@@ -65,25 +118,22 @@ export const PufferBody = forwardRef<THREE.Group, PufferBodyProps>(({ puffProgre
     ctx.fillStyle = "#e64a19";
     ctx.fillRect(0, 0, 1024, 1024);
 
-    // 2. Soft, subtle baked freckle clusters on canvas texture
-    ctx.fillStyle = "rgba(195, 75, 30, 0.45)";
-    const canvasDots = [
-      // Forehead cluster (x around 256, y 380..520)
-      { x: 256, y: 440, r: 7 }, { x: 236, y: 420, r: 5.5 }, { x: 278, y: 425, r: 6 },
-      { x: 254, y: 395, r: 5 }, { x: 220, y: 460, r: 4.5 }, { x: 295, y: 455, r: 5 },
-      { x: 248, y: 480, r: 6 }, { x: 268, y: 475, r: 5.5 }, { x: 210, y: 485, r: 4 },
-      { x: 304, y: 482, r: 4.5 }, { x: 256, y: 370, r: 4 }, { x: 232, y: 380, r: 3.5 },
-      { x: 282, y: 378, r: 3.5 },
-      // Left fin flank (x around 120..180)
-      { x: 140, y: 520, r: 6 }, { x: 160, y: 500, r: 5 }, { x: 130, y: 550, r: 7 },
-      { x: 155, y: 540, r: 5.5 }, { x: 175, y: 515, r: 4.5 }, { x: 125, y: 510, r: 5 },
-      { x: 148, y: 565, r: 4.5 }, { x: 170, y: 555, r: 5 }, { x: 135, y: 580, r: 5.5 },
-      // Right fin flank (x around 330..390)
-      { x: 370, y: 520, r: 6 }, { x: 350, y: 500, r: 5 }, { x: 380, y: 550, r: 7 },
-      { x: 355, y: 540, r: 5.5 }, { x: 335, y: 515, r: 4.5 }, { x: 385, y: 510, r: 5 },
-      { x: 362, y: 565, r: 4.5 }, { x: 340, y: 555, r: 5.5 }, { x: 375, y: 580, r: 5.5 },
+    // 2. Rich darker baked freckles on canvas texture (mouth area cleared)
+    ctx.fillStyle = "rgba(155, 52, 16, 0.78)";
+    const randomSeedDots = [
+      { x: 256, y: 280, r: 6.5 }, { x: 220, y: 260, r: 5.5 }, { x: 290, y: 265, r: 6 },
+      { x: 160, y: 400, r: 6 }, { x: 350, y: 395, r: 5.5 }, { x: 245, y: 410, r: 6.5 },
+      { x: 275, y: 405, r: 6 }, { x: 210, y: 430, r: 5 }, { x: 300, y: 425, r: 5.5 },
+      { x: 130, y: 480, r: 6.5 }, { x: 380, y: 475, r: 6.5 }, { x: 100, y: 530, r: 7 },
+      { x: 410, y: 525, r: 7 }, { x: 145, y: 560, r: 5.5 }, { x: 365, y: 555, r: 5.5 },
+      { x: 180, y: 450, r: 5.5 }, { x: 330, y: 450, r: 5.5 },
+      { x: 115, y: 510, r: 6 }, { x: 395, y: 505, r: 6 },
+      { x: 500, y: 420, r: 6.5 }, { x: 540, y: 460, r: 6 }, { x: 620, y: 440, r: 6.5 },
+      { x: 720, y: 450, r: 5.5 }, { x: 800, y: 420, r: 6.5 }, { x: 850, y: 450, r: 6 },
+      { x: 920, y: 430, r: 6.5 }, { x: 60, y: 440, r: 6 }, { x: 40, y: 500, r: 5.5 },
+      { x: 480, y: 450, r: 6 }, { x: 580, y: 500, r: 5.5 }, { x: 670, y: 480, r: 6 },
     ];
-    canvasDots.forEach(({ x, y, r }) => {
+    randomSeedDots.forEach(({ x, y, r }) => {
       ctx.beginPath();
       ctx.arc(x, y, r, 0, Math.PI * 2);
       ctx.fill();
@@ -110,21 +160,24 @@ export const PufferBody = forwardRef<THREE.Group, PufferBodyProps>(({ puffProgre
   // Broader, clean smooth cartoon smile curve
   const smileGeometry = useMemo(() => {
     const curve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(-0.135, 0.02, -0.012),
-      new THREE.Vector3(-0.068, -0.006, 0.008),
+      new THREE.Vector3(-0.145, 0.02, -0.012),
+      new THREE.Vector3(-0.072, -0.006, 0.008),
       new THREE.Vector3(0, -0.018, 0.014),
-      new THREE.Vector3(0.068, -0.006, 0.008),
-      new THREE.Vector3(0.135, 0.02, -0.012),
+      new THREE.Vector3(0.072, -0.006, 0.008),
+      new THREE.Vector3(0.145, 0.02, -0.012),
     ]);
-    return new THREE.TubeGeometry(curve, 44, 0.048, 18, false);
+    return new THREE.TubeGeometry(curve, 44, 0.055, 18, false);
   }, []);
 
-  const bodyScale = 1.0 + puffProgress * 0.18;
+  // Broad, plump 3D proportions
+  const scaleX = (1.18 + puffProgress * 0.18);
+  const scaleY = (1.04 + puffProgress * 0.18);
+  const scaleZ = (1.12 + puffProgress * 0.18);
 
   return (
     <group ref={ref}>
-      {/* ── Main Body ── */}
-      <mesh position={[0, 0, 0]} scale={bodyScale}>
+      {/* ── Main Body: Broad & Plump 3D Geometry ── */}
+      <mesh position={[0, 0, 0]} scale={[scaleX, scaleY, scaleZ]}>
         <sphereGeometry args={[1, 64, 64]} />
         <meshStandardMaterial
           map={bodyTexture ?? undefined}
@@ -134,17 +187,17 @@ export const PufferBody = forwardRef<THREE.Group, PufferBodyProps>(({ puffProgre
         />
       </mesh>
 
-      {/* ── 3D Sphere Freckle Dots (Softer, Subtle Warm Terracotta) ── */}
+      {/* ── 3D Sphere Freckle Dots (Clean Around Mouth) ── */}
       {FRECKLE_POSITIONS.map((pos, i) => (
         <mesh key={`freckle-${i}`} position={pos}>
-          <sphereGeometry args={[0.018, 10, 10]} />
-          <meshStandardMaterial color="#c85628" roughness={0.5} transparent opacity={0.85} />
+          <sphereGeometry args={[0.02, 10, 10]} />
+          <meshStandardMaterial color="#9e360e" roughness={0.42} />
         </mesh>
       ))}
 
-      {/* ── Broader, Cute Cartoon Pink Smile ── */}
+      {/* ── Cute Cartoon Pink Smile ── */}
       <group
-        position={[0, 0.14, 0.96]}
+        position={[0, 0.14, 1.13]}
         rotation={[0.06, 0, 0]}
         scale={1.0 + puffProgress * 0.1}
       >
@@ -154,14 +207,20 @@ export const PufferBody = forwardRef<THREE.Group, PufferBodyProps>(({ puffProgre
         </mesh>
 
         {/* Left Rounded Smile Tip */}
-        <mesh position={[-0.135, 0.02, -0.012]}>
-          <sphereGeometry args={[0.048, 16, 16]} />
+        <mesh position={[-0.145, 0.02, -0.012]}>
+          <sphereGeometry args={[0.055, 16, 16]} />
           <meshStandardMaterial color="#ff7eb3" roughness={0.28} metalness={0.02} />
         </mesh>
 
         {/* Right Rounded Smile Tip */}
-        <mesh position={[0.135, 0.02, -0.012]}>
-          <sphereGeometry args={[0.048, 16, 16]} />
+        <mesh position={[0.145, 0.02, -0.012]}>
+          <sphereGeometry args={[0.055, 16, 16]} />
+          <meshStandardMaterial color="#ff7eb3" roughness={0.28} metalness={0.02} />
+        </mesh>
+
+        {/* Plump Lower Smile Pillow */}
+        <mesh position={[0, -0.022, 0.008]} scale={[0.13, 0.055, 0.04]}>
+          <sphereGeometry args={[1, 20, 20]} />
           <meshStandardMaterial color="#ff7eb3" roughness={0.28} metalness={0.02} />
         </mesh>
       </group>
