@@ -5,13 +5,15 @@ import { PufferBubbles, type BubbleTrigger } from "./PufferBubbles";
 
 interface PufferSceneProps {
   animState: FishAnimationState;
-  onFishClick: () => void;
+  onFishClick?: () => void;
+  onFishDoubleClick?: () => void;
   bubbleTriggerRef: React.MutableRefObject<BubbleTrigger | null>;
 }
 
 export const PufferScene: React.FC<PufferSceneProps> = ({
   animState,
   onFishClick,
+  onFishDoubleClick,
   bubbleTriggerRef,
 }) => {
   return (
@@ -31,6 +33,7 @@ export const PufferScene: React.FC<PufferSceneProps> = ({
         <PufferFish
           animState={animState}
           onFishClick={onFishClick}
+          onFishDoubleClick={onFishDoubleClick}
           triggerBubbles={(x, y, z, count, spread, speed) => {
             bubbleTriggerRef.current?.(x, y, z, count, spread, speed);
           }}
