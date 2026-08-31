@@ -314,7 +314,7 @@ export async function handlePufferRequest(
     const ai = new GoogleGenAI({ apiKey });
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemma-4-26b-a4b-it",
       contents,
       config: {
         systemInstruction,
@@ -340,7 +340,8 @@ export async function handlePufferRequest(
   } catch (error: unknown) {
     console.error("Puffer Gemini error:", error);
     const errString = String(error);
-    let userMsg = "Looks like I lost contact with the surface for a moment. Try again in a moment. 🐡";
+    let userMsg =
+      "Looks like I lost contact with the surface for a moment. Try again in a moment. 🐡";
     if (
       errString.includes("429") ||
       errString.includes("RESOURCE_EXHAUSTED") ||
@@ -370,4 +371,3 @@ export async function handlePufferRequest(
 export default async function handler(req: Request | IncomingRequest, res?: ServerResponseLike) {
   return handlePufferRequest(req, res);
 }
-

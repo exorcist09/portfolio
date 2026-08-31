@@ -2,7 +2,7 @@
  * Curated personality constants & API client for Puffer
  * Adarsh's portfolio companion mascot.
  *
- * Connected to Gemini 2.5 Flash via /api/puffer.
+ * Connected to Gemma (gemma-4-26b-a4b-it) via /api/puffer.
  */
 
 export interface Message {
