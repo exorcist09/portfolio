@@ -1,26 +1,26 @@
 import { useState, useRef } from "react";
-import { MonitorSmartphone, Server, Rocket, Sparkles } from "lucide-react";
+import { Terminal, AppWindow, Zap, BrainCircuit } from "lucide-react";
 
 const services = [
   {
     title: "Backend Development",
     desc: "Building robust, scalable and secure APIs and microservices using Node.js and PostgreSQL.",
-    icon: Server,
+    icon: Terminal,
   },
   {
     title: "Frontend Development",
     desc: "Crafting beautiful, responsive and interactive UI with modern frameworks like React and Next.js.",
-    icon: MonitorSmartphone,
+    icon: AppWindow,
   },
   {
     title: "SaaS MVP Development",
     desc: "Rapidly building and launching end-to-end scalable SaaS products from zero to one.",
-    icon: Rocket,
+    icon: Zap,
   },
   {
     title: "AI Integration",
     desc: "Empowering applications with modern AI capabilities, RAG pipelines, and intelligent agents.",
-    icon: Sparkles,
+    icon: BrainCircuit,
   }
 ];
 
@@ -64,7 +64,7 @@ function ServiceCard({ title, desc, icon: Icon }: { title: string, desc: string,
             opacity: isHovered ? 1 : 0
           }}
         />
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-transform duration-300 group-hover/svc:scale-110">
           <Icon className="h-5 w-5 relative z-10" />
         </div>
         <div className="relative z-10">
@@ -78,14 +78,14 @@ function ServiceCard({ title, desc, icon: Icon }: { title: string, desc: string,
 
 export function Services() {
   return (
-    <section id="services" className="relative px-6 py-20 z-0 overflow-hidden">
+    <section id="services" className="relative px-6 pt-20 pb-36 sm:pb-44 z-0 overflow-hidden">
       {/* Center gradient */}
       <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full blur-3xl opacity-40 -z-10"
         style={{ background: "radial-gradient(circle, color-mix(in oklab, var(--primary) 40%, transparent), transparent 70%)" }} />
 
       <div className="mx-auto max-w-3xl text-center">
         <p className="mb-2 text-xs tracking-widest text-muted-foreground">— FREELANCE —</p>
-        <h2 className="mb-8 font-display text-2xl font-bold sm:text-3xl">Where I pick weapons</h2>
+        <h2 className="mb-8 font-display text-2xl font-bold sm:text-3xl">Where I pick my gear</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {services.map(s => <ServiceCard key={s.title} {...s} />)}
         </div>

@@ -1,6 +1,5 @@
 const education = [
-  { college: "Indian Institute of Technology", degree: "B.Tech in Computer Science", period: "2016 — 2020", image: "https://images.unsplash.com/photo-1562774053-701939374585?w=600&q=80" },
-  { college: "Delhi Public School", degree: "Higher Secondary, Science", period: "2014 — 2016", image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&q=80" },
+  { college: "Indian Institute of Information Technology, Design and Manufacturing, Jabalpur", degree: "B.Tech", period: "2022 — 2026", image: "https://images.unsplash.com/photo-1562774053-701939374585?w=600&q=80" },
 ];
 
 export function Education() {

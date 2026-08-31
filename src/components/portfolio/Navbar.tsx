@@ -1,22 +1,29 @@
 import { useEffect, useRef, useState } from "react";
-import { Github, Linkedin, FileText, Moon, Sun, ArrowUpRight, Settings, MousePointer2, Wand2, Contrast, Search, Navigation } from "lucide-react";
-import { motion } from "framer-motion";
+import { Github, Linkedin, FileText, Moon, Sun, ArrowUpRight, Settings, MousePointer2, Wand2, Contrast, Navigation, Palette } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useTheme, ACCENTS, type Accent } from "./ThemeContext";
 
-export function Navbar() {
-  const { mode, setMode, accent, setAccent, cursorMode, setCursorMode } = useTheme();
+interface NavbarProps {
+  onOpenResume?: () => void;
+}
+
+export function Navbar({ onOpenResume }: NavbarProps) {
+  const { mode, setMode, accent, setAccent, cursorMode, setCursorMode, pufferEnabled, setPufferEnabled } = useTheme();
   const [open, setOpen] = useState(false);
+  const [accentOpen, setAccentOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [atBottom, setAtBottom] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const ddRef = useRef<HTMLDivElement>(null);
+  const accentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let last = window.scrollY;
     const onScroll = () => {
       const cur = window.scrollY;
       setOpen(false);
+      setAccentOpen(false);
       setScrolled(cur > 20);
       if (cur > last && cur > 80) setHidden(true);
       else setHidden(false);
@@ -36,26 +43,25 @@ export function Navbar() {
           }
         }
       }
-      // If we are at the very bottom, highlight experience
       if (isBottom) current = "experience";
       setActiveSection(current);
 
       last = cur;
     };
     window.addEventListener("scroll", onScroll, { passive: true });
-    // Run once to initialize correctly
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open && !accentOpen) return;
     const onDocClick = (e: MouseEvent) => {
-      if (!ddRef.current?.contains(e.target as Node)) setOpen(false);
+      if (open && !ddRef.current?.contains(e.target as Node)) setOpen(false);
+      if (accentOpen && !accentRef.current?.contains(e.target as Node)) setAccentOpen(false);
     };
     document.addEventListener("mousedown", onDocClick);
     return () => document.removeEventListener("mousedown", onDocClick);
-  }, [open]);
+  }, [open, accentOpen]);
 
   return (
     <>
@@ -82,7 +88,7 @@ export function Navbar() {
       <header
         className={`fixed inset-x-0 top-4 z-50 flex justify-center px-4 transition-transform duration-300 ${hidden ? "-translate-y-32" : "translate-y-0"}`}
       >
-        <nav ref={ddRef} className={`relative flex w-full max-w-4xl items-center justify-between gap-1 md:gap-3 rounded-full transition-all duration-500 ${scrolled ? 'px-2 py-1' : ''}`}>
+        <nav className={`relative flex w-full max-w-4xl items-center justify-between gap-1 md:gap-3 rounded-full transition-all duration-500 ${scrolled ? 'px-2 py-1' : ''}`}>
 
           {scrolled && (
             <motion.div
@@ -100,7 +106,7 @@ export function Navbar() {
                 transition={{ type: "spring", stiffness: 250, damping: 25 }}
               />
             )}
-            
+
             {/* Logo */}
             <a href="#home" className="font-hero pl-2 pr-1 text-sm tracking-tight">
               adarsh<span className="text-primary">.</span>
@@ -127,10 +133,72 @@ export function Navbar() {
                 <Github className="h-4 w-4" />
               </a>
 
-              <div className="relative">
+              {/* Direct Accent Selector Button */}
+              <div ref={accentRef} className="relative">
                 <button
-                  onClick={() => setOpen((o) => !o)}
+                  onClick={() => {
+                    setAccentOpen((o) => !o);
+                    setOpen(false);
+                  }}
+                  aria-label="Accent Color"
+                  title="Choose Accent Color"
+                  className={`relative grid h-8 w-8 place-items-center rounded-full transition hover:bg-foreground hover:text-background ${
+                    accentOpen ? "bg-foreground text-background shadow-md" : "bg-foreground/10 text-foreground"
+                  }`}
+                >
+                  <Palette className="h-4 w-4" />
+                  {/* Current Accent Dot Indicator */}
+                  <span
+                    className="absolute bottom-1 right-1 h-2 w-2 rounded-full border border-background"
+                    style={{ backgroundColor: ACCENTS[accent]?.swatch || "currentColor" }}
+                  />
+                </button>
+
+                <AnimatePresence>
+                  {accentOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 4, scale: 0.95 }}
+                      transition={{ duration: 0.15 }}
+                      className="glass absolute right-0 md:right-auto md:left-0 top-11 z-50 rounded-2xl p-3.5 shadow-2xl backdrop-blur-xl border border-white/10"
+                    >
+                      <div className="flex items-center gap-3.5 sm:gap-4">
+                        {(Object.keys(ACCENTS) as Accent[]).map((k) => (
+                          <button
+                            key={k}
+                            onClick={() => {
+                              setAccent(k);
+                              setAccentOpen(false);
+                            }}
+                            aria-label={ACCENTS[k].name}
+                            title={ACCENTS[k].name}
+                            className={`group relative grid h-7 w-7 place-items-center rounded-full transition-transform hover:scale-110 ${
+                              accent === k ? "ring-2 ring-offset-2 ring-offset-background" : ""
+                            }`}
+                            style={{
+                              background: ACCENTS[k].swatch,
+                              ["--tw-ring-color" as string]: ACCENTS[k].swatch,
+                            }}
+                          >
+                            {accent === k && <span className="h-1.5 w-1.5 rounded-full bg-white shadow" />}
+                          </button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Settings Button */}
+              <div ref={ddRef} className="relative hidden sm:block">
+                <button
+                  onClick={() => {
+                    setOpen((o) => !o);
+                    setAccentOpen(false);
+                  }}
                   aria-label="Settings"
+                  title="Settings"
                   className={`grid h-8 w-8 place-items-center rounded-full transition hover:bg-foreground hover:text-background ${open ? "bg-foreground text-background" : "bg-foreground/10"}`}
                 >
                   <Settings className="h-4 w-4" />
@@ -154,18 +222,8 @@ export function Navbar() {
                         )}
                       </button>
                     </div>
-                    <p className="mb-2 px-1 text-[10px] uppercase tracking-widest text-muted-foreground">Accent</p>
-                    <div className="flex items-center justify-between gap-1">
-                      {(Object.keys(ACCENTS) as Accent[]).map((k) => (
-                        <button key={k} onClick={() => setAccent(k)} aria-label={ACCENTS[k].name}
-                          className={`grid h-7 w-7 place-items-center rounded-full transition ${accent === k ? "ring-2 ring-offset-2 ring-offset-background" : ""}`}
-                          style={{ background: ACCENTS[k].swatch, ["--tw-ring-color" as string]: ACCENTS[k].swatch }}>
-                          {accent === k && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
-                        </button>
-                      ))}
-                    </div>
 
-                    <p className="mb-2 mt-4 px-1 text-[10px] uppercase tracking-widest text-muted-foreground">Cursor</p>
+                    <p className="mb-2 mt-4 px-1 text-[10px] uppercase tracking-widest text-muted-foreground">Interactions</p>
                     <div className="flex flex-col gap-1">
                       <p className="text-[10px] text-muted-foreground px-1 leading-relaxed md:hidden">
                         Switch to a mouse-based screen in order to use cursor modes.
@@ -187,11 +245,30 @@ export function Navbar() {
                           className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${cursorMode === "invert" ? "bg-foreground text-background" : "hover:bg-foreground/10"}`}>
                           <Contrast className="h-3 w-3" /> Invert Color Mode
                         </button>
-                        <button onClick={() => setCursorMode("magnifying")}
-                          className={`group relative flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${cursorMode === "magnifying" ? "bg-foreground text-background" : "hover:bg-foreground/10"}`}>
-                          <Search className="h-3 w-3" /> 
-                          <span className="block group-hover:hidden">Magnifying Mode</span>
-                          <span className="hidden group-hover:block text-muted-foreground">Under Dev</span>
+                      </div>
+                    </div>
+
+                    <p className="mb-2 mt-4 px-1 text-[10px] uppercase tracking-widest text-muted-foreground">Companion</p>
+                    <div className="flex items-center justify-between px-1 py-0.5">
+                      <span className="text-xs text-foreground/80 font-medium">Puffer</span>
+                      <div className="relative flex rounded-full bg-secondary/50 p-0.5">
+                        <button
+                          onClick={() => setPufferEnabled(true)}
+                          className={`relative z-10 px-2.5 py-1 text-xs transition-colors duration-300 ${pufferEnabled ? "text-background font-medium" : "text-muted-foreground hover:text-foreground"}`}
+                        >
+                          ON
+                          {pufferEnabled && (
+                            <motion.div layoutId="puffer-tab" className="absolute inset-0 -z-10 rounded-full bg-foreground" transition={{ type: "spring", stiffness: 400, damping: 30 }} />
+                          )}
+                        </button>
+                        <button
+                          onClick={() => setPufferEnabled(false)}
+                          className={`relative z-10 px-2.5 py-1 text-xs transition-colors duration-300 ${!pufferEnabled ? "text-background font-medium" : "text-muted-foreground hover:text-foreground"}`}
+                        >
+                          OFF
+                          {!pufferEnabled && (
+                            <motion.div layoutId="puffer-tab" className="absolute inset-0 -z-10 rounded-full bg-foreground" transition={{ type: "spring", stiffness: 400, damping: 30 }} />
+                          )}
                         </button>
                       </div>
                     </div>
@@ -218,9 +295,19 @@ export function Navbar() {
               <a href="https://github.com/exorcist09" target="_blank" rel="noreferrer" aria-label="GitHub" className="hover:text-foreground transition">
                 <Github className="h-4 w-4" />
               </a>
-              <a href="/AdarshVermaResume.pdf" target="_blank" rel="noreferrer" aria-label="AdarshVermaResume" className="hover:text-foreground transition">
+              <button
+                onClick={() => {
+                  if (onOpenResume) onOpenResume();
+                  else if (typeof window !== "undefined") {
+                    window.dispatchEvent(new CustomEvent("open-resume-modal"));
+                  }
+                }}
+                aria-label="AdarshVermaResume"
+                title="View Resume"
+                className="hover:text-foreground transition cursor-pointer"
+              >
                 <FileText className="h-4 w-4" />
-              </a>
+              </button>
             </div>
           </div>
         </nav>

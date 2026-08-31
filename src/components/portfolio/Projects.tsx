@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
-import { ExternalLink, Github, Plus, X } from "lucide-react";
+import { ExternalLink, Github, X } from "lucide-react";
 
 type Project = {
   title: string;
@@ -205,9 +205,73 @@ export function Projects() {
                       : undefined,
                   }}
                 >
-                  <div className="absolute -right-16 -bottom-16 z-0">
-                    <Plus className="absolute right-0 bottom-0 h-40 w-40 text-foreground/5" strokeWidth={1} />
-                    <Plus className="absolute right-8 bottom-8 h-40 w-40 text-foreground/5" strokeWidth={1} />
+                  {/* Subtle Jellyfish & Aquatic Kelp Flora Watermark */}
+                  <div className="pointer-events-none absolute -right-1 -bottom-1 z-0 select-none opacity-18 transition-opacity duration-300 group-hover:opacity-25">
+                    <svg
+                      viewBox="0 0 160 160"
+                      className="h-32 w-32 sm:h-36 sm:w-36 text-foreground fill-none stroke-current"
+                      strokeWidth="1.3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      {/* === Floating Bioluminescent Jellyfish === */}
+                      {/* Umbrella Bell Dome */}
+                      <path
+                        d="M100,28 C100,10 148,10 148,28 C148,34 140,36 136,34 C132,32 128,34 124,34 C120,32 116,34 112,34 C108,32 100,34 100,28 Z"
+                        fill="currentColor"
+                        fillOpacity="0.18"
+                        strokeWidth="1.5"
+                      />
+                      {/* Inner Bell Scallop Arc */}
+                      <path d="M106,26 C114,20 134,20 142,26" opacity="0.6" strokeWidth="1" />
+                      {/* Flowing Oral Arms & Tentacles */}
+                      <path d="M112,34 Q108,52 116,72 Q122,88 118,105" opacity="0.8" strokeWidth="1.2" />
+                      <path d="M124,35 Q126,56 122,80 Q119,102 124,120" strokeWidth="1.4" opacity="0.9" />
+                      <path d="M136,34 Q140,54 134,75 Q130,96 135,115" opacity="0.8" strokeWidth="1.2" />
+                      <path d="M144,32 Q150,48 146,65 Q142,80 148,95" opacity="0.6" strokeDasharray="3 3" />
+                      <path d="M104,32 Q98,48 104,65" opacity="0.5" strokeDasharray="2 3" />
+
+                      {/* Jellyfish Bioluminescent Nodes */}
+                      <circle cx="118" cy="22" r="1.5" fill="currentColor" fillOpacity="0.8" />
+                      <circle cx="130" cy="22" r="1.5" fill="currentColor" fillOpacity="0.8" />
+                      <circle cx="124" cy="16" r="1.8" fill="currentColor" fillOpacity="0.9" />
+
+                      {/* === Swaying Deep-Sea Kelp & Aquatic Plants === */}
+                      {/* Primary Kelp Stem */}
+                      <path
+                        d="M75,160 C70,130 90,105 82,75 C76,55 60,42 50,30"
+                        strokeWidth="1.6"
+                      />
+                      {/* Kelp Leaves */}
+                      <path d="M74,138 C86,132 92,122 88,112 C82,120 75,128 74,138 Z" fill="currentColor" fillOpacity="0.16" />
+                      <path d="M80,110 C68,104 62,94 66,84 C73,92 78,100 80,110 Z" fill="currentColor" fillOpacity="0.16" />
+                      <path d="M82,82 C94,75 98,64 92,54 C86,63 81,72 82,82 Z" fill="currentColor" fillOpacity="0.16" />
+                      <path d="M68,52 C56,46 52,35 58,26 C64,34 66,43 68,52 Z" fill="currentColor" fillOpacity="0.16" />
+
+                      {/* Secondary Slender Seagrass Blade */}
+                      <path
+                        d="M48,160 C44,135 58,112 50,88 C44,68 32,58 24,46"
+                        strokeWidth="1.3"
+                        opacity="0.75"
+                      />
+                      <path d="M49,132 C38,126 34,116 38,106 C44,113 48,122 49,132 Z" fill="currentColor" fillOpacity="0.14" />
+                      <path d="M52,98 C62,92 65,82 60,72 C55,80 52,89 52,98 Z" fill="currentColor" fillOpacity="0.14" />
+
+                      {/* Marine Coral Sprig */}
+                      <path
+                        d="M98,160 C96,145 104,136 100,122 M98,142 C104,136 106,128 104,120"
+                        strokeWidth="1.2"
+                        opacity="0.6"
+                      />
+
+                      {/* === Ascending Marine Micro-Bubbles === */}
+                      <circle cx="92" cy="45" r="2.5" fill="currentColor" fillOpacity="0.35" />
+                      <circle cx="86" cy="28" r="1.6" fill="currentColor" fillOpacity="0.25" />
+                      <circle cx="42" cy="38" r="2.2" fill="currentColor" fillOpacity="0.3" />
+                      <circle cx="34" cy="54" r="1.4" fill="currentColor" fillOpacity="0.25" />
+                      <circle cx="108" cy="85" r="2" fill="currentColor" fillOpacity="0.25" />
+                      <circle cx="140" cy="72" r="1.6" fill="currentColor" fillOpacity="0.25" />
+                    </svg>
                   </div>
                   
                   {/* Mobile Close Button */}

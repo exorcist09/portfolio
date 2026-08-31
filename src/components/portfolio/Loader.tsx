@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 
-const emojis = ["😐", "🙂", "😊", "😄", "😁"];
-
-export function Loader({ onDone }: { onDone: () => void }) {
+export function Loader({
+  onDone,
+  onProgress,
+}: {
+  onDone: () => void;
+  onProgress?: (progress: number) => void;
+}) {
   const [progress, setProgress] = useState(0);
   const [phase, setPhase] = useState<"loading" | "reveal" | "done">("loading");
 
@@ -11,91 +15,116 @@ export function Loader({ onDone }: { onDone: () => void }) {
     const id = setInterval(() => {
       setProgress((p) => {
         const n = p + 2;
+        const clamped = Math.min(n, 100);
+        onProgress?.(clamped);
         if (n >= 100) {
           clearInterval(id);
-          setTimeout(() => setPhase("reveal"), 250);
-          setTimeout(() => { setPhase("done"); onDone(); }, 1500);
+          setTimeout(() => setPhase("reveal"), 200);
+          setTimeout(() => {
+            setPhase("done");
+            onDone();
+          }, 800);
           return 100;
         }
         return n;
       });
-    }, 30);
+    }, 28);
     return () => clearInterval(id);
-  }, [phase, onDone]);
+  }, [phase, onDone, onProgress]);
 
   if (phase === "done") return null;
 
-  const emojiIdx = Math.min(emojis.length - 1, Math.floor((progress / 100) * emojis.length));
-  const trackWidth = 320;
-  const circleSize = 56;
-  const offset = ((progress / 100) * (trackWidth - circleSize));
-
-  const loaderUI = (
-    <div className="relative w-full h-full">
-      {/* adarsh. top-left */}
-      <div className="absolute left-6 top-6 z-20 font-hero text-lg tracking-tight text-white">
-        adarsh<span className="text-primary">.</span>
-      </div>
-
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <div
-          className="relative h-14 overflow-hidden rounded-full border border-white/15 backdrop-blur-xl"
-          style={{ width: trackWidth, background: "rgba(255,255,255,0.06)" }}
-        >
-          <div
-            className="absolute inset-y-0 left-0 rounded-full transition-[width] duration-100 ease-linear"
-            style={{ width: circleSize + offset, background: "rgba(255,255,255,0.9)" }}
-          />
-          <div
-            className="absolute top-1/2 grid place-items-center rounded-full border border-white/40 text-xl shadow-2xl"
-            style={{
-              width: circleSize,
-              height: circleSize,
-              left: offset,
-              transform: "translateY(-50%)",
-              background: "rgba(255,255,255,0.18)",
-              backdropFilter: "blur(14px) saturate(160%)",
-              transition: "left 100ms linear",
-            }}
-          >
-            {emojis[emojiIdx]}
-          </div>
-        </div>
-        <div className="absolute left-1/2 top-[calc(100%+2rem)] -translate-x-1/2 text-xs tracking-widest text-white/60">
-          {progress}%
-        </div>
-      </div>
-    </div>
-  );
-
   return (
-    <div className={`fixed inset-0 z-[100] overflow-hidden ${phase === "reveal" ? "pointer-events-none" : ""}`} aria-hidden>
-      {/* Top reveal panel */}
-      <div
-        className="absolute inset-x-0 top-0 z-10 bg-black transition-transform duration-1000 ease-[cubic-bezier(0.83,0,0.17,1)]"
-        style={{
-          height: "calc(50% + 1px)", // 1px overlap to prevent sub-pixel gap
-          boxShadow: phase === "reveal" ? "0 30px 50px 20px black" : "none",
-          transform: phase === "reveal" ? "translateY(calc(-100% - 150px))" : "translateY(0)",
-        }}
-      />
+    <div
+      className={`fixed inset-0 z-[100] overflow-hidden bg-black transition-opacity duration-700 ease-out ${
+        phase === "reveal" ? "opacity-0 pointer-events-none" : "opacity-100"
+      }`}
+      aria-hidden
+    >
+      <style>{`
+        @keyframes waveFront {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes waveBack {
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
+        }
+      `}</style>
 
-      {/* Bottom reveal panel */}
-      <div
-        className="absolute inset-x-0 bottom-0 z-10 bg-black transition-transform duration-1000 ease-[cubic-bezier(0.83,0,0.17,1)]"
-        style={{
-          height: "50%",
-          boxShadow: phase === "reveal" ? "0 -30px 50px 20px black" : "none",
-          transform: phase === "reveal" ? "translateY(calc(100% + 150px))" : "translateY(0)",
-        }}
-      />
+      {/* ── Top-Center "adarsh." Branding with Green Accent Dot ── */}
+      <div className="absolute top-8 sm:top-12 inset-x-0 z-30 pointer-events-none flex justify-center">
+        <h1 className="font-hero text-2xl sm:text-3xl font-bold tracking-tight text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)] select-none">
+          adarsh<span className="text-[#22c55e]">.</span>
+        </h1>
+      </div>
 
-      {/* Central Loader UI that fades out */}
-      <div 
-        className="absolute inset-0 z-20 pointer-events-none transition-opacity duration-500" 
-        style={{ opacity: phase === "reveal" ? 0 : 1 }}
+      {/* ── Center Loading Percentage (Visible ONLY on small screens / mobile) ── */}
+      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none sm:hidden">
+        <div className="flex flex-col items-center gap-1.5">
+          <span className="font-mono text-5xl font-bold tracking-tight text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)] select-none">
+            {progress}
+            <span className="text-2xl text-[#22c55e] font-semibold ml-0.5">%</span>
+          </span>
+          <span className="text-[10px] font-medium uppercase tracking-widest text-sky-200/75">
+            Diving In...
+          </span>
+        </div>
+      </div>
+
+      {/* ── Rising Water with Prominent Dynamic Fluid Waves ── */}
+      <div
+        className="absolute inset-x-0 bottom-0 z-10 overflow-visible transition-[height] duration-150 ease-out pointer-events-none"
+        style={{ height: `${Math.max(progress, 5)}%` }}
       >
-        {loaderUI}
+        {/* Secondary Back Wave (Slower, deep cyan) */}
+        <div
+          className="absolute inset-x-0 -top-8 h-12 w-[200%] pointer-events-none opacity-50"
+          style={{ animation: "waveBack 6s linear infinite" }}
+        >
+          <svg
+            className="w-full h-full"
+            viewBox="0 0 1440 120"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M0,32 C240,95 480,5 720,48 C960,90 1200,10 1440,32 L1440,120 L0,120 Z"
+              fill="#0284c7"
+            />
+          </svg>
+        </div>
+
+        {/* Primary Front Wave (Faster, bright caustic sky-blue crest) */}
+        <div
+          className="absolute inset-x-0 -top-7 h-11 w-[200%] pointer-events-none opacity-95"
+          style={{ animation: "waveFront 3.8s linear infinite" }}
+        >
+          <svg
+            className="w-full h-full"
+            viewBox="0 0 1440 120"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M0,45 C200,5 440,85 720,38 C1000,-5 1240,75 1440,45 L1440,120 L0,120 Z"
+              fill="rgba(56, 189, 248, 0.92)"
+            />
+          </svg>
+        </div>
+
+        {/* Deep Water Gradient Body */}
+        <div className="h-full w-full bg-gradient-to-t from-[#0284c7]/90 via-[#0ea5e9]/65 to-[#38bdf8]/40 backdrop-blur-[1px] shadow-[inset_0_16px_50px_rgba(56,189,248,0.5)]" />
+
+        {/* Continuous Rising Ambient Bubbles */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute bottom-4 left-[15%] h-3.5 w-3.5 rounded-full bg-white/50 animate-ping" />
+          <div className="absolute bottom-10 left-[82%] h-4.5 w-4.5 rounded-full bg-white/40 animate-pulse" />
+          <div className="absolute bottom-16 left-[46%] h-3 w-3 rounded-full bg-white/60 animate-bounce" />
+          <div className="absolute bottom-28 left-[28%] h-4 w-4 rounded-full bg-white/45 animate-pulse" />
+          <div className="absolute bottom-36 left-[68%] h-3.5 w-3.5 rounded-full bg-white/50 animate-ping" />
+          <div className="absolute bottom-48 left-[50%] h-2.5 w-2.5 rounded-full bg-white/60 animate-bounce" />
+          <div className="absolute bottom-60 left-[35%] h-4 w-4 rounded-full bg-white/40 animate-pulse" />
+          <div className="absolute bottom-72 left-[75%] h-3 w-3 rounded-full bg-white/50 animate-ping" />
+        </div>
       </div>
     </div>
   );

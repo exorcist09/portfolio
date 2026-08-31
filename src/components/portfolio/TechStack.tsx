@@ -16,6 +16,24 @@ const ApiIcon = ({ className, color }: { className?: string; color?: string }) =
   </div>
 );
 
+const BearIcon = ({ className, color }: { className?: string; color?: string }) => (
+  <svg
+    viewBox="0 0 24 24"
+    className={className}
+    fill={color || "currentColor"}
+  >
+    <circle cx="6" cy="7" r="3.2" />
+    <circle cx="18" cy="7" r="3.2" />
+    <circle cx="12" cy="13" r="7.5" />
+    <circle cx="6" cy="7" r="1.6" fill="rgba(0,0,0,0.3)" />
+    <circle cx="18" cy="7" r="1.6" fill="rgba(0,0,0,0.3)" />
+    <ellipse cx="12" cy="14.8" rx="3.5" ry="2.6" fill="rgba(255,255,255,0.85)" />
+    <ellipse cx="12" cy="13.8" rx="1.2" ry="0.8" fill="#18181b" />
+    <circle cx="9.2" cy="11.2" r="1.1" fill="#18181b" />
+    <circle cx="14.8" cy="11.2" r="1.1" fill="#18181b" />
+  </svg>
+);
+
 const groups: { label: string; items: Tech[] }[] = [
   {
     label: "Languages",
@@ -33,7 +51,7 @@ const groups: { label: string; items: Tech[] }[] = [
     items: [
       { name: "Next.js", slug: "nextdotjs", alwaysWhite: true },
       { name: "React.js", slug: "react", color: "#61DAFB" },
-      { name: "Zustand", slug: "react", color: "#61DAFB" },
+      { name: "Zustand", slug: "zustand", icon: BearIcon, color: "#854d0e" },
       { name: "TailwindCSS", slug: "tailwindcss", color: "#06B6D4" },
       { name: "Radix UI", slug: "radixui", alwaysWhite: true },
       { name: "Shadcn UI", slug: "shadcnui", alwaysWhite: true },
@@ -127,9 +145,9 @@ export function TechStack() {
 
       <div className="relative mx-auto max-w-3xl text-center">
         <p className="mb-3 text-xs tracking-widest text-muted-foreground">— TECH —</p>
-        <h2 className="font-display text-3xl font-bold sm:text-4xl">Arsenal</h2>
+        <h2 className="font-display text-3xl font-bold sm:text-4xl">Dive Gear</h2>
         <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
-          Tools and technologies I reach for to build fast, scalable, delightful products.
+          The tools I take into the deep.
         </p>
 
         {/* Desktop View */}
