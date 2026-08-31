@@ -82,11 +82,7 @@ export function Loader({
           className="absolute inset-x-0 -top-8 h-12 w-[200%] pointer-events-none opacity-50"
           style={{ animation: "waveBack 6s linear infinite" }}
         >
-          <svg
-            className="w-full h-full"
-            viewBox="0 0 1440 120"
-            preserveAspectRatio="none"
-          >
+          <svg className="w-full h-full" viewBox="0 0 1440 120" preserveAspectRatio="none">
             <path
               d="M0,32 C240,95 480,5 720,48 C960,90 1200,10 1440,32 L1440,120 L0,120 Z"
               fill="#0284c7"
@@ -99,11 +95,7 @@ export function Loader({
           className="absolute inset-x-0 -top-7 h-11 w-[200%] pointer-events-none opacity-95"
           style={{ animation: "waveFront 3.8s linear infinite" }}
         >
-          <svg
-            className="w-full h-full"
-            viewBox="0 0 1440 120"
-            preserveAspectRatio="none"
-          >
+          <svg className="w-full h-full" viewBox="0 0 1440 120" preserveAspectRatio="none">
             <path
               d="M0,45 C200,5 440,85 720,38 C1000,-5 1240,75 1440,45 L1440,120 L0,120 Z"
               fill="rgba(56, 189, 248, 0.92)"

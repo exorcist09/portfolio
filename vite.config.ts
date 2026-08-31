@@ -19,15 +19,17 @@ function pufferDevApiPlugin(): Plugin {
               body: bodyBuffer.length > 0 ? bodyBuffer : undefined,
             });
 
-            const { handlePufferRequest } = await import("./src/lib/puffer/pufferEngine");
+            const { handlePufferRequest } = await import("./api/puffer");
             const response = await handlePufferRequest(standardReq);
 
-            res.statusCode = response.status;
-            response.headers.forEach((value, key) => {
-              res.setHeader(key, value);
-            });
-            const responseBody = await response.text();
-            res.end(responseBody);
+            if (response instanceof Response) {
+              res.statusCode = response.status;
+              response.headers.forEach((value, key) => {
+                res.setHeader(key, value);
+              });
+              const responseBody = await response.text();
+              res.end(responseBody);
+            }
           } catch (err) {
             console.error("Vite Dev Puffer API error:", err);
             res.statusCode = 500;

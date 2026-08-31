@@ -6,11 +6,11 @@ export interface PufferFinsHandle {
 }
 
 export const PufferFins = forwardRef<PufferFinsHandle>((_, ref) => {
-  const leftRef   = useRef<THREE.Group>(null);
-  const rightRef  = useRef<THREE.Group>(null);
+  const leftRef = useRef<THREE.Group>(null);
+  const rightRef = useRef<THREE.Group>(null);
   const dorsalRef = useRef<THREE.Group>(null);
-  const analRef   = useRef<THREE.Group>(null);
-  const tailRef   = useRef<THREE.Group>(null);
+  const analRef = useRef<THREE.Group>(null);
+  const tailRef = useRef<THREE.Group>(null);
 
   useImperativeHandle(ref, () => ({
     animateFins: (time, speedMult = 1, ampMult = 1) => {
@@ -42,7 +42,7 @@ export const PufferFins = forwardRef<PufferFinsHandle>((_, ref) => {
 
   // Body color base + darker orange shades for design rays
   const finBaseColor = "#e64a19";
-  const finDarkRay = "#b8340d";    // Darker shade of body orange
+  const finDarkRay = "#b8340d"; // Darker shade of body orange
   const finDeepContour = "#9c2807"; // Deep darker contour accent
 
   return (

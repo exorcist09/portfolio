@@ -4,9 +4,27 @@ import { Github, Linkedin, Mail, ArrowUpRight } from "lucide-react";
 type Key = "mail" | "linkedin" | "github";
 
 const items: { key: Key; icon: typeof Mail; label: string; value: string; href: string }[] = [
-  { key: "mail", icon: Mail, label: "Email", value: "vermaadarsh1024@gmail.com", href: "mailto:vermaadarsh1024@gmail.com" },
-  { key: "linkedin", icon: Linkedin, label: "LinkedIn", value: "linkedin.com/in/adarsh-verma-exorcist09", href: "https://www.linkedin.com/in/adarsh-verma-exorcist09/" },
-  { key: "github", icon: Github, label: "GitHub", value: "github.com/exorcist09", href: "https://github.com/exorcist09" },
+  {
+    key: "mail",
+    icon: Mail,
+    label: "Email",
+    value: "vermaadarsh1024@gmail.com",
+    href: "mailto:vermaadarsh1024@gmail.com",
+  },
+  {
+    key: "linkedin",
+    icon: Linkedin,
+    label: "LinkedIn",
+    value: "linkedin.com/in/adarsh-verma-exorcist09",
+    href: "https://www.linkedin.com/in/adarsh-verma-exorcist09/",
+  },
+  {
+    key: "github",
+    icon: Github,
+    label: "GitHub",
+    value: "github.com/exorcist09",
+    href: "https://github.com/exorcist09",
+  },
 ];
 
 // Aesthetic bubbles surrounding the badge
@@ -32,13 +50,15 @@ export function Contact() {
   return (
     <section id="contact" className="relative overflow-hidden px-6 pt-40 sm:pt-48 pb-12">
       <div className="mx-auto max-w-4xl">
-
         {/* Floating Bubbles Halo around adarshverma.xyz */}
         <div className="relative mx-auto mb-28 sm:mb-36 h-48 w-full max-w-3xl flex items-center justify-center">
           {/* Ambient Glow */}
           <div
             className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-36 w-80 rounded-full blur-2xl opacity-30"
-            style={{ background: "radial-gradient(circle, color-mix(in oklab, var(--primary) 60%, transparent), transparent 70%)" }}
+            style={{
+              background:
+                "radial-gradient(circle, color-mix(in oklab, var(--primary) 60%, transparent), transparent 70%)",
+            }}
           />
 
           {/* Encompassing Animated Bubbles */}
@@ -94,17 +114,21 @@ export function Contact() {
                 rel="noreferrer"
                 onMouseEnter={() => setHovered(it.key)}
                 className={`glass group flex items-center overflow-hidden rounded-full text-xs font-medium transition-all duration-500 ease-out ${
-                  isOpen 
-                    ? "flex-[1_0_auto] px-4 bg-primary/10 text-primary border-primary/30" 
+                  isOpen
+                    ? "flex-[1_0_auto] px-4 bg-primary/10 text-primary border-primary/30"
                     : "flex-[0_0_44px] justify-center px-0 text-foreground"
                 }`}
                 aria-label={it.label}
               >
                 <Icon className="h-4 w-4 shrink-0" />
-                <span className={`truncate transition-all duration-500 ${isOpen ? "max-w-[140px] opacity-100 ml-2" : "max-w-0 opacity-0 ml-0"}`}>
+                <span
+                  className={`truncate transition-all duration-500 ${isOpen ? "max-w-[140px] opacity-100 ml-2" : "max-w-0 opacity-0 ml-0"}`}
+                >
                   {it.value}
                 </span>
-                <div className={`overflow-hidden transition-all duration-500 ${isOpen ? "max-w-[20px] opacity-100 ml-2" : "max-w-0 opacity-0 ml-0"}`}>
+                <div
+                  className={`overflow-hidden transition-all duration-500 ${isOpen ? "max-w-[20px] opacity-100 ml-2" : "max-w-0 opacity-0 ml-0"}`}
+                >
                   <ArrowUpRight className="h-3 w-3 shrink-0 opacity-60" />
                 </div>
               </a>
@@ -114,12 +138,12 @@ export function Contact() {
 
         <footer className="mt-32 flex items-center justify-between border-t border-border pt-6 text-[11px] text-muted-foreground">
           <span>© {new Date().getFullYear()} Adarsh Verma</span>
-          <a 
-            href="#home" 
+          <a
+            href="#home"
             onClick={(e) => {
               e.preventDefault();
               document.documentElement.style.scrollBehavior = "auto";
-              
+
               const startY = window.scrollY;
               const duration = 700;
               const startTime = performance.now();
@@ -127,10 +151,11 @@ export function Contact() {
               const animateScroll = (currentTime: number) => {
                 const timeElapsed = currentTime - startTime;
                 const progress = Math.min(timeElapsed / duration, 1);
-                
-                const ease = progress < 0.5 
-                  ? 4 * progress * progress * progress 
-                  : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+                const ease =
+                  progress < 0.5
+                    ? 4 * progress * progress * progress
+                    : 1 - Math.pow(-2 * progress + 2, 3) / 2;
 
                 window.scrollTo(0, startY * (1 - ease));
 

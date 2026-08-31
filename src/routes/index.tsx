@@ -48,11 +48,14 @@ function Index() {
         />
       )}
       <PufferCompanion loading={!loaded} progress={loadProgress} />
-      
+
       {/* Resume Modal View */}
       <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
 
-      <main className="relative min-h-screen bg-background text-foreground" style={{ overflowX: "clip" }}>
+      <main
+        className="relative min-h-screen bg-background text-foreground"
+        style={{ overflowX: "clip" }}
+      >
         {/* Deep sea floating margins (bioluminescent jellyfish, marine snow, micro-bubbles) */}
         <DeepSeaAmbience />
 
@@ -63,7 +66,6 @@ function Index() {
         <Services />
         <Experience />
         <Contact />
-
       </main>
     </ThemeProvider>
   );

@@ -7,11 +7,7 @@ interface PufferMessageProps {
   onDismiss: () => void;
 }
 
-export function PufferMessage({
-  message,
-  duration = 4200,
-  onDismiss,
-}: PufferMessageProps) {
+export function PufferMessage({ message, duration = 4200, onDismiss }: PufferMessageProps) {
   useEffect(() => {
     const timer = setTimeout(onDismiss, duration);
     return () => clearTimeout(timer);

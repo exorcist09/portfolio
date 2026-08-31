@@ -6,7 +6,7 @@ export function CustomCursor() {
   const { cursorMode } = useTheme();
 
   const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
-  const [trail, setTrail] = useState<{ x: number, y: number, id: number }[]>([]);
+  const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
   const trailId = useRef(0);
 
   // Follower physics
@@ -67,20 +67,20 @@ export function CustomCursor() {
 
   return (
     <>
-
       {/* Trail Mode: Windows 95 style mouse trails */}
-      {cursorMode === "trail" && trail.map((pt, i) => (
-        <div
-          key={pt.id}
-          className="pointer-events-none fixed z-[9999] h-4 w-4 rounded-full bg-primary/40 shadow-[0_0_10px_var(--primary)]"
-          style={{
-            left: pt.x - 8,
-            top: pt.y - 8,
-            opacity: (i + 1) / trail.length,
-            transform: `scale(${(i + 1) / trail.length})`
-          }}
-        />
-      ))}
+      {cursorMode === "trail" &&
+        trail.map((pt, i) => (
+          <div
+            key={pt.id}
+            className="pointer-events-none fixed z-[9999] h-4 w-4 rounded-full bg-primary/40 shadow-[0_0_10px_var(--primary)]"
+            style={{
+              left: pt.x - 8,
+              top: pt.y - 8,
+              opacity: (i + 1) / trail.length,
+              transform: `scale(${(i + 1) / trail.length})`,
+            }}
+          />
+        ))}
 
       {/* Follower Mode */}
       {cursorMode === "follower" && (
@@ -119,11 +119,15 @@ export function CustomCursor() {
             translateY: "-50%",
             backdropFilter: "saturate(2) brightness(1.2)",
             WebkitBackdropFilter: "saturate(2) brightness(1.2)",
-            background: "radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%)",
+            background:
+              "radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%)",
           }}
         >
           {/* Magnifier Stem and Handle */}
-          <div className="absolute top-1/2 left-1/2 flex flex-col items-center justify-start origin-top" style={{ transform: "translate(-50%, 0) rotate(-45deg) translateY(44px)" }}>
+          <div
+            className="absolute top-1/2 left-1/2 flex flex-col items-center justify-start origin-top"
+            style={{ transform: "translate(-50%, 0) rotate(-45deg) translateY(44px)" }}
+          >
             <div className="h-4 w-1.5 bg-white rounded-sm" />
             <div className="h-8 w-3.5 bg-foreground rounded-full shadow-sm mt-0.5" />
           </div>
@@ -142,7 +146,6 @@ export function CustomCursor() {
           }}
         />
       )}
-
     </>
   );
 }

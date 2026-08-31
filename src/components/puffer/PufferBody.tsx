@@ -8,7 +8,7 @@ interface PufferBodyProps {
 // 85+ Organic freckle positions across Forehead, Temples, Cheeks, and Flanks
 const FRECKLE_POSITIONS: [number, number, number][] = [
   // ── Top Crown ──
-  [0, 1.04, 0.20],
+  [0, 1.04, 0.2],
   [-0.14, 1.02, 0.22],
   [0.14, 1.02, 0.22],
   [-0.08, 1.05, 0.05],
@@ -22,33 +22,33 @@ const FRECKLE_POSITIONS: [number, number, number][] = [
   // ── High Forehead & Upper Brow ──
   [-0.12, 0.74, 0.72],
   [0.15, 0.72, 0.74],
-  [0.02, 0.80, 0.66],
+  [0.02, 0.8, 0.66],
   [-0.05, 0.77, 0.68],
   [0.08, 0.78, 0.68],
   [-0.22, 0.66, 0.76],
-  [0.20, 0.68, 0.74],
-  [-0.16, 0.70, 0.72],
+  [0.2, 0.68, 0.74],
+  [-0.16, 0.7, 0.72],
   [0.14, 0.71, 0.72],
 
   // ── Temples & Cheeks ──
-  [-0.38, 0.68, 0.60],
-  [0.36, 0.70, 0.58],
+  [-0.38, 0.68, 0.6],
+  [0.36, 0.7, 0.58],
   [-0.52, 0.65, 0.55],
   [0.48, 0.68, 0.52],
   [-0.45, 0.58, 0.66],
-  [0.44, 0.60, 0.64],
+  [0.44, 0.6, 0.64],
   [-0.68, 0.48, 0.52],
-  [0.65, 0.52, 0.50],
-  [-0.60, 0.42, 0.62],
-  [0.58, 0.45, 0.60],
+  [0.65, 0.52, 0.5],
+  [-0.6, 0.42, 0.62],
+  [0.58, 0.45, 0.6],
   [-0.72, 0.35, 0.58],
-  [0.70, 0.38, 0.56],
-  [-0.54, 0.32, 0.70],
+  [0.7, 0.38, 0.56],
+  [-0.54, 0.32, 0.7],
   [0.52, 0.34, 0.68],
   [-0.35, 0.45, 0.78],
   [0.34, 0.46, 0.77],
   [-0.48, 0.38, 0.72],
-  [0.46, 0.40, 0.71],
+  [0.46, 0.4, 0.71],
 
   // ── Left Flank & Above Fin ──
   [-0.92, 0.48, 0.32],
@@ -60,14 +60,14 @@ const FRECKLE_POSITIONS: [number, number, number][] = [
   [-0.82, 0.32, 0.52],
   [-0.98, 0.42, 0.22],
   [-0.76, 0.46, 0.38],
-  [-0.90, 0.54, 0.30],
+  [-0.9, 0.54, 0.3],
   [-1.04, 0.28, 0.25],
   [-0.84, 0.22, 0.48],
-  [-0.75, 0.60, 0.28],
+  [-0.75, 0.6, 0.28],
   [-0.88, 0.62, 0.18],
-  [-0.80, 0.38, 0.42],
-  [-0.94, 0.50, 0.16],
-  [-1.00, 0.20, 0.35],
+  [-0.8, 0.38, 0.42],
+  [-0.94, 0.5, 0.16],
+  [-1.0, 0.2, 0.35],
   [-0.72, 0.55, 0.36],
 
   // ── Right Flank & Above Fin ──
@@ -80,28 +80,28 @@ const FRECKLE_POSITIONS: [number, number, number][] = [
   [0.82, 0.32, 0.52],
   [0.98, 0.42, 0.22],
   [0.76, 0.46, 0.38],
-  [0.90, 0.54, 0.30],
+  [0.9, 0.54, 0.3],
   [1.04, 0.28, 0.25],
   [0.84, 0.22, 0.48],
-  [0.75, 0.60, 0.28],
+  [0.75, 0.6, 0.28],
   [0.88, 0.62, 0.18],
-  [0.80, 0.38, 0.42],
-  [0.94, 0.50, 0.16],
-  [1.00, 0.20, 0.35],
+  [0.8, 0.38, 0.42],
+  [0.94, 0.5, 0.16],
+  [1.0, 0.2, 0.35],
   [0.72, 0.55, 0.36],
 
   // ── Rear Flanks ──
   [-0.55, 0.55, -0.52],
-  [0.58, 0.52, -0.50],
+  [0.58, 0.52, -0.5],
   [-0.42, 0.64, -0.58],
-  [0.40, 0.65, -0.56],
+  [0.4, 0.65, -0.56],
   [0.05, 0.68, -0.85],
   [-0.18, 0.55, -0.88],
   [0.16, 0.52, -0.88],
   [-0.32, 0.45, -0.82],
-  [0.30, 0.46, -0.80],
+  [0.3, 0.46, -0.8],
   [-0.48, 0.48, -0.72],
-  [0.46, 0.50, -0.70],
+  [0.46, 0.5, -0.7],
 ];
 
 export const PufferBody = forwardRef<THREE.Group, PufferBodyProps>(({ puffProgress }, ref) => {
@@ -121,17 +121,37 @@ export const PufferBody = forwardRef<THREE.Group, PufferBodyProps>(({ puffProgre
     // 2. Rich darker baked freckles on canvas texture
     ctx.fillStyle = "rgba(155, 52, 16, 0.78)";
     const randomSeedDots = [
-      { x: 256, y: 280, r: 6.5 }, { x: 220, y: 260, r: 5.5 }, { x: 290, y: 265, r: 6 },
-      { x: 160, y: 400, r: 6 }, { x: 350, y: 395, r: 5.5 }, { x: 245, y: 410, r: 6.5 },
-      { x: 275, y: 405, r: 6 }, { x: 210, y: 430, r: 5 }, { x: 300, y: 425, r: 5.5 },
-      { x: 130, y: 480, r: 6.5 }, { x: 380, y: 475, r: 6.5 }, { x: 100, y: 530, r: 7 },
-      { x: 410, y: 525, r: 7 }, { x: 145, y: 560, r: 5.5 }, { x: 365, y: 555, r: 5.5 },
-      { x: 180, y: 450, r: 5.5 }, { x: 330, y: 450, r: 5.5 },
-      { x: 115, y: 510, r: 6 }, { x: 395, y: 505, r: 6 },
-      { x: 500, y: 420, r: 6.5 }, { x: 540, y: 460, r: 6 }, { x: 620, y: 440, r: 6.5 },
-      { x: 720, y: 450, r: 5.5 }, { x: 800, y: 420, r: 6.5 }, { x: 850, y: 450, r: 6 },
-      { x: 920, y: 430, r: 6.5 }, { x: 60, y: 440, r: 6 }, { x: 40, y: 500, r: 5.5 },
-      { x: 480, y: 450, r: 6 }, { x: 580, y: 500, r: 5.5 }, { x: 670, y: 480, r: 6 },
+      { x: 256, y: 280, r: 6.5 },
+      { x: 220, y: 260, r: 5.5 },
+      { x: 290, y: 265, r: 6 },
+      { x: 160, y: 400, r: 6 },
+      { x: 350, y: 395, r: 5.5 },
+      { x: 245, y: 410, r: 6.5 },
+      { x: 275, y: 405, r: 6 },
+      { x: 210, y: 430, r: 5 },
+      { x: 300, y: 425, r: 5.5 },
+      { x: 130, y: 480, r: 6.5 },
+      { x: 380, y: 475, r: 6.5 },
+      { x: 100, y: 530, r: 7 },
+      { x: 410, y: 525, r: 7 },
+      { x: 145, y: 560, r: 5.5 },
+      { x: 365, y: 555, r: 5.5 },
+      { x: 180, y: 450, r: 5.5 },
+      { x: 330, y: 450, r: 5.5 },
+      { x: 115, y: 510, r: 6 },
+      { x: 395, y: 505, r: 6 },
+      { x: 500, y: 420, r: 6.5 },
+      { x: 540, y: 460, r: 6 },
+      { x: 620, y: 440, r: 6.5 },
+      { x: 720, y: 450, r: 5.5 },
+      { x: 800, y: 420, r: 6.5 },
+      { x: 850, y: 450, r: 6 },
+      { x: 920, y: 430, r: 6.5 },
+      { x: 60, y: 440, r: 6 },
+      { x: 40, y: 500, r: 5.5 },
+      { x: 480, y: 450, r: 6 },
+      { x: 580, y: 500, r: 5.5 },
+      { x: 670, y: 480, r: 6 },
     ];
     randomSeedDots.forEach(({ x, y, r }) => {
       ctx.beginPath();
@@ -142,7 +162,7 @@ export const PufferBody = forwardRef<THREE.Group, PufferBodyProps>(({ puffProgre
     // 3. Soft pastel yellowish-crème belly patch
     const bellyFront = ctx.createRadialGradient(256, 855, 0, 256, 855, 270);
     bellyFront.addColorStop(0.0, "#fff0ba");
-    bellyFront.addColorStop(0.50, "#fff0ba");
+    bellyFront.addColorStop(0.5, "#fff0ba");
     bellyFront.addColorStop(0.78, "#ffd296");
     bellyFront.addColorStop(1.0, "#e64a19");
     ctx.fillStyle = bellyFront;
@@ -164,14 +184,14 @@ export const PufferBody = forwardRef<THREE.Group, PufferBodyProps>(({ puffProgre
     for (let i = 0; i < pos.count; i++) {
       let x = pos.getX(i);
       let y = pos.getY(i);
-      let z = pos.getZ(i);
+      const z = pos.getZ(i);
 
       // Taper towards rear (z < 0): slender rear peduncle
       if (z < 0) {
         const t = -z; // 0 to 1
         const taper = 1.0 - t * 0.28;
         x *= taper;
-        y *= (1.0 - t * 0.22);
+        y *= 1.0 - t * 0.22;
       }
 
       // Chubby cheeks and saggy round belly in front-bottom
@@ -199,9 +219,9 @@ export const PufferBody = forwardRef<THREE.Group, PufferBodyProps>(({ puffProgre
   }, []);
 
   // Volumetric scale
-  const scaleX = (1.18 + puffProgress * 0.18);
-  const scaleY = (1.04 + puffProgress * 0.18);
-  const scaleZ = (1.14 + puffProgress * 0.18);
+  const scaleX = 1.18 + puffProgress * 0.18;
+  const scaleY = 1.04 + puffProgress * 0.18;
+  const scaleZ = 1.14 + puffProgress * 0.18;
 
   return (
     <group ref={ref}>
@@ -234,11 +254,7 @@ export const PufferBody = forwardRef<THREE.Group, PufferBodyProps>(({ puffProgre
       ))}
 
       {/* ── Cute Cartoon Pink Smile ── */}
-      <group
-        position={[0, 0.14, 1.15]}
-        rotation={[0.06, 0, 0]}
-        scale={1.0 + puffProgress * 0.1}
-      >
+      <group position={[0, 0.14, 1.15]} rotation={[0.06, 0, 0]} scale={1.0 + puffProgress * 0.1}>
         {/* Smooth Broad Smile Arc */}
         <mesh geometry={smileGeometry}>
           <meshStandardMaterial color="#ff7eb3" roughness={0.28} metalness={0.02} />

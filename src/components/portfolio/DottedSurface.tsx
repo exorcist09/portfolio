@@ -2,7 +2,13 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { cn } from "@/lib/utils";
 
-export function DottedSurface({ className, invert = false }: { className?: string; invert?: boolean }) {
+export function DottedSurface({
+  className,
+  invert = false,
+}: {
+  className?: string;
+  invert?: boolean;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -42,7 +48,13 @@ export function DottedSurface({ className, invert = false }: { className?: strin
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
     geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
-    const material = new THREE.PointsMaterial({ size: 6, vertexColors: true, transparent: true, opacity: 0.55, sizeAttenuation: true });
+    const material = new THREE.PointsMaterial({
+      size: 6,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.55,
+      sizeAttenuation: true,
+    });
     const points = new THREE.Points(geometry, material);
     scene.add(points);
 
@@ -84,5 +96,11 @@ export function DottedSurface({ className, invert = false }: { className?: strin
     };
   }, [invert]);
 
-  return <div ref={containerRef} className={cn("pointer-events-none absolute inset-0", invert && "scale-y-[-1]", className)} aria-hidden />;
+  return (
+    <div
+      ref={containerRef}
+      className={cn("pointer-events-none absolute inset-0", invert && "scale-y-[-1]", className)}
+      aria-hidden
+    />
+  );
 }

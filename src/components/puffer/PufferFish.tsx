@@ -156,13 +156,10 @@ export const PufferFish: React.FC<PufferFishProps> = ({
     if (Math.abs(puffProgress.current - visualPuff) > 0.02) setVisualPuff(puffProgress.current);
 
     /* 2 ── dynamic scale: shrinks smoothly with spin when AI assistant box is open ── */
-    const baseSize = animState.isSwimmingDown
-      ? 1.15
-      : animState.isAssistantOpen
-      ? 0.58
-      : 0.85;
+    const baseSize = animState.isSwimmingDown ? 1.15 : animState.isAssistantOpen ? 0.58 : 0.85;
 
-    const hoverBonus = animState.isHovered && !animState.isMobile && !animState.isAssistantOpen ? 0.05 : 0;
+    const hoverBonus =
+      animState.isHovered && !animState.isMobile && !animState.isAssistantOpen ? 0.05 : 0;
     const targetScale = baseSize * (1 + puffProgress.current * 0.2 + hoverBonus);
     currentScale.current = THREE.MathUtils.lerp(currentScale.current, targetScale, 8 * dt);
     rootGroupRef.current.scale.setScalar(currentScale.current);
@@ -178,9 +175,16 @@ export const PufferFish: React.FC<PufferFishProps> = ({
       currentX.current = THREE.MathUtils.lerp(currentX.current, 0, 8 * dt);
 
       currentRotY.current = THREE.MathUtils.lerp(currentRotY.current, 0.78, 8 * dt);
-      currentRotX.current = THREE.MathUtils.lerp(currentRotX.current, Math.sin(time * 1.5) * 0.04, 8 * dt);
-      currentRotZ.current = THREE.MathUtils.lerp(currentRotZ.current, Math.cos(time * 1.2) * 0.03, 8 * dt);
-
+      currentRotX.current = THREE.MathUtils.lerp(
+        currentRotX.current,
+        Math.sin(time * 1.5) * 0.04,
+        8 * dt,
+      );
+      currentRotZ.current = THREE.MathUtils.lerp(
+        currentRotZ.current,
+        Math.cos(time * 1.2) * 0.03,
+        8 * dt,
+      );
     } else if (animState.isTransitioningToCorner) {
       /* 5 ── ACTIVE SWIMMING TO CORNER: dynamic dive angle */
       swimBubbleTimer.current += dt;
@@ -191,15 +195,18 @@ export const PufferFish: React.FC<PufferFishProps> = ({
 
       const swimBob = Math.sin(time * 8.0) * 0.04;
       currentY.current = THREE.MathUtils.lerp(currentY.current, swimBob, 10 * dt);
-      currentX.current = THREE.MathUtils.lerp(currentX.current, Math.cos(time * 8.0) * 0.03, 10 * dt);
+      currentX.current = THREE.MathUtils.lerp(
+        currentX.current,
+        Math.cos(time * 8.0) * 0.03,
+        10 * dt,
+      );
 
       currentRotY.current = THREE.MathUtils.lerp(currentRotY.current, 0.98, 8 * dt);
       currentRotX.current = THREE.MathUtils.lerp(currentRotX.current, 0.16, 8 * dt);
       currentRotZ.current = THREE.MathUtils.lerp(currentRotZ.current, 0.24, 8 * dt);
-
     } else {
       /* 6 ── reached corner: resting rotation (-0.78 rad) */
-      const bobAmp = animState.reducedMotion ? 0.01 : (animState.isAssistantOpen ? 0.025 : 0.06);
+      const bobAmp = animState.reducedMotion ? 0.01 : animState.isAssistantOpen ? 0.025 : 0.06;
       const bobY = Math.sin(time * 2.0) * bobAmp;
       currentY.current = THREE.MathUtils.lerp(currentY.current, bobY, 8 * dt);
       currentX.current = THREE.MathUtils.lerp(currentX.current, 0, 8 * dt);
@@ -215,26 +222,30 @@ export const PufferFish: React.FC<PufferFishProps> = ({
         currentRotY.current = THREE.MathUtils.lerp(
           currentRotY.current,
           baseY + lookX + swayY + spinAngle.current,
-          5 * dt
+          5 * dt,
         );
         currentRotX.current = THREE.MathUtils.lerp(
           currentRotX.current,
           lookY + swayX + spinTilt,
-          5 * dt
+          5 * dt,
         );
         currentRotZ.current = THREE.MathUtils.lerp(
           currentRotZ.current,
           Math.sin(time * 1.4) * 0.028 + spinTilt * 0.5,
-          6 * dt
+          6 * dt,
         );
 
         // Pupil tracking
         eyesRef.current?.setPupilOffset(
           THREE.MathUtils.clamp(pointer.x * 0.042, -0.05, 0.05),
-          pointer.y * 0.038
+          pointer.y * 0.038,
         );
       } else {
-        currentRotY.current = THREE.MathUtils.lerp(currentRotY.current, baseY + spinAngle.current, 5 * dt);
+        currentRotY.current = THREE.MathUtils.lerp(
+          currentRotY.current,
+          baseY + spinAngle.current,
+          5 * dt,
+        );
         currentRotX.current = THREE.MathUtils.lerp(currentRotX.current, spinTilt, 5 * dt);
         currentRotZ.current = THREE.MathUtils.lerp(currentRotZ.current, 0, 5 * dt);
         eyesRef.current?.setPupilOffset(-0.015, 0);
@@ -243,25 +254,52 @@ export const PufferFish: React.FC<PufferFishProps> = ({
 
     /* Apply transforms */
     rootGroupRef.current.position.set(currentX.current, currentY.current, 0);
-    rootGroupRef.current.rotation.set(currentRotX.current, currentRotY.current, currentRotZ.current);
+    rootGroupRef.current.rotation.set(
+      currentRotX.current,
+      currentRotY.current,
+      currentRotZ.current,
+    );
 
     /* Fin speed */
-    let spd = 1.0, amp = 1.0;
-    if (animState.isTransitioningToCorner) { spd = 3.4; amp = 1.8; }
-    else if (animState.isSwimmingDown) { spd = 1.6; amp = 1.2; }
-    else if (animState.isHovered) { spd = 1.8; amp = 1.3; }
-    if (animState.isAssistantOpen) { spd = 0.8; amp = 0.6; }
-    if (animState.reducedMotion) { spd = 0.4; amp = 0.3; }
+    let spd = 1.0,
+      amp = 1.0;
+    if (animState.isTransitioningToCorner) {
+      spd = 3.4;
+      amp = 1.8;
+    } else if (animState.isSwimmingDown) {
+      spd = 1.6;
+      amp = 1.2;
+    } else if (animState.isHovered) {
+      spd = 1.8;
+      amp = 1.3;
+    }
+    if (animState.isAssistantOpen) {
+      spd = 0.8;
+      amp = 0.6;
+    }
+    if (animState.reducedMotion) {
+      spd = 0.4;
+      amp = 0.3;
+    }
     finsRef.current?.animateFins(time, spd, amp);
   });
 
   return (
     <group
       ref={rootGroupRef}
-      onPointerDown={(e) => { e.stopPropagation(); handlePointerDown(); }}
-      onPointerUp={(e) => { e.stopPropagation(); handlePointerUp(); }}
+      onPointerDown={(e) => {
+        e.stopPropagation();
+        handlePointerDown();
+      }}
+      onPointerUp={(e) => {
+        e.stopPropagation();
+        handlePointerUp();
+      }}
       onPointerOut={handlePointerUp}
-      onClick={(e) => { e.stopPropagation(); handleClick(); }}
+      onClick={(e) => {
+        e.stopPropagation();
+        handleClick();
+      }}
     >
       <PufferBody puffProgress={visualPuff} />
       <PufferEyes ref={eyesRef} puffProgress={visualPuff} />

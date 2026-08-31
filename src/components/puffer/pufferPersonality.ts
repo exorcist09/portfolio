@@ -1,7 +1,7 @@
 /**
  * Curated personality constants & API client for Puffer
  * Adarsh's portfolio companion mascot.
- * 
+ *
  * Connected to Gemini 2.5 Flash via /api/puffer.
  */
 
@@ -31,10 +31,7 @@ export const SUGGESTED_QUESTIONS = [
 /**
  * Sends user prompt and recent conversation history to the /api/puffer backend.
  */
-export async function getPufferResponse(
-  query: string,
-  history: Message[] = []
-): Promise<string> {
+export async function getPufferResponse(query: string, history: Message[] = []): Promise<string> {
   const q = query.trim();
   if (!q) return "Say something first! 🐡";
 
