@@ -69,9 +69,9 @@ export async function getPufferResponse(query: string, history: Message[] = []):
     }
 
     const data = await res.json();
-    return data?.message || "I seem to have drifted a bit quiet. 🐡";
+    return data?.message || "I seem to have drifted a bit quiet.";
   } catch (err) {
     console.error("Puffer API error:", err);
-    return "Looks like I lost contact with the surface for a moment. Try again. 🐡";
+    return "Looks like I lost contact with the surface for a moment. Try again. ";
   }
 }

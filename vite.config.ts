@@ -1,13 +1,21 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
-import type { Plugin } from "vite";
+import { loadEnv, type Plugin } from "vite";
 
 function pufferDevApiPlugin(): Plugin {
   return {
     name: "puffer-dev-api",
     configureServer(server) {
+      const env = loadEnv(server.config.mode || "development", process.cwd(), "");
+      if (env.GEMINI_API_KEY && !process.env.GEMINI_API_KEY) {
+        process.env.GEMINI_API_KEY = env.GEMINI_API_KEY;
+      }
+
       server.middlewares.use(async (req, res, next) => {
         if (req.url?.split("?")[0] === "/api/puffer" && req.method === "POST") {
           try {
+            if (env.GEMINI_API_KEY && !process.env.GEMINI_API_KEY) {
+              process.env.GEMINI_API_KEY = env.GEMINI_API_KEY;
+            }
             const chunks: Uint8Array[] = [];
             for await (const chunk of req) {
               chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);

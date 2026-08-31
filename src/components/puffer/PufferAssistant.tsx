@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ArrowUp, Compass } from "lucide-react";
+import { X, Compass, CornerDownLeft } from "lucide-react";
 import {
   type Message,
   INITIAL_ASSISTANT_MESSAGE,
@@ -221,11 +221,11 @@ export function PufferAssistant({ isOpen, onClose }: PufferAssistantProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 z-[139] bg-black/65 backdrop-blur-sm sm:hidden pointer-events-auto"
+            className="fixed inset-0 z-[190] bg-black/65 backdrop-blur-sm sm:hidden pointer-events-auto"
           />
 
-          {/* Modal Container: Centered on mobile (< sm), bottom-right on desktop (sm:) */}
-          <div className="fixed inset-0 sm:inset-auto sm:bottom-24 sm:right-6 md:right-8 z-[140] flex items-center justify-center p-4 sm:p-0 pointer-events-none">
+          {/* Modal Container: Centered on mobile (< sm), bottom-right over corner on desktop (sm:) */}
+          <div className="fixed inset-0 sm:inset-auto sm:bottom-28 md:bottom-40 sm:right-6 md:right-8 z-[200] flex items-center justify-center p-4 sm:p-0 pointer-events-none">
             <div className="relative pointer-events-auto">
               {/* Close Button OUTSIDE the modal at the top right */}
               <button
@@ -243,7 +243,7 @@ export function PufferAssistant({ isOpen, onClose }: PufferAssistantProps) {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.88, y: 15 }}
                 transition={{ type: "spring", stiffness: 340, damping: 28 }}
-                className="w-full max-w-sm sm:max-w-none sm:w-[380px] md:w-[410px] h-[510px] max-h-[82vh] sm:max-h-[75vh] flex flex-col rounded-3xl border border-white/20 bg-background/90 sm:bg-background/85 shadow-[0_16px_48px_0_rgba(0,0,0,0.6)] backdrop-blur-2xl overflow-hidden"
+                className="w-full max-w-sm sm:max-w-none sm:w-[380px] md:w-[410px] h-[500px] max-h-[82vh] sm:max-h-[calc(100vh-160px)] flex flex-col rounded-3xl border border-white/20 bg-background/90 sm:bg-background/85 shadow-[0_16px_48px_0_rgba(0,0,0,0.6)] backdrop-blur-2xl overflow-hidden"
                 role="dialog"
                 aria-label="Puffer Assistant"
               >
@@ -328,7 +328,7 @@ export function PufferAssistant({ isOpen, onClose }: PufferAssistantProps) {
                 {/* Input Footer */}
                 <form
                   onSubmit={handleSubmit}
-                  className="p-3 border-t border-white/10 bg-white/[0.02] flex items-center gap-2"
+                  className="p-3 border-t border-white/10 bg-white/[0.02] flex items-center gap-2 relative z-10 pointer-events-auto"
                 >
                   <input
                     ref={inputRef}
@@ -343,7 +343,7 @@ export function PufferAssistant({ isOpen, onClose }: PufferAssistantProps) {
                     }}
                     placeholder="Ask about Adarsh..."
                     aria-label="Ask about Adarsh"
-                    className="flex-1 rounded-full bg-white/[0.06] border border-white/15 px-4 py-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/40 transition-all"
+                    className="flex-1 rounded-full bg-white/[0.06] border border-white/15 px-4 py-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/40 transition-all pointer-events-auto"
                   />
 
                   <button
@@ -352,13 +352,13 @@ export function PufferAssistant({ isOpen, onClose }: PufferAssistantProps) {
                     disabled={!inputVal.trim() || isTyping}
                     aria-label="Send message"
                     title="Send message (Enter)"
-                    className={`grid h-8 w-8 sm:h-9 sm:w-9 shrink-0 place-items-center rounded-full transition-all duration-200 shadow-md ${
+                    className={`grid h-8 w-8 sm:h-9 sm:w-9 shrink-0 place-items-center rounded-full transition-all duration-200 shadow-md relative z-20 ${
                       inputVal.trim() && !isTyping
-                        ? "bg-primary text-primary-foreground hover:scale-105 active:scale-95 cursor-pointer shadow-primary/30"
+                        ? "bg-primary text-primary-foreground hover:scale-105 active:scale-95 cursor-pointer shadow-primary/30 pointer-events-auto"
                         : "bg-white/10 text-muted-foreground opacity-40 cursor-not-allowed"
                     }`}
                   >
-                    <ArrowUp className="h-4 w-4 stroke-[2.5]" />
+                    <CornerDownLeft className="h-4 w-4 stroke-[2.2]" />
                   </button>
                 </form>
               </motion.div>

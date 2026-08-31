@@ -450,13 +450,13 @@ export function PufferCompanion({
                 }
               : isAssistantOpen
                 ? {
-                    top: isMobile ? "calc(100vh - 75px)" : "calc(100vh - 85px)",
-                    left: isMobile ? "calc(100vw - 75px)" : "calc(100vw - 85px)",
+                    top: isMobile ? "calc(100vh - 100px)" : "calc(100vh - 110px)",
+                    left: isMobile ? "calc(100vw - 100px)" : "calc(100vw - 110px)",
                     x: "-50%",
                     y: "-50%",
                     width: boxSize,
                     height: boxSize,
-                    zIndex: 150,
+                    zIndex: 120,
                   }
                 : {
                     top: isMobile ? "calc(100vh - 125px)" : "calc(100vh - 145px)",
@@ -499,14 +499,16 @@ export function PufferCompanion({
           {/* Interactive 3D Canvas Scene */}
           <div
             onPointerEnter={() => {
-              if (!isMobile) {
+              if (!isMobile && !isAssistantOpen) {
                 setIsHovered(true);
               }
             }}
             onPointerLeave={() => {
               if (!isMobile) setIsHovered(false);
             }}
-            className="relative h-full w-full pointer-events-auto cursor-pointer overflow-visible"
+            className={`relative h-full w-full overflow-visible ${
+              isAssistantOpen ? "pointer-events-none" : "pointer-events-auto cursor-pointer"
+            }`}
           >
             <PufferScene
               animState={animState}
