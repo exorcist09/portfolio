@@ -1,8 +1,8 @@
 /**
  * Curated personality constants & API client for Puffer
  * Adarsh's portfolio companion mascot.
- * 
- * Connected to Gemini 2.5 Flash via /api/puffer.
+ *
+ * Connected to Gemma (gemma-4-26b-a4b-it) via /api/puffer.
  */
 
 export interface Message {
@@ -31,10 +31,7 @@ export const SUGGESTED_QUESTIONS = [
 /**
  * Sends user prompt and recent conversation history to the /api/puffer backend.
  */
-export async function getPufferResponse(
-  query: string,
-  history: Message[] = []
-): Promise<string> {
+export async function getPufferResponse(query: string, history: Message[] = []): Promise<string> {
   const q = query.trim();
   if (!q) return "Say something first! 🐡";
 
@@ -72,9 +69,9 @@ export async function getPufferResponse(
     }
 
     const data = await res.json();
-    return data?.message || "I seem to have drifted a bit quiet. 🐡";
+    return data?.message || "I seem to have drifted a bit quiet.";
   } catch (err) {
     console.error("Puffer API error:", err);
-    return "Looks like I lost contact with the surface for a moment. Try again. 🐡";
+    return "Looks like I lost contact with the surface for a moment. Try again. ";
   }
 }

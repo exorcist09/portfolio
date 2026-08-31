@@ -9,16 +9,16 @@ interface SpikeDef {
 // 8 spikes defining the pufferfish crown, flanks, and belly
 const RAW_SPIKES: SpikeDef[] = [
   // ── Top Spikes ──
-  { pos: [0, 1.06, 0.28] },       // Top Front Crown
-  { pos: [0, 0.98, -0.38] },      // Top Mid Spine
-  { pos: [-0.68, 0.92, -0.02] },  // Top Left Flank
-  { pos: [0.68, 0.92, -0.02] },   // Top Right Flank
+  { pos: [0, 1.06, 0.28] }, // Top Front Crown
+  { pos: [0, 0.98, -0.38] }, // Top Mid Spine
+  { pos: [-0.68, 0.92, -0.02] }, // Top Left Flank
+  { pos: [0.68, 0.92, -0.02] }, // Top Right Flank
 
   // ── Bottom Spikes ──
   { pos: [0, -1.05, 0.38], color: "#fff0ba" }, // Front Belly Spike (Matching yellowish-crème belly!)
-  { pos: [0, -0.92, -0.38] },                  // Bottom Mid Spine
-  { pos: [-0.68, -0.92, -0.02] },              // Bottom Left Flank
-  { pos: [0.68, -0.92, -0.02] },               // Bottom Right Flank
+  { pos: [0, -0.92, -0.38] }, // Bottom Mid Spine
+  { pos: [-0.68, -0.92, -0.02] }, // Bottom Left Flank
+  { pos: [0.68, -0.92, -0.02] }, // Bottom Right Flank
 ];
 
 interface SpikeData {
@@ -47,7 +47,7 @@ export const PufferSpikes: React.FC<PufferSpikesProps> = ({ puffProgress }) => {
   }, []);
 
   const ext = 1.0 + puffProgress * 0.14;
-  const sc  = 0.88 + puffProgress * 0.55;
+  const sc = 0.88 + puffProgress * 0.55;
 
   return (
     <group>

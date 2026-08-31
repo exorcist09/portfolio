@@ -4,7 +4,10 @@ export type Mode = "dark" | "light";
 export type Accent = "darkgreen" | "blue" | "cyan" | "violet";
 export type CursorMode = "normal" | "magnifying" | "trail" | "invert" | "follower";
 
-export const ACCENTS: Record<Accent, { name: string; swatch: string; primary: string; primaryFg: string; ring: string; glow: string }> = {
+export const ACCENTS: Record<
+  Accent,
+  { name: string; swatch: string; primary: string; primaryFg: string; ring: string; glow: string }
+> = {
   darkgreen: {
     name: "Light Green",
     swatch: "#4ade80",

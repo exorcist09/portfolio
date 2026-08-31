@@ -1,13 +1,21 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
-import type { Plugin } from "vite";
+import { loadEnv, type Plugin } from "vite";
 
 function pufferDevApiPlugin(): Plugin {
   return {
     name: "puffer-dev-api",
     configureServer(server) {
+      const env = loadEnv(server.config.mode || "development", process.cwd(), "");
+      if (env.GEMINI_API_KEY && !process.env.GEMINI_API_KEY) {
+        process.env.GEMINI_API_KEY = env.GEMINI_API_KEY;
+      }
+
       server.middlewares.use(async (req, res, next) => {
         if (req.url?.split("?")[0] === "/api/puffer" && req.method === "POST") {
           try {
+            if (env.GEMINI_API_KEY && !process.env.GEMINI_API_KEY) {
+              process.env.GEMINI_API_KEY = env.GEMINI_API_KEY;
+            }
             const chunks: Uint8Array[] = [];
             for await (const chunk of req) {
               chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
@@ -19,15 +27,17 @@ function pufferDevApiPlugin(): Plugin {
               body: bodyBuffer.length > 0 ? bodyBuffer : undefined,
             });
 
-            const { handlePufferRequest } = await import("./src/lib/puffer/pufferEngine");
+            const { handlePufferRequest } = await import("./api/puffer");
             const response = await handlePufferRequest(standardReq);
 
-            res.statusCode = response.status;
-            response.headers.forEach((value, key) => {
-              res.setHeader(key, value);
-            });
-            const responseBody = await response.text();
-            res.end(responseBody);
+            if (response instanceof Response) {
+              res.statusCode = response.status;
+              response.headers.forEach((value, key) => {
+                res.setHeader(key, value);
+              });
+              const responseBody = await response.text();
+              res.end(responseBody);
+            }
           } catch (err) {
             console.error("Vite Dev Puffer API error:", err);
             res.statusCode = 500;

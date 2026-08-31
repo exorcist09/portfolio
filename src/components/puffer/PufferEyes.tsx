@@ -53,38 +53,34 @@ const EyeMesh: React.FC<EyeProps> = ({ position, rotation, pupilRef }) => (
   </group>
 );
 
-export const PufferEyes = forwardRef<PufferEyesHandle, PufferEyesProps>(
-  ({ puffProgress }, ref) => {
-    const leftPupilRef  = useRef<THREE.Group>(null);
-    const rightPupilRef = useRef<THREE.Group>(null);
+export const PufferEyes = forwardRef<PufferEyesHandle, PufferEyesProps>(({ puffProgress }, ref) => {
+  const leftPupilRef = useRef<THREE.Group>(null);
+  const rightPupilRef = useRef<THREE.Group>(null);
 
-    useImperativeHandle(ref, () => ({
-      setPupilOffset: (ox: number, oy: number) => {
-        const cx = THREE.MathUtils.clamp(ox, -0.06, 0.06);
-        const cy = THREE.MathUtils.clamp(oy, -0.05, 0.05);
-        if (leftPupilRef.current)  { leftPupilRef.current.position.x = cx; leftPupilRef.current.position.y = cy; }
-        if (rightPupilRef.current) { rightPupilRef.current.position.x = cx; rightPupilRef.current.position.y = cy; }
-      },
-    }));
+  useImperativeHandle(ref, () => ({
+    setPupilOffset: (ox: number, oy: number) => {
+      const cx = THREE.MathUtils.clamp(ox, -0.06, 0.06);
+      const cy = THREE.MathUtils.clamp(oy, -0.05, 0.05);
+      if (leftPupilRef.current) {
+        leftPupilRef.current.position.x = cx;
+        leftPupilRef.current.position.y = cy;
+      }
+      if (rightPupilRef.current) {
+        rightPupilRef.current.position.x = cx;
+        rightPupilRef.current.position.y = cy;
+      }
+    },
+  }));
 
-    const es = 1.0 + puffProgress * 0.08;
+  const es = 1.0 + puffProgress * 0.08;
 
-    return (
-      <group scale={es}>
-        {/* Sits naturally on the broader chubby face */}
-        <EyeMesh
-          position={[-0.46, 0.25, 0.88]}
-          rotation={[0.02, -0.15, 0]}
-          pupilRef={leftPupilRef}
-        />
-        <EyeMesh
-          position={[0.46, 0.25, 0.88]}
-          rotation={[0.02, 0.15, 0]}
-          pupilRef={rightPupilRef}
-        />
-      </group>
-    );
-  }
-);
+  return (
+    <group scale={es}>
+      {/* Sits naturally on the broader chubby face */}
+      <EyeMesh position={[-0.46, 0.25, 0.88]} rotation={[0.02, -0.15, 0]} pupilRef={leftPupilRef} />
+      <EyeMesh position={[0.46, 0.25, 0.88]} rotation={[0.02, 0.15, 0]} pupilRef={rightPupilRef} />
+    </group>
+  );
+});
 
 PufferEyes.displayName = "PufferEyes";

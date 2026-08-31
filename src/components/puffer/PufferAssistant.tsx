@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ArrowUp, Compass } from "lucide-react";
+import { X, Compass, CornerDownLeft } from "lucide-react";
 import {
   type Message,
   INITIAL_ASSISTANT_MESSAGE,
@@ -49,13 +49,11 @@ function MarkdownMessage({ text, isPuffer }: { text: string; isPuffer: boolean }
           <strong
             key={key++}
             className={
-              isPuffer
-                ? "font-semibold text-foreground"
-                : "font-bold text-primary-foreground"
+              isPuffer ? "font-semibold text-foreground" : "font-bold text-primary-foreground"
             }
           >
             {match[2]}
-          </strong>
+          </strong>,
         );
       } else if (match[3] && match[4]) {
         // [title](url)
@@ -70,7 +68,7 @@ function MarkdownMessage({ text, isPuffer }: { text: string; isPuffer: boolean }
             }`}
           >
             {match[3]}
-          </a>
+          </a>,
         );
       } else if (match[5]) {
         // raw url
@@ -85,7 +83,7 @@ function MarkdownMessage({ text, isPuffer }: { text: string; isPuffer: boolean }
             }`}
           >
             {match[5]}
-          </a>
+          </a>,
         );
       }
       lastIndex = regex.lastIndex;
@@ -223,11 +221,11 @@ export function PufferAssistant({ isOpen, onClose }: PufferAssistantProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 z-[139] bg-black/65 backdrop-blur-sm sm:hidden pointer-events-auto"
+            className="fixed inset-0 z-[190] bg-black/65 backdrop-blur-sm sm:hidden pointer-events-auto"
           />
 
-          {/* Modal Container: Centered on mobile (< sm), bottom-right on desktop (sm:) */}
-          <div className="fixed inset-0 sm:inset-auto sm:bottom-24 sm:right-6 md:right-8 z-[140] flex items-center justify-center p-4 sm:p-0 pointer-events-none">
+          {/* Modal Container: Centered on mobile (< sm), bottom-right over corner on desktop (sm:) */}
+          <div className="fixed inset-0 sm:inset-auto sm:bottom-28 md:bottom-40 sm:right-6 md:right-8 z-[200] flex items-center justify-center p-4 sm:p-0 pointer-events-none">
             <div className="relative pointer-events-auto">
               {/* Close Button OUTSIDE the modal at the top right */}
               <button
@@ -245,130 +243,129 @@ export function PufferAssistant({ isOpen, onClose }: PufferAssistantProps) {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.88, y: 15 }}
                 transition={{ type: "spring", stiffness: 340, damping: 28 }}
-                className="w-full max-w-sm sm:max-w-none sm:w-[380px] md:w-[410px] h-[510px] max-h-[82vh] sm:max-h-[75vh] flex flex-col rounded-3xl border border-white/20 bg-background/90 sm:bg-background/85 shadow-[0_16px_48px_0_rgba(0,0,0,0.6)] backdrop-blur-2xl overflow-hidden"
+                className="w-full max-w-sm sm:max-w-none sm:w-[380px] md:w-[410px] h-[500px] max-h-[82vh] sm:max-h-[calc(100vh-160px)] flex flex-col rounded-3xl border border-white/20 bg-background/90 sm:bg-background/85 shadow-[0_16px_48px_0_rgba(0,0,0,0.6)] backdrop-blur-2xl overflow-hidden"
                 role="dialog"
                 aria-label="Puffer Assistant"
               >
-
-              {/* Header */}
-              <div className="flex items-center px-5 py-3.5 border-b border-white/10 bg-white/[0.02]">
-                <div className="flex items-center gap-3">
-                  {/* Uncolored, neutral avatar icon */}
-                  <div className="relative grid h-8 w-8 place-items-center rounded-full bg-white/[0.08] text-foreground border border-white/15 shadow-inner">
-                    <PufferAvatarIcon className="h-4 w-4 -scale-x-100 opacity-90" />
+                {/* Header */}
+                <div className="flex items-center px-5 py-3.5 border-b border-white/10 bg-white/[0.02]">
+                  <div className="flex items-center gap-3">
+                    {/* Uncolored, neutral avatar icon */}
+                    <div className="relative grid h-8 w-8 place-items-center rounded-full bg-white/[0.08] text-foreground border border-white/15 shadow-inner">
+                      <PufferAvatarIcon className="h-4 w-4 -scale-x-100 opacity-90" />
+                    </div>
+                    <h3 className="font-hero text-sm font-semibold tracking-tight text-foreground">
+                      Puffer
+                    </h3>
                   </div>
-                  <h3 className="font-hero text-sm font-semibold tracking-tight text-foreground">
-                    Puffer
-                  </h3>
                 </div>
-              </div>
 
-              {/* Messages Scroll Area */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-4 text-xs leading-relaxed">
-                {messages.map((m) => {
-                  const isPuffer = m.sender === "puffer";
-                  return (
-                    <div
-                      key={m.id}
-                      className={`flex items-start gap-2.5 ${
-                        isPuffer ? "justify-start" : "justify-end"
-                      }`}
-                    >
-                      {isPuffer && (
-                        <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white/[0.08] text-foreground border border-white/15 mt-0.5">
-                          <PufferAvatarIcon className="h-3.5 w-3.5 -scale-x-100 opacity-80" />
-                        </div>
-                      )}
-
+                {/* Messages Scroll Area */}
+                <div className="flex-1 overflow-y-auto p-4 space-y-4 text-xs leading-relaxed">
+                  {messages.map((m) => {
+                    const isPuffer = m.sender === "puffer";
+                    return (
                       <div
-                        className={`rounded-2xl px-4 py-2.5 max-w-[84%] ${
-                          isPuffer
-                            ? "glass bg-white/[0.04] text-foreground border border-white/10 shadow-sm"
-                            : "bg-primary text-primary-foreground font-medium shadow-md"
+                        key={m.id}
+                        className={`flex items-start gap-2.5 ${
+                          isPuffer ? "justify-start" : "justify-end"
                         }`}
                       >
-                        <MarkdownMessage text={m.text} isPuffer={isPuffer} />
+                        {isPuffer && (
+                          <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white/[0.08] text-foreground border border-white/15 mt-0.5">
+                            <PufferAvatarIcon className="h-3.5 w-3.5 -scale-x-100 opacity-80" />
+                          </div>
+                        )}
+
+                        <div
+                          className={`rounded-2xl px-4 py-2.5 max-w-[84%] ${
+                            isPuffer
+                              ? "glass bg-white/[0.04] text-foreground border border-white/10 shadow-sm"
+                              : "bg-primary text-primary-foreground font-medium shadow-md"
+                          }`}
+                        >
+                          <MarkdownMessage text={m.text} isPuffer={isPuffer} />
+                        </div>
+                      </div>
+                    );
+                  })}
+
+                  {/* Suggested Questions Chips */}
+                  {messages.length === 1 && !isTyping && (
+                    <div className="pt-2">
+                      <p className="mb-2 text-[10px] uppercase tracking-wider text-muted-foreground flex items-center gap-1.5 font-medium">
+                        <Compass className="h-3 w-3 text-primary" /> Suggested Questions
+                      </p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {SUGGESTED_QUESTIONS.map((q) => (
+                          <button
+                            key={q}
+                            onClick={() => handleSendMessage(q)}
+                            className="glass rounded-full px-3 py-1.5 text-[11px] text-foreground/90 border border-white/15 bg-white/[0.03] transition-all hover:bg-primary/15 hover:border-primary/40 hover:text-primary active:scale-95 text-left cursor-pointer"
+                          >
+                            {q}
+                          </button>
+                        ))}
                       </div>
                     </div>
-                  );
-                })}
+                  )}
 
-                {/* Suggested Questions Chips */}
-                {messages.length === 1 && !isTyping && (
-                  <div className="pt-2">
-                    <p className="mb-2 text-[10px] uppercase tracking-wider text-muted-foreground flex items-center gap-1.5 font-medium">
-                      <Compass className="h-3 w-3 text-primary" /> Suggested Questions
-                    </p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {SUGGESTED_QUESTIONS.map((q) => (
-                        <button
-                          key={q}
-                          onClick={() => handleSendMessage(q)}
-                          className="glass rounded-full px-3 py-1.5 text-[11px] text-foreground/90 border border-white/15 bg-white/[0.03] transition-all hover:bg-primary/15 hover:border-primary/40 hover:text-primary active:scale-95 text-left cursor-pointer"
-                        >
-                          {q}
-                        </button>
-                      ))}
+                  {/* Typing / Thinking Indicator */}
+                  {isTyping && (
+                    <div className="flex items-center gap-2 text-muted-foreground pl-8">
+                      <span className="text-[11px] font-medium">Puffer is thinking</span>
+                      <span className="flex gap-1 items-center">
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce [animation-delay:-0.3s]" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce [animation-delay:-0.15s]" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce" />
+                      </span>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {/* Typing / Thinking Indicator */}
-                {isTyping && (
-                  <div className="flex items-center gap-2 text-muted-foreground pl-8">
-                    <span className="text-[11px] font-medium">Puffer is thinking</span>
-                    <span className="flex gap-1 items-center">
-                      <span className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce [animation-delay:-0.3s]" />
-                      <span className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce [animation-delay:-0.15s]" />
-                      <span className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce" />
-                    </span>
-                  </div>
-                )}
+                  <div ref={messagesEndRef} />
+                </div>
 
-                <div ref={messagesEndRef} />
-              </div>
-
-              {/* Input Footer */}
-              <form
-                onSubmit={handleSubmit}
-                className="p-3 border-t border-white/10 bg-white/[0.02] flex items-center gap-2"
-              >
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={inputVal}
-                  onChange={(e) => setInputVal(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      handleSendMessage(inputVal);
-                    }
-                  }}
-                  placeholder="Ask about Adarsh..."
-                  aria-label="Ask about Adarsh"
-                  className="flex-1 rounded-full bg-white/[0.06] border border-white/15 px-4 py-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/40 transition-all"
-                />
-
-                <button
-                  type="submit"
-                  onClick={handleSubmit}
-                  disabled={!inputVal.trim() || isTyping}
-                  aria-label="Send message"
-                  title="Send message (Enter)"
-                  className={`grid h-8 w-8 sm:h-9 sm:w-9 shrink-0 place-items-center rounded-full transition-all duration-200 shadow-md ${
-                    inputVal.trim() && !isTyping
-                      ? "bg-primary text-primary-foreground hover:scale-105 active:scale-95 cursor-pointer shadow-primary/30"
-                      : "bg-white/10 text-muted-foreground opacity-40 cursor-not-allowed"
-                  }`}
+                {/* Input Footer */}
+                <form
+                  onSubmit={handleSubmit}
+                  className="p-3 border-t border-white/10 bg-white/[0.02] flex items-center gap-2 relative z-10 pointer-events-auto"
                 >
-                  <ArrowUp className="h-4 w-4 stroke-[2.5]" />
-                </button>
-              </form>
-            </motion.div>
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={inputVal}
+                    onChange={(e) => setInputVal(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        handleSendMessage(inputVal);
+                      }
+                    }}
+                    placeholder="Ask about Adarsh..."
+                    aria-label="Ask about Adarsh"
+                    className="flex-1 rounded-full bg-white/[0.06] border border-white/15 px-4 py-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/40 transition-all pointer-events-auto"
+                  />
+
+                  <button
+                    type="submit"
+                    onClick={handleSubmit}
+                    disabled={!inputVal.trim() || isTyping}
+                    aria-label="Send message"
+                    title="Send message (Enter)"
+                    className={`grid h-8 w-8 sm:h-9 sm:w-9 shrink-0 place-items-center rounded-full transition-all duration-200 shadow-md relative z-20 ${
+                      inputVal.trim() && !isTyping
+                        ? "bg-primary text-primary-foreground hover:scale-105 active:scale-95 cursor-pointer shadow-primary/30 pointer-events-auto"
+                        : "bg-white/10 text-muted-foreground opacity-40 cursor-not-allowed"
+                    }`}
+                  >
+                    <CornerDownLeft className="h-4 w-4 stroke-[2.2]" />
+                  </button>
+                </form>
+              </motion.div>
+            </div>
           </div>
-        </div>
-      </>
-    )}
-  </AnimatePresence>
-);
+        </>
+      )}
+    </AnimatePresence>
+  );
 }

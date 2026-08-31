@@ -6,16 +6,27 @@ const MAX_BUBBLES = 24;
 
 export interface BubbleData {
   active: boolean;
-  x: number; y: number; z: number;
-  vx: number; vy: number; vz: number;
-  scale: number; baseScale: number;
-  life: number; maxLife: number;
-  wobbleSpeed: number; wobbleOffset: number;
+  x: number;
+  y: number;
+  z: number;
+  vx: number;
+  vy: number;
+  vz: number;
+  scale: number;
+  baseScale: number;
+  life: number;
+  maxLife: number;
+  wobbleSpeed: number;
+  wobbleOffset: number;
 }
 
 export type BubbleTrigger = (
-  x?: number, y?: number, z?: number,
-  count?: number, spread?: number, speed?: number
+  x?: number,
+  y?: number,
+  z?: number,
+  count?: number,
+  spread?: number,
+  speed?: number,
 ) => void;
 
 interface PufferBubblesProps {
@@ -29,12 +40,19 @@ export const PufferBubbles: React.FC<PufferBubblesProps> = ({ triggerRef }) => {
   const bubbles = useRef<BubbleData[]>(
     Array.from({ length: MAX_BUBBLES }, () => ({
       active: false,
-      x: 0, y: 0, z: 0,
-      vx: 0, vy: 0, vz: 0,
-      scale: 0, baseScale: 0.12,
-      life: 0, maxLife: 1.4,
-      wobbleSpeed: 3, wobbleOffset: 0,
-    }))
+      x: 0,
+      y: 0,
+      z: 0,
+      vx: 0,
+      vy: 0,
+      vz: 0,
+      scale: 0,
+      baseScale: 0.12,
+      life: 0,
+      maxLife: 1.4,
+      wobbleSpeed: 3,
+      wobbleOffset: 0,
+    })),
   );
 
   const spawnBubbles: BubbleTrigger = useCallback(
@@ -63,12 +81,14 @@ export const PufferBubbles: React.FC<PufferBubblesProps> = ({ triggerRef }) => {
         }
       }
     },
-    []
+    [],
   );
 
   useEffect(() => {
     triggerRef.current = spawnBubbles;
-    return () => { triggerRef.current = null; };
+    return () => {
+      triggerRef.current = null;
+    };
   }, [spawnBubbles, triggerRef]);
 
   useFrame((state, delta) => {
@@ -117,11 +137,7 @@ export const PufferBubbles: React.FC<PufferBubblesProps> = ({ triggerRef }) => {
   });
 
   return (
-    <instancedMesh
-      ref={meshRef}
-      args={[undefined, undefined, MAX_BUBBLES]}
-      frustumCulled={false}
-    >
+    <instancedMesh ref={meshRef} args={[undefined, undefined, MAX_BUBBLES]} frustumCulled={false}>
       <sphereGeometry args={[1, 16, 16]} />
       <meshStandardMaterial
         color="#0284c7"

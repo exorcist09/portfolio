@@ -11,17 +11,16 @@ type Tech = {
 };
 
 const ApiIcon = ({ className, color }: { className?: string; color?: string }) => (
-  <div className={`flex items-center justify-center font-black text-[10px] ${className}`} style={{ color }}>
+  <div
+    className={`flex items-center justify-center font-black text-[10px] ${className}`}
+    style={{ color }}
+  >
     API
   </div>
 );
 
 const BearIcon = ({ className, color }: { className?: string; color?: string }) => (
-  <svg
-    viewBox="0 0 24 24"
-    className={className}
-    fill={color || "currentColor"}
-  >
+  <svg viewBox="0 0 24 24" className={className} fill={color || "currentColor"}>
     <circle cx="6" cy="7" r="3.2" />
     <circle cx="18" cy="7" r="3.2" />
     <circle cx="12" cy="13" r="7.5" />
@@ -110,7 +109,11 @@ const groups: { label: string; items: Tech[] }[] = [
 
 function Pill({ t }: { t: Tech }) {
   const whiteUrl = `https://cdn.simpleicons.org/${t.slug}/ffffff`;
-  const colorUrl = t.colorUrlOverride ? t.colorUrlOverride : t.alwaysWhite ? whiteUrl : `https://cdn.simpleicons.org/${t.slug}`;
+  const colorUrl = t.colorUrlOverride
+    ? t.colorUrlOverride
+    : t.alwaysWhite
+      ? whiteUrl
+      : `https://cdn.simpleicons.org/${t.slug}`;
 
   return (
     <div className="glass group relative flex items-center gap-2 rounded-md px-2.5 py-1.5 text-xs transition hover:-translate-y-0.5">
@@ -118,19 +121,38 @@ function Pill({ t }: { t: Tech }) {
         {t.icon ? (
           <>
             <t.icon className="h-3.5 w-3.5 transition group-hover:opacity-0 text-foreground" />
-            <t.icon className="absolute inset-0 h-3.5 w-3.5 opacity-0 transition group-hover:opacity-100 text-foreground" color={t.alwaysWhite ? "currentColor" : (t.color || "currentColor")} />
+            <t.icon
+              className="absolute inset-0 h-3.5 w-3.5 opacity-0 transition group-hover:opacity-100 text-foreground"
+              color={t.alwaysWhite ? "currentColor" : t.color || "currentColor"}
+            />
           </>
         ) : (
           <>
-            <img src={whiteUrl} alt="" className="h-3.5 w-3.5 transition group-hover:opacity-0 invert dark:invert-0" loading="lazy" />
-            <img src={colorUrl} alt="" className={`absolute inset-0 h-3.5 w-3.5 opacity-0 transition group-hover:opacity-100 ${t.alwaysWhite ? 'invert dark:invert-0' : ''}`} loading="lazy" />
+            <img
+              src={whiteUrl}
+              alt=""
+              className="h-3.5 w-3.5 transition group-hover:opacity-0 invert dark:invert-0"
+              loading="lazy"
+            />
+            <img
+              src={colorUrl}
+              alt=""
+              className={`absolute inset-0 h-3.5 w-3.5 opacity-0 transition group-hover:opacity-100 ${t.alwaysWhite ? "invert dark:invert-0" : ""}`}
+              loading="lazy"
+            />
           </>
         )}
       </span>
-      <span className="text-foreground/80 transition group-hover:text-foreground whitespace-nowrap">{t.name}</span>
+      <span className="text-foreground/80 transition group-hover:text-foreground whitespace-nowrap">
+        {t.name}
+      </span>
       <span
         className="pointer-events-none absolute inset-0 rounded-md opacity-0 transition group-hover:opacity-100"
-        style={{ boxShadow: t.alwaysWhite ? `0 0 24px -6px color-mix(in oklab, var(--foreground) 40%, transparent)` : `0 0 24px -6px ${t.color || '#ffffff'}66` }}
+        style={{
+          boxShadow: t.alwaysWhite
+            ? `0 0 24px -6px color-mix(in oklab, var(--foreground) 40%, transparent)`
+            : `0 0 24px -6px ${t.color || "#ffffff"}66`,
+        }}
       />
     </div>
   );
@@ -140,8 +162,14 @@ export function TechStack() {
   return (
     <section id="about" className="relative overflow-hidden px-6 py-32 z-0">
       {/* Center gradient */}
-      <div aria-hidden className="pointer-events-none absolute left-1/2 top-[60%] -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full blur-3xl opacity-40 -z-10"
-        style={{ background: "radial-gradient(circle, color-mix(in oklab, var(--primary) 30%, transparent), transparent 70%)" }} />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-[60%] -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full blur-3xl opacity-40 -z-10"
+        style={{
+          background:
+            "radial-gradient(circle, color-mix(in oklab, var(--primary) 30%, transparent), transparent 70%)",
+        }}
+      />
 
       <div className="relative mx-auto max-w-3xl text-center">
         <p className="mb-3 text-xs tracking-widest text-muted-foreground">— TECH —</p>
@@ -154,8 +182,10 @@ export function TechStack() {
         <div className="mt-12 hidden md:block space-y-5">
           {groups.map((g) => (
             <div key={g.label} className="flex flex-wrap items-center justify-center gap-2">
-              <span className="mr-1 text-[10px] uppercase tracking-widest text-muted-foreground">{g.label}</span>
-              {g.items.map((t) => (
+              <span className="mr-1 text-[10px] uppercase tracking-widest text-muted-foreground">
+                {g.label}
+              </span>
+              {g.items.map((t) =>
                 t.name === "Agentic AI" ? (
                   <span key={g.label + t.name} className="contents">
                     <div className="w-full" />
@@ -163,8 +193,8 @@ export function TechStack() {
                   </span>
                 ) : (
                   <Pill key={g.label + t.name} t={t} />
-                )
-              ))}
+                ),
+              )}
             </div>
           ))}
         </div>
@@ -175,7 +205,9 @@ export function TechStack() {
             const direction = groupIndex % 2 === 0 ? ["0%", "-50%"] : ["-50%", "0%"];
             return (
               <div key={g.label} className="flex flex-col items-center">
-                <span className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">{g.label}</span>
+                <span className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+                  {g.label}
+                </span>
                 <div className="relative flex w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
                   <motion.div
                     className="flex w-max shrink-0 gap-3 px-1.5 hover:[animation-play-state:paused]"
