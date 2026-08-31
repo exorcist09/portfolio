@@ -26,12 +26,12 @@ export function PufferMessage({
       onClick={onDismiss}
       role="status"
       aria-live="polite"
-      className="absolute -top-16 right-2 sm:right-6 z-50 cursor-pointer pointer-events-auto select-none max-w-[280px] sm:max-w-xs"
+      className="absolute -top-6 sm:-top-7 left-1/2 -translate-x-1/2 z-50 cursor-pointer pointer-events-auto select-none max-w-[260px] sm:max-w-[280px] w-max"
     >
-      <div className="relative rounded-2xl bg-foreground/95 px-4 py-2.5 text-xs font-medium text-background shadow-2xl backdrop-blur-md border border-white/20 leading-snug">
+      <div className="relative rounded-2xl bg-foreground/95 px-3.5 py-2 text-xs font-medium text-background shadow-2xl backdrop-blur-md border border-white/20 leading-snug min-w-[44px] flex items-center justify-center text-center">
         <span>{message}</span>
-        {/* Speech Bubble Tail pointing down towards Puffer */}
-        <div className="absolute -bottom-1.5 right-6 h-3 w-3 rotate-45 bg-foreground/95 border-b border-r border-white/20" />
+        {/* Speech Bubble Tail pointing down directly to Puffer in center */}
+        <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 h-3 w-3 rotate-45 bg-foreground/95 border-b border-r border-white/20" />
       </div>
     </motion.div>
   );
