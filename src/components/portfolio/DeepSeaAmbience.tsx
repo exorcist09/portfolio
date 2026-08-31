@@ -14,10 +14,14 @@ export function DeepSeaAmbience() {
         style={{ animation: "causticSway 18s ease-in-out 3s infinite alternate-reverse" }}
       />
 
+      {/* ── Soft Peripheral Deep-Sea Blur Vignettes ── */}
+      <div className="absolute inset-y-0 left-0 w-28 sm:w-56 pointer-events-none bg-gradient-to-r from-background/40 via-background/10 to-transparent backdrop-blur-[2px] -z-10" />
+      <div className="absolute inset-y-0 right-0 w-28 sm:w-56 pointer-events-none bg-gradient-to-l from-background/40 via-background/10 to-transparent backdrop-blur-[2px] -z-10" />
+
       {/* ═════════════════════════════════════════════════════════════════════
           LEFT DEEP SEA MARGIN
          ═════════════════════════════════════════════════════════════════════ */}
-      <div className="absolute inset-y-0 left-0 w-24 sm:w-44 opacity-30 transition-opacity duration-700">
+      <div className="absolute inset-y-0 left-0 w-24 sm:w-44 opacity-35 backdrop-blur-[1px] blur-[0.4px] transition-opacity duration-700">
 
         {/* 1. Bioluminescent Anglerfish with Glowing Lure */}
         <div
@@ -105,7 +109,7 @@ export function DeepSeaAmbience() {
       {/* ═════════════════════════════════════════════════════════════════════
           RIGHT DEEP SEA MARGIN
          ═════════════════════════════════════════════════════════════════════ */}
-      <div className="absolute inset-y-0 right-0 w-24 sm:w-44 opacity-30 transition-opacity duration-700">
+      <div className="absolute inset-y-0 right-0 w-24 sm:w-44 opacity-35 backdrop-blur-[1px] blur-[0.4px] transition-opacity duration-700">
 
         {/* 1. Graceful Deep-Sea Manta / Stingray Glide */}
         <div
