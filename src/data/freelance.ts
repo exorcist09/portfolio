@@ -17,7 +17,7 @@ export interface FreelanceData {
 
 export const freelanceData: FreelanceData = {
   status: "available",
-  statusText: "Available for select freelance contracts & advisory",
+  statusText: "Available for select freelance contracts ",
   tagline: "from concept to production-grade deployment",
   description:
     "Let's work together and build products from MVP to Scale.",

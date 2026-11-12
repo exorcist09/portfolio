@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Github } from "lucide-react";
 import { projects } from "@/data/projects";
 import FolderCard from "./FolderCard";
 
@@ -46,7 +46,7 @@ export default function Work() {
               href={project.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group block rounded-2xl border border-white/[0.08] bg-[#0E0E0E] hover:bg-[#151515] hover:border-white/20 p-5 transition-all duration-200 select-none shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F5A623]"
+              className="group block rounded-2xl border border-white/[0.08] bg-[#0E0E0E] hover:bg-[#151515] hover:border-white/20 p-5 transition-all duration-200 select-none shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EA580C]"
             >
               <div className="flex items-start justify-between gap-4">
                 {/* Left side: Name, description, and tech stack */}
@@ -76,9 +76,13 @@ export default function Work() {
                 </div>
 
                 {/* Right side: Arrow link button */}
+                 <div className="w-8 h-8 rounded-full border border-white/10 bg-white/[0.04] flex items-center justify-center text-[#8A8A85] group-hover:text-white group-hover:border-white/30 group-hover:bg-white/[0.1] transition-all shrink-0">
+                  <Github className="w-4 h-4" />
+                </div>
                 <div className="w-8 h-8 rounded-full border border-white/10 bg-white/[0.04] flex items-center justify-center text-[#8A8A85] group-hover:text-white group-hover:border-white/30 group-hover:bg-white/[0.1] transition-all shrink-0">
                   <ArrowUpRight className="w-4 h-4" />
                 </div>
+                
               </div>
             </a>
           ))}
@@ -89,7 +93,7 @@ export default function Work() {
       <div className="mt-8 text-center select-none">
         <button
           type="button"
-          className="font-handwriting text-xl sm:text-2xl text-[#F5A623] hover:text-amber-400 transition-colors cursor-pointer select-none"
+          className="font-handwriting text-xl sm:text-2xl text-[#EA580C] hover:text-orange-400 transition-colors cursor-pointer select-none"
         >
           + more ..
         </button>

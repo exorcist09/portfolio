@@ -4,10 +4,11 @@ export interface ExperienceItem {
   role: string;
   period: string;
   startYear: number;
-  endYear: number; // 2027 is 'present'
-  lane: number; // Row lane for timeline view
+  endYear: number;
+  lane: number;
   active?: boolean;
   isTileOnly?: boolean;
+  image?: string; // Optional custom logo image URL (e.g. /my-logo.png)
   description: string;
   bullets?: string[];
   logoText: string;
@@ -19,35 +20,35 @@ export const experiences: ExperienceItem[] = [
   {
     id: "skyclad",
     company: "Skyclad Ventures",
-    role: "Software Engineering Intern",
-    period: "dec 2025 to present",
+    role: "Software Engineer Intern",
+    period: "Dec 2025 — Present",
     startYear: 2025.12,
     endYear: 2027.0,
     lane: 1,
     active: true,
-    description: "making fixed income investing feel simple and trustworthy.",
+    description: "Scalable backend engineering and product development.",
     bullets: [
-      "design across core investing journeys for a fintech trusted with real savings.",
-      "recent work is under NDA, happy to walk through it on a call.",
+      "Building scalable backend services and high-concurrency architecture.",
+      "Refining core product features and distributed system infrastructure.",
     ],
-    logoText: "WW",
+    logoText: "SV",
     logoBg: "#0F281E",
     logoColor: "#10B981",
   },
   {
     id: "bloop",
     company: "Bloop",
-    role: "Software Engineering Intern",
-    period: "jun 2023 to sep 2025",
-    startYear: 2023.4,
-    endYear: 2025.7,
+    role: "Software Engineer Intern",
+    period: "June 2025 — Aug 2025",
+    startYear: 2025.5,
+    endYear: 2025.67,
     lane: 1,
-    description: "crafted international travel booking & discover experiences for 50+ global hubs.",
+    description: "Software engineering, features, and system reliability.",
     bullets: [
-      "optimized high-conversion checkout flows across iOS and mobile web.",
-      "spearheaded local exploration feed and real-time tour booking interfaces.",
+      "Engineered performant features across mobile web and microservices.",
+      "Collaborated on system reliability, state management, and user experience.",
     ],
-    logoText: "hd",
+    logoText: "BL",
     logoBg: "#2A124D",
     logoColor: "#A855F7",
   },
@@ -55,32 +56,35 @@ export const experiences: ExperienceItem[] = [
     id: "meteorite",
     company: "Meteorite",
     role: "Frontend Developer Intern",
-    period: "jul 2022 to jun 2023",
-    startYear: 2022.5,
-    endYear: 2023.4,
+    period: "Jan 2025 — Feb 2025",
+    startYear: 2025.08,
+    endYear: 2025.17,
     lane: 1,
-    description: "designed financial education modules and video-first interactive learning.",
+    description: "Frontend development, responsive user interfaces, and component architectures.",
     bullets: [
-      "built curriculum player interface with interactive code and quiz overlays.",
+      "Built responsive UI components and interactive web interfaces.",
+      "Collaborated on frontend architecture and component design systems.",
     ],
-    logoText: "LA",
+    logoText: "ME",
     logoBg: "#1C1C1E",
-    logoColor: "#FFFFFF",
+    logoColor: "#EDEDEA",
   },
   {
     id: "iiit",
-    company: "IIITDMJ",
-    role: "Bachelors of Technology",
-    period: "2022-2026",
+    company: "Indian Institute of Information Technology (IIITDMJ)",
+    role: "Bachelor of Technology",
+    period: "2022 — 2026",
     startYear: 2022.0,
-    endYear: 2022.4,
+    endYear: 2026.4,
     lane: 2,
     isTileOnly: true,
-    description: "frontend web engineering and site optimization for SMB storefronts.",
-    bullets: ["assisted small business owners launching performant e-commerce sites."],
-    logoText: "GD",
+    description: "Computer Science & Engineering foundation, algorithms, systems design.",
+    bullets: [
+      "Indian Institute of Information Technology, Design and Manufacturing, Jabalpur.",
+      "B.Tech degree with deep focus on software engineering and distributed computing.",
+    ],
+    logoText: "IIIT",
     logoBg: "#083337",
     logoColor: "#06B6D4",
   },
 ];
-

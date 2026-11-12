@@ -100,26 +100,7 @@ export default function Hero() {
 
         {/* Bio Paragraph 1 */}
         <p className="text-sm sm:text-base leading-relaxed text-[#8A8A85]">
-          {siteContent.bioParagraph1.greeting} I&apos;m currently working as a{" "}
-          <strong className="font-medium text-[#EDEDEA]">
-            {siteContent.bioParagraph1.currentRole}
-          </strong>{" "}
-          at{" "}
-          <strong className="font-medium text-[#EDEDEA] inline-flex items-center gap-1">
-            {siteContent.bioParagraph1.company}{" "}
-            <span className="text-xs">{siteContent.bioParagraph1.companyIcon}</span>
-          </strong>{" "}
-          and as a{" "}
-          <strong className="font-medium text-[#EDEDEA]">
-            {siteContent.bioParagraph1.secondaryRole}
-          </strong>{" "}
-          at{" "}
-          <strong className="font-medium text-[#EDEDEA] inline-flex items-center gap-1">
-            {siteContent.bioParagraph1.lab}{" "}
-            <span className="text-xs">{siteContent.bioParagraph1.labIcon}</span>
-          </strong>
-          , {siteContent.bioParagraph1.locationText}{" "}
-          <span className="text-sm">{siteContent.countryFlag}</span>
+          {siteContent.bioParagraph1}
         </p>
 
         {/* Bio Paragraph 2 */}
@@ -129,27 +110,27 @@ export default function Hero() {
 
         {/* Action Buttons: Talk to agent + Resume */}
         <div className="pt-2 flex flex-wrap items-center gap-3">
-           <button
-            onClick={() => setIsAgentOpen(true)}
+          <a
+            href="#contact"
             className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.07] hover:bg-white/[0.12] border border-white/[0.1] text-xs sm:text-sm font-medium text-[#EDEDEA] hover:text-white transition-all cursor-pointer shadow-sm hover:scale-[1.02] active:scale-[0.98]"
-            aria-label="Talk to AI Agent"
+            aria-label="Contact Adarsh"
           >
-            <Mail className="w-3.5 h-3.5 text-[#F5A623] group-hover:rotate-12 transition-transform" />
+            <Mail className="w-3.5 h-3.5 text-[#EA580C] fill-[#EA580C] stroke-[#121214] stroke-[1.8] group-hover:rotate-12 transition-transform" />
             <span>Contact</span>
-          </button>
+          </a>
 
           <button
             onClick={() => setIsAgentOpen(true)}
             className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.07] hover:bg-white/[0.12] border border-white/[0.1] text-xs sm:text-sm font-medium text-[#EDEDEA] hover:text-white transition-all cursor-pointer shadow-sm hover:scale-[1.02] active:scale-[0.98]"
             aria-label="Talk to AI Agent"
           >
-            <Sparkles className="w-3.5 h-3.5 text-[#F5A623] group-hover:rotate-12 transition-transform" />
+            <Sparkles className="w-3.5 h-3.5 text-[#EA580C] fill-[#EA580C] group-hover:rotate-12 transition-transform" />
             <span>talk to agent</span>
           </button>
 
           <a
             href={siteContent.resumeUrl}
-            download="Adarsh_Resume.pdf"
+            download="AdarshVermaResume.pdf"
             className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/[0.07] hover:bg-white/[0.12] border border-white/[0.1] text-[#EDEDEA] hover:text-white transition-all hover:scale-[1.05] active:scale-[0.98]"
             aria-label="Download Resume"
             title="Download Resume"

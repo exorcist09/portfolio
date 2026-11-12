@@ -98,15 +98,18 @@ export default function Experience() {
         )}
       </AnimatePresence>
 
-      {/* Bottom "+ know more" button without borders */}
-      <div className="mt-8 text-center select-none">
-        <button
-          type="button"
-          className="font-handwriting text-xl sm:text-2xl text-[#F5A623] hover:text-amber-400 transition-colors cursor-pointer select-none"
-        >
-          + know more
-        </button>
-      </div>
+      {/* Bottom "+ know more" button: visible in timeline mode, hidden in list mode */}
+      {activeTab === "timeline" && (
+        <div className="mt-8 text-center select-none">
+          <button
+            type="button"
+            onClick={() => setActiveTab("list")}
+            className="font-handwriting text-xl sm:text-2xl text-[#EA580C] hover:text-orange-400 transition-colors cursor-pointer select-none"
+          >
+            + know more
+          </button>
+        </div>
+      )}
     </section>
   );
 }

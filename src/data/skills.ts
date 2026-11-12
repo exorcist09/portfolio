@@ -1,9 +1,10 @@
-// Skills with pure Lucide icons (white/monochrome, zero emoji/color)
+// Skills data with SimpleIcons slugs for authentic logos
 
 export interface SkillItem {
   id: string;
   name: string;
-  iconName: string;
+  slug?: string;
+  iconName?: string;
 }
 
 export interface SkillRow {
@@ -19,14 +20,15 @@ export const skillRows: SkillRow[] = [
     direction: "left",
     speedClass: "animate-marquee-slow-left",
     items: [
-      { id: "ts", name: "TypeScript", iconName: "Code2" },
-      { id: "next", name: "Next.js", iconName: "Globe" },
-      { id: "react", name: "React", iconName: "Layers" },
-      { id: "python", name: "Python", iconName: "Terminal" },
-      { id: "tailwind", name: "Tailwind CSS", iconName: "Palette" },
-      { id: "framer", name: "Framer Motion", iconName: "Sparkles" },
-      { id: "tanstack", name: "TanStack Query", iconName: "RefreshCw" },
-      { id: "redux", name: "Redux Toolkit", iconName: "Cpu" },
+      { id: "next", name: "Next.js", slug: "nextdotjs" },
+      { id: "react", name: "React.js", slug: "react" },
+      { id: "ts", name: "TypeScript", slug: "typescript" },
+      { id: "python", name: "Python", slug: "python" },
+      { id: "java", name: "Java", slug: "java" },
+      { id: "tailwind", name: "TailwindCSS", slug: "tailwindcss" },
+      { id: "zustand", name: "Zustand", slug: "zustand" },
+      { id: "redux", name: "Redux Toolkit", slug: "redux" },
+      { id: "tanstack", name: "TanStack Query", slug: "reactquery" },
     ],
   },
   {
@@ -34,14 +36,16 @@ export const skillRows: SkillRow[] = [
     direction: "right",
     speedClass: "animate-marquee-slow-right",
     items: [
-      { id: "node", name: "Node.js", iconName: "Server" },
-      { id: "postgres", name: "PostgreSQL", iconName: "Database" },
-      { id: "redis", name: "Redis", iconName: "Zap" },
-      { id: "websockets", name: "WebSockets", iconName: "Radio" },
-      { id: "supabase", name: "Supabase", iconName: "ShieldCheck" },
-      { id: "prisma", name: "Prisma ORM", iconName: "Blocks" },
-      { id: "graphql", name: "GraphQL", iconName: "Workflow" },
-      { id: "docker", name: "Docker", iconName: "Box" },
+      { id: "node", name: "Node.js", slug: "nodedotjs" },
+      { id: "express", name: "Express.js", slug: "express" },
+      { id: "postgres", name: "PostgreSQL", slug: "postgresql" },
+      { id: "redis", name: "Redis", slug: "redis" },
+      { id: "rabbitmq", name: "RabbitMQ", slug: "rabbitmq" },
+      { id: "websockets", name: "WebSockets", slug: "socketdotio" },
+      { id: "mysql", name: "MySQL", slug: "mysql" },
+      { id: "mongodb", name: "MongoDB", slug: "mongodb" },
+      { id: "prisma", name: "Prisma ORM", slug: "prisma" },
+      { id: "supabase", name: "Supabase", slug: "supabase" },
     ],
   },
   {
@@ -49,14 +53,15 @@ export const skillRows: SkillRow[] = [
     direction: "left",
     speedClass: "animate-marquee-slow-left",
     items: [
-      { id: "rag", name: "RAG Systems", iconName: "Braces" },
-      { id: "vectordb", name: "Vector DBs", iconName: "HardDrive" },
-      { id: "agentic", name: "Agentic AI", iconName: "Bot" },
-      { id: "aws", name: "AWS Cloud", iconName: "Cloud" },
-      { id: "linux", name: "Linux", iconName: "Terminal" },
-      { id: "nginx", name: "Nginx", iconName: "Server" },
-      { id: "cloudflare", name: "Cloudflare", iconName: "Shield" },
-      { id: "figma", name: "Figma", iconName: "Component" },
+      { id: "aws", name: "AWS", slug: "aws" },
+      { id: "docker", name: "Docker", slug: "docker" },
+      { id: "nginx", name: "Nginx", slug: "nginx" },
+      { id: "linux", name: "Linux", slug: "linux" },
+      { id: "langchain", name: "LangChain", slug: "langchain" },
+      { id: "langgraph", name: "LangGraph", slug: "langgraph" },
+      { id: "huggingface", name: "Hugging Face", slug: "huggingface" },
+      { id: "graphql", name: "GraphQL", slug: "graphql" },
+      { id: "agentic", name: "Agentic AI", slug: "dependabot" },
     ],
   },
 ];

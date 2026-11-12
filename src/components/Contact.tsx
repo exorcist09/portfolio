@@ -187,7 +187,7 @@ export default function Contact() {
 
       {/* Footer */}
       <footer className="mt-20 pt-8 border-t border-white/[0.06] text-xs font-mono-custom text-[#8A8A85]/70 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-1.5 uppercase tracking-wider">
+        <div className="flex items-center gap-1.5 tracking-wider">
           <MapPin className="w-3.5 h-3.5 text-[#8A8A85]" />
           <span>{siteContent.location}</span>
         </div>

@@ -18,7 +18,7 @@ export default function Home() {
   const [loadingComplete, setLoadingComplete] = useState(false);
 
   return (
-    <div className="relative min-h-screen bg-black text-[#EDEDEA] overflow-x-hidden selection:bg-[#F5A623]/25 selection:text-[#F5A623]">
+    <div className="relative min-h-screen bg-black text-[#EDEDEA] overflow-x-hidden selection:bg-[#EA580C]/25 selection:text-[#EA580C]">
       {/* Cursive Name Intro Loader */}
       <Loader onComplete={() => setLoadingComplete(true)} />
 

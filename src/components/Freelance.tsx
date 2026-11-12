@@ -41,10 +41,10 @@ export default function Freelance() {
               <span className="uppercase tracking-wider text-[#8A8A85]/80">
                 {service.category}
               </span>
-              <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/[0.04] border border-white/[0.06] text-[#EDEDEA]/70">
-                <Clock className="w-3 h-3 text-[#F5A623]" />
+              {/* <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/[0.04] border border-white/[0.06] text-[#EDEDEA]/70">
+                <Clock className="w-3 h-3 text-[#EA580C]" />
                 <span>{service.timeline}</span>
-              </span>
+              </span> */}
             </div>
 
             {/* Title & Description */}
@@ -64,7 +64,6 @@ export default function Freelance() {
                   key={item}
                   className="inline-flex items-center gap-1 text-[10px] font-mono-custom px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/[0.06] text-[#8A8A85]"
                 >
-                  <span className="text-[#F5A623] text-xs leading-none">*</span>
                   <span>{item}</span>
                 </span>
               ))}
@@ -73,11 +72,11 @@ export default function Freelance() {
         ))}
       </div>
 
-      {/* Bottom "+ work together .." action button without borders */}
+      {/* Bottom "+ work together .." action button without borders in dark orange */}
       <div className="mt-8 text-center select-none">
         <a
           href="#contact"
-          className="font-handwriting text-xl sm:text-2xl text-[#F5A623] hover:text-amber-400 transition-colors cursor-pointer select-none inline-block"
+          className="font-handwriting text-xl sm:text-2xl text-[#EA580C] hover:text-orange-400 transition-colors cursor-pointer select-none inline-block"
         >
           + work together ..
         </a>

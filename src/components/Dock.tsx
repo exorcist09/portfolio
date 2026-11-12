@@ -184,7 +184,7 @@ export default function Dock() {
                         }
                       }}
                       aria-label={item.label}
-                      className={`relative w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F5A623] ${
+                      className={`relative w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EA580C] ${
                         isActive
                           ? "bg-white text-black shadow-md scale-105"
                           : "text-[#EDEDEA]/70 hover:text-white bg-white/[0.06] hover:bg-white/[0.14] border border-white/[0.08]"

@@ -99,7 +99,7 @@ export default function ListView() {
                       <ul className="space-y-1.5 pt-1">
                         {exp.bullets.map((bullet, i) => (
                           <li key={i} className="flex items-start gap-2 leading-relaxed">
-                            <span className="text-[#F5A623] font-bold select-none text-xs mt-0.5">
+                            <span className="text-[#EA580C] font-bold select-none text-xs mt-0.5">
                               *
                             </span>
                             <span>{bullet}</span>

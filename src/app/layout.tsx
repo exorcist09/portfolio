@@ -21,7 +21,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-full bg-black text-[#EDEDEA] font-sans selection:bg-[#F5A623]/25 selection:text-[#F5A623]">
+      <body className="min-h-full bg-black text-[#EDEDEA] font-sans selection:bg-[#EA580C]/25 selection:text-[#EA580C]">
         {children}
       </body>
     </html>

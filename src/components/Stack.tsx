@@ -1,63 +1,21 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  Code2,
-  Globe,
-  Layers,
-  Terminal,
-  Palette,
-  Sparkles,
-  RefreshCw,
-  Cpu,
-  Server,
-  Database,
-  Zap,
-  Radio,
-  ShieldCheck,
-  Blocks,
-  Workflow,
-  Box,
-  Braces,
-  HardDrive,
-  Bot,
-  Cloud,
-  Shield,
-  Component,
-} from "lucide-react";
 import { skillRows, SkillRow, SkillItem } from "@/data/skills";
 
-const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
-  Code2,
-  Globe,
-  Layers,
-  Terminal,
-  Palette,
-  Sparkles,
-  RefreshCw,
-  Cpu,
-  Server,
-  Database,
-  Zap,
-  Radio,
-  ShieldCheck,
-  Blocks,
-  Workflow,
-  Box,
-  Braces,
-  HardDrive,
-  Bot,
-  Cloud,
-  Shield,
-  Component,
-};
-
 function SkillPill({ item }: { item: SkillItem }) {
-  const IconComponent = ICON_MAP[item.iconName] || Code2;
-
   return (
-    <div className="shrink-0 rounded-full px-4 py-2 border border-white/[0.08] bg-[#0E0E0E] hover:bg-[#161616] hover:border-white/20 text-xs font-mono-custom text-[#EDEDEA] flex items-center gap-2 select-none cursor-default transition-all shadow-sm">
-      <IconComponent className="w-3.5 h-3.5 text-white stroke-[2]" />
+    <div className="shrink-0 flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/[0.08] bg-[#0E0E0E] text-xs font-mono-custom text-[#EDEDEA] hover:border-white/20 transition-all select-none">
+      {item.slug ? (
+        <img
+          src={`https://cdn.simpleicons.org/${item.slug}/ffffff`}
+          alt=""
+          className="w-3.5 h-3.5 object-contain opacity-90"
+          loading="lazy"
+        />
+      ) : (
+        <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
+      )}
       <span>{item.name}</span>
     </div>
   );
@@ -103,7 +61,7 @@ export default function Stack() {
           what I make things with
         </h2>
         <p className="mt-1 text-xs sm:text-sm text-[#8A8A85]">
-          Technologies, frameworks, cloud primitives, and generative AI systems.
+          Technologies, frameworks, databases, and distributed systems.
         </p>
       </motion.div>
 
@@ -114,11 +72,11 @@ export default function Stack() {
         ))}
       </div>
 
-      {/* Bottom "+ check .." button without borders */}
+      {/* Bottom "+ check .." button in dark orange */}
       <div className="mt-8 text-center select-none">
         <button
           type="button"
-          className="font-handwriting text-xl sm:text-2xl text-[#F5A623] hover:text-amber-400 transition-colors cursor-pointer select-none"
+          className="font-handwriting text-xl sm:text-2xl text-[#EA580C] hover:text-orange-400 transition-colors cursor-pointer select-none"
         >
           + check ..
         </button>

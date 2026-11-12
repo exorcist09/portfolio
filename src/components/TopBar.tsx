@@ -38,7 +38,7 @@ export default function TopBar({ name = "Adarsh" }: { name?: string }) {
         >
           <button
             onClick={scrollToTop}
-            className="px-4 py-1.5 text-sm tracking-wide text-[#EDEDEA]/80 hover:text-white transition-colors duration-200 cursor-pointer font-medium focus:outline-none focus-visible:ring-1 focus-visible:ring-[#F5A623] rounded-full"
+            className="px-4 py-1.5 text-sm tracking-wide text-[#EDEDEA]/80 hover:text-white transition-colors duration-200 cursor-pointer font-medium focus:outline-none focus-visible:ring-1 focus-visible:ring-[#EA580C] rounded-full"
             aria-label="Scroll to top"
           >
             {name}
