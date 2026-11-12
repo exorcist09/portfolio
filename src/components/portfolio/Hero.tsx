@@ -82,7 +82,9 @@ export function Hero({ onOpenResume }: HeroProps) {
               onClick={handleTalkWithPuffer}
               className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium transition hover:bg-gradient-to-tr hover:from-primary/10 hover:to-transparent hover:text-primary group cursor-pointer"
             >
-              <PufferIcon className="h-4 w-4 -scale-x-100 text-primary transition-transform duration-300 group-hover:scale-125" />
+              <span className="inline-flex transition-transform duration-300 group-hover:scale-110 active:scale-95">
+                <PufferIcon className="h-4 w-4 text-primary" />
+              </span>
               <span>Talk to Puffer</span>
             </button>
 

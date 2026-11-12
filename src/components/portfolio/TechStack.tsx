@@ -33,16 +33,25 @@ const BearIcon = ({ className, color }: { className?: string; color?: string }) 
   </svg>
 );
 
+const PythonIcon = ({ className, color }: { className?: string; color?: string }) => (
+  <svg
+    viewBox="0 0 110 110"
+    className={className}
+    fill={color || "currentColor"}
+  >
+    <path d="M54.5 5.5c-27 0-25.3 11.7-25.3 11.7l.1 12.1h25.8v3.6H17.8C7 32.9 0 39.4 0 54.5c0 15 6.3 22.8 15.3 22.8h8.8v-12.7c0-14.7 12.8-15.3 15.3-15.3h25.7c2.6 0 15.3-.6 15.3-15.3V17.2S81.5 5.5 54.5 5.5zM41.7 13.7a4.8 4.8 0 1 1 0 9.6 4.8 4.8 0 0 1 0-9.6z" />
+    <path d="M55.5 104.5c27 0 25.3-11.7 25.3-11.7l-.1-12.1H54.9v-3.6h37.3c10.8 0 17.8-6.5 17.8-21.6 0-15-6.3-22.8-15.3-22.8h-8.8v12.7c0 14.7-12.8 15.3-15.3 15.3H44.9c-2.6 0-15.3.6-15.3 15.3v16.9s-1.1 11.7 25.9 11.7zm12.8-8.2a4.8 4.8 0 1 1 0-9.6 4.8 4.8 0 0 1 0 9.6z" />
+  </svg>
+);
+
 const groups: { label: string; items: Tech[] }[] = [
   {
     label: "Languages",
     items: [
       { name: "Java", slug: "java", icon: Coffee, color: "#FF0000" },
-      { name: "JavaScript", slug: "javascript", color: "#F7DF1E" },
+      { name: "Python", slug: "python", icon: PythonIcon, alwaysWhite: true },
       { name: "TypeScript", slug: "typescript", color: "#3178C6" },
       { name: "SQL", slug: "postgresql", color: "#4169E1" },
-      { name: "HTML", slug: "html5", color: "#E34F26" },
-      { name: "CSS", slug: "css", color: "#663399" },
     ],
   },
   {
@@ -52,8 +61,6 @@ const groups: { label: string; items: Tech[] }[] = [
       { name: "React.js", slug: "react", color: "#61DAFB" },
       { name: "Zustand", slug: "zustand", icon: BearIcon, color: "#854d0e" },
       { name: "TailwindCSS", slug: "tailwindcss", color: "#06B6D4" },
-      { name: "Radix UI", slug: "radixui", alwaysWhite: true },
-      { name: "Shadcn UI", slug: "shadcnui", alwaysWhite: true },
       { name: "Redux Toolkit", slug: "redux", color: "#764ABC" },
       { name: "TanStack Query", slug: "reactquery", color: "#FF4154" },
     ],
@@ -63,15 +70,12 @@ const groups: { label: string; items: Tech[] }[] = [
     items: [
       { name: "Node.js", slug: "nodedotjs", color: "#5FA04E" },
       { name: "Express.js", slug: "express", alwaysWhite: true },
-      { name: "Spring Boot", slug: "springboot", color: "#6DB33F" },
       { name: "REST APIs", slug: "api", icon: ApiIcon, color: "#009688" },
       { name: "GraphQL", slug: "graphql", color: "#E10098" },
       { name: "WebSockets", slug: "socketdotio", alwaysWhite: true },
       { name: "JWT / OAuth 2.0", slug: "jsonwebtokens", alwaysWhite: true },
       { name: "Redis", slug: "redis", color: "#FF4438" },
       { name: "RabbitMQ", slug: "rabbitmq", color: "#FF6600" },
-      { name: "Kafka", slug: "apachekafka", alwaysWhite: true },
-      { name: "Elasticsearch", slug: "elasticsearch", color: "#005571" },
     ],
   },
   {
@@ -91,7 +95,6 @@ const groups: { label: string; items: Tech[] }[] = [
       { name: "Docker", slug: "docker", color: "#2496ED" },
       { name: "Nginx", slug: "nginx", color: "#009639" },
       { name: "Linux", slug: "linux", color: "#FCC624" },
-      { name: "Sentry", slug: "sentry", color: "#362D59" },
     ],
   },
   {

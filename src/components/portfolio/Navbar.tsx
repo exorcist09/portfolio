@@ -133,7 +133,7 @@ export function Navbar({ onOpenResume }: NavbarProps) {
 
             {/* Logo */}
             <a href="#home" className="font-hero pl-2 pr-1 text-sm tracking-tight">
-              adarsh<span className="text-primary">.</span>
+              adarsh.
             </a>
 
             {/* Actions */}
@@ -168,67 +168,6 @@ export function Navbar({ onOpenResume }: NavbarProps) {
               >
                 <Github className="h-4 w-4" />
               </a>
-
-              {/* Direct Accent Selector Button */}
-              <div ref={accentRef} className="relative">
-                <button
-                  onClick={() => {
-                    setAccentOpen((o) => !o);
-                    setOpen(false);
-                  }}
-                  aria-label="Accent Color"
-                  title="Choose Accent Color"
-                  className={`relative grid h-8 w-8 place-items-center rounded-full transition hover:bg-foreground hover:text-background ${
-                    accentOpen
-                      ? "bg-foreground text-background shadow-md"
-                      : "bg-foreground/10 text-foreground"
-                  }`}
-                >
-                  <Palette className="h-4 w-4" />
-                  {/* Current Accent Dot Indicator */}
-                  <span
-                    className="absolute bottom-1 right-1 h-2 w-2 rounded-full border border-background"
-                    style={{ backgroundColor: ACCENTS[accent]?.swatch || "currentColor" }}
-                  />
-                </button>
-
-                <AnimatePresence>
-                  {accentOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 4, scale: 0.95 }}
-                      transition={{ duration: 0.15 }}
-                      className="glass absolute right-0 md:right-auto md:left-0 top-11 z-50 rounded-2xl p-3.5 shadow-2xl backdrop-blur-xl border border-white/10"
-                    >
-                      <div className="flex items-center gap-3.5 sm:gap-4">
-                        {(Object.keys(ACCENTS) as Accent[]).map((k) => (
-                          <button
-                            key={k}
-                            onClick={() => {
-                              setAccent(k);
-                              setAccentOpen(false);
-                            }}
-                            aria-label={ACCENTS[k].name}
-                            title={ACCENTS[k].name}
-                            className={`group relative grid h-7 w-7 place-items-center rounded-full transition-transform hover:scale-110 ${
-                              accent === k ? "ring-2 ring-offset-2 ring-offset-background" : ""
-                            }`}
-                            style={{
-                              background: ACCENTS[k].swatch,
-                              ["--tw-ring-color" as string]: ACCENTS[k].swatch,
-                            }}
-                          >
-                            {accent === k && (
-                              <span className="h-1.5 w-1.5 rounded-full bg-white shadow" />
-                            )}
-                          </button>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
 
               {/* Settings Button */}
               <div ref={ddRef} className="relative hidden sm:block">
@@ -276,42 +215,6 @@ export function Navbar({ onOpenResume }: NavbarProps) {
                         )}
                       </button>
                     </div>
-
-                    <p className="mb-2 mt-4 px-1 text-[10px] uppercase tracking-widest text-muted-foreground">
-                      Interactions
-                    </p>
-                    <div className="flex flex-col gap-1">
-                      <p className="text-[10px] text-muted-foreground px-1 leading-relaxed md:hidden">
-                        Switch to a mouse-based screen in order to use cursor modes.
-                      </p>
-                      <div className="hidden md:flex flex-col gap-1">
-                        <button
-                          onClick={() => setCursorMode("normal")}
-                          className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${cursorMode === "normal" ? "bg-foreground text-background" : "hover:bg-foreground/10"}`}
-                        >
-                          <MousePointer2 className="h-3 w-3" /> Normal Mode
-                        </button>
-                        <button
-                          onClick={() => setCursorMode("trail")}
-                          className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${cursorMode === "trail" ? "bg-foreground text-background" : "hover:bg-foreground/10"}`}
-                        >
-                          <Wand2 className="h-3 w-3" /> Trail Mode
-                        </button>
-                        <button
-                          onClick={() => setCursorMode("follower")}
-                          className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${cursorMode === "follower" ? "bg-foreground text-background" : "hover:bg-foreground/10"}`}
-                        >
-                          <Navigation className="h-3 w-3" /> Follower Mode
-                        </button>
-                        <button
-                          onClick={() => setCursorMode("invert")}
-                          className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${cursorMode === "invert" ? "bg-foreground text-background" : "hover:bg-foreground/10"}`}
-                        >
-                          <Contrast className="h-3 w-3" /> Invert Color Mode
-                        </button>
-                      </div>
-                    </div>
-
                     <p className="mb-2 mt-4 px-1 text-[10px] uppercase tracking-widest text-muted-foreground">
                       Companion
                     </p>
