@@ -55,7 +55,7 @@ export function Loader({
       {/* ── Top-Center "adarsh." Branding with Green Accent Dot ── */}
       <div className="absolute top-8 sm:top-12 inset-x-0 z-30 pointer-events-none flex justify-center">
         <h1 className="font-hero text-2xl sm:text-3xl font-bold tracking-tight text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)] select-none">
-          adarsh<span className="text-[#22c55e]">.</span>
+          adarsh.
         </h1>
       </div>
 

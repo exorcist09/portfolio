@@ -19,7 +19,7 @@ const projects: Project[] = [
     description:
       "Visual workflow automation platform for automating processes through a visual interface. Built with a focus on scalability, reliability, and user experience.",
     tags: ["Next.js", "Node.js", "PostgreSQL", "AWS", "Docker", "Redis"],
-    live: "https://kairoworkflow.vercel.app",
+    live: "https://kairoworkflow-landing.vercel.app/",
     github: "https://github.com/exorcist09/kairo-v2",
     gradientClass: "from-black/10 to-black/30",
   },

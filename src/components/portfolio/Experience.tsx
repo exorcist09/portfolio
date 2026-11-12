@@ -15,7 +15,7 @@ const experience: TimelineItem[] = [
   {
     role: "Software Engineer",
     company: "Intern • Skyclad Ventures",
-    period: "Dec 2025 — July 2026",
+    period: "Dec 2025 — Present",
     type: "exp",
   },
   {
