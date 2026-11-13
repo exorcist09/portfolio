@@ -53,7 +53,7 @@ export const projects: Project[] = [
       "Autonomous AI assistant capable of multi-step tool execution, semantic document indexing, contextual memory retrieval, and natural language database querying.",
     href: "https://fynmanager.netlify.app",
     github: "https://github.com/exorcist09/fyn",
-    image: "/fyn.png",
+    image: "/cruzo.png",
     featured: true,
     techStack: ["Spring Boot", "Python", "LangGraph", "OpenAI / Claude", "PostgreSQL", "Redis"],
     gradientTheme: {

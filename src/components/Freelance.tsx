@@ -147,7 +147,7 @@ export default function Freelance() {
           href="/work-together"
           className="font-handwriting text-xl sm:text-2xl text-[#EA580C] hover:text-orange-400 transition-colors cursor-pointer select-none inline-block"
         >
-          + work together ..
+          + book a call ..
         </Link>
       </div>
     </section>
