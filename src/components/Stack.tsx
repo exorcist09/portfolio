@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { skillRows, SkillRow, SkillItem } from "@/data/skills";
 
@@ -72,14 +73,14 @@ export default function Stack() {
         ))}
       </div>
 
-      {/* Bottom "+ check .." button in dark orange */}
+      {/* Bottom "+ check .." button linking to /skills */}
       <div className="mt-8 text-center select-none">
-        <button
-          type="button"
-          className="font-handwriting text-xl sm:text-2xl text-[#EA580C] hover:text-orange-400 transition-colors cursor-pointer select-none"
+        <Link
+          href="/skills"
+          className="font-handwriting text-xl sm:text-2xl text-[#EA580C] hover:text-orange-400 transition-colors cursor-pointer select-none inline-block"
         >
           + check ..
-        </button>
+        </Link>
       </div>
     </section>
   );

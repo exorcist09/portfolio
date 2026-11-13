@@ -4,12 +4,22 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Loader({ onComplete }: { onComplete?: () => void }) {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
+    // Only show intro animation once per session so navigating back does not reload/replay it
+    const hasSeenIntro = sessionStorage.getItem("portfolio_intro_seen");
+    if (hasSeenIntro) {
+      onComplete?.();
+      return;
+    }
+
+    setShow(true);
+
     // Fill completes at ~1.7s, exit at 2.1s
     const timer = setTimeout(() => {
       setShow(false);
+      sessionStorage.setItem("portfolio_intro_seen", "true");
       onComplete?.();
     }, 2200);
 
@@ -54,4 +64,3 @@ export default function Loader({ onComplete }: { onComplete?: () => void }) {
     </AnimatePresence>
   );
 }
-

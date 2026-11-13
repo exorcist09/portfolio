@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { freelanceData, FreelanceService } from "@/data/freelance";
 
@@ -140,14 +141,14 @@ export default function Freelance() {
         ))}
       </div>
 
-      {/* Bottom "+ work together .." action button without borders in dark orange */}
+      {/* Bottom "+ work together .." action button linking to /work-together */}
       <div className="mt-8 text-center select-none">
-        <a
-          href="#contact"
+        <Link
+          href="/work-together"
           className="font-handwriting text-xl sm:text-2xl text-[#EA580C] hover:text-orange-400 transition-colors cursor-pointer select-none inline-block"
         >
           + work together ..
-        </a>
+        </Link>
       </div>
     </section>
   );

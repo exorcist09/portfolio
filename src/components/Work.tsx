@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Github } from "lucide-react";
 import { projects } from "@/data/projects";
@@ -89,14 +90,14 @@ export default function Work() {
         </div>
       )}
 
-      {/* Bottom "+ more .." button without borders */}
+      {/* Bottom "+ more .." button linking to all work page */}
       <div className="mt-8 text-center select-none">
-        <button
-          type="button"
-          className="font-handwriting text-xl sm:text-2xl text-[#EA580C] hover:text-orange-400 transition-colors cursor-pointer select-none"
+        <Link
+          href="/work"
+          className="font-handwriting text-xl sm:text-2xl text-[#EA580C] hover:text-orange-400 transition-colors cursor-pointer select-none inline-block"
         >
           + more ..
-        </button>
+        </Link>
       </div>
     </section>
   );
