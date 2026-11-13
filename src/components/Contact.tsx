@@ -22,7 +22,7 @@ export default function Contact() {
   return (
     <section id="contact" className="pt-16 sm:pt-20 pb-20 w-full max-w-[760px] mx-auto px-5 sm:px-6">
       {/* Oversized Type-Erase Wordmark with generous top & bottom whitespace */}
-      <div className="pt-6 sm:pt-10 pb-18 sm:pb-22 text-center overflow-hidden">
+      <div className="pt-6 sm:pt-10 pb-28 sm:pb-36 text-center overflow-hidden">
         <TypeEraseText
           initialText={siteContent.handle}
           targetText={siteContent.alternateHandle}
@@ -35,7 +35,7 @@ export default function Contact() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.5 }}
-        className="mb-8 text-left"
+        className="mt-6 sm:mt-10 mb-8 text-left"
       >
         <span className="text-[11px] font-mono-custom tracking-[0.2em] uppercase text-[#8A8A85]">
           CONTACT

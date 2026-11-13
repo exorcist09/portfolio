@@ -24,16 +24,16 @@ export const freelanceData: FreelanceData = {
   services: [
     {
       id: "mvp-engineering",
-      category: "FULL-STACK ENGINEERING",
+      category: "FULL-STACK ENGINEERING & BACKEND",
       title: "Rapid MVP & Product Builds",
       description:
-        "End-to-end development from zero to production. High-performance Next.js architectures with clean APIs, database schemas, and rock-solid auth.",
+        "End-to-end development from zero to production. High-performance Backend architectures with clean APIs, database schemas, and rock-solid auth.",
       timeline: "2–4 weeks",
       deliverables: ["Next.js App Router", "PostgreSQL / Supabase", "Auth & Stripe billing", "CI/CD & Cloud Deploy"],
     },
     {
       id: "design-systems",
-      category: "FRONTEND & DESIGN SYSTEMS",
+      category: "FRONTEND SYSTEMS",
       title: "Scalable UI & Design Systems",
       description:
         "Building accessible, token-driven component libraries that bridge Figma with code. Fast, responsive interfaces your engineers love shipping with.",
@@ -41,9 +41,9 @@ export const freelanceData: FreelanceData = {
       deliverables: ["Token Architecture", "Accessible Components", "Framer Motion Polish", "Storybook Documentation"],
     },
     {
-      id: "creative-ai",
-      category: "CREATIVE TECH & AI",
-      title: "Interactive Web & AI Integrations",
+      id: "ai",
+      category: "Artificial Intelligence",
+      title: "AI Integrations And Machine Learning",
       description:
         "Spatial web storytelling, fluid micro-interactions, and LLM agent pipelines that turn standard websites into memorable product experiences.",
       timeline: "1–2 weeks",

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Loader from "@/components/Loader";
 import TopBar from "@/components/TopBar";
-import Dock from "@/components/Dock";
 import Hero from "@/components/Hero";
 import Work from "@/components/Work";
 import Experience from "@/components/Experience";
@@ -22,9 +21,8 @@ export default function Home() {
       {/* Cursive Name Intro Loader */}
       <Loader onComplete={() => setLoadingComplete(true)} />
 
-      {/* Fixed Navigation Elements */}
-      <TopBar name={siteContent.name} />
-      <Dock />
+      {/* Floating Top Navigation Bar */}
+      <TopBar />
 
       {/* Main Portfolio Sections */}
       <main className="relative z-10 flex flex-col items-center justify-center w-full">
