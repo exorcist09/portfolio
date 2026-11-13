@@ -128,23 +128,15 @@ export default function Hero() {
             <span>Contact</span>
           </a>
 
-          <button
-            onClick={() => setIsAgentOpen(true)}
-            className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.07] hover:bg-white/[0.12] border border-white/[0.1] text-xs sm:text-sm font-medium text-[#EDEDEA] hover:text-white transition-all cursor-pointer shadow-sm hover:scale-[1.02] active:scale-[0.98]"
-            aria-label="Talk to AI Agent"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-[#EA580C] fill-[#EA580C] group-hover:rotate-12 transition-transform" />
-            <span>talk to agent</span>
-          </button>
-
           <a
             href={siteContent.resumeUrl}
             download="AdarshVermaResume.pdf"
-            className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/[0.07] hover:bg-white/[0.12] border border-white/[0.1] text-[#EDEDEA] hover:text-white transition-all hover:scale-[1.05] active:scale-[0.98]"
+            className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.07] hover:bg-white/[0.12] border border-white/[0.1] text-xs sm:text-sm font-medium text-[#EDEDEA] hover:text-white transition-all cursor-pointer shadow-sm hover:scale-[1.02] active:scale-[0.98]"
             aria-label="Download Resume"
             title="Download Resume"
           >
             <FileDown className="w-4 h-4 stroke-[1.8]" />
+            <span>Resume</span>
           </a>
         </div>
       </motion.div>

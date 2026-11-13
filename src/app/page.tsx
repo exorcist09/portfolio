@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Loader from "@/components/Loader";
 import TopBar from "@/components/TopBar";
+import Mascot3D from "@/components/Mascot3D";
 import Hero from "@/components/Hero";
 import Work from "@/components/Work";
 import Experience from "@/components/Experience";
@@ -56,6 +57,9 @@ export default function Home() {
         {/* Section 6: Contact & Wordmark Type-Erase */}
         <Contact />
       </main>
+
+      {/* 3D Interactive Mascot (Walking entrance, waving & interactive companion) */}
+      <Mascot3D />
     </div>
   );
 }
