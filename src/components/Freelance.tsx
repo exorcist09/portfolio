@@ -56,18 +56,6 @@ export default function Freelance() {
                 {service.description}
               </p>
             </div>
-
-            {/* Deliverables Tags */}
-            <div className="mt-4 pt-3 border-t border-white/[0.05] flex flex-wrap items-center gap-2">
-              {service.deliverables.map((item) => (
-                <span
-                  key={item}
-                  className="inline-flex items-center gap-1 text-[10px] font-mono-custom px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/[0.06] text-[#8A8A85]"
-                >
-                  <span>{item}</span>
-                </span>
-              ))}
-            </div>
           </div>
         ))}
       </div>

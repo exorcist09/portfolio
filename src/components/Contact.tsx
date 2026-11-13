@@ -44,7 +44,7 @@ export default function Contact() {
           get in touch
         </h2>
         <p className="mt-1 text-xs sm:text-sm text-[#8A8A85]">
-          Open for collaborations, creative engineering, and high-impact design systems.
+          Open for collaborations, creative engineering, and high-impact systems.
         </p>
       </motion.div>
 

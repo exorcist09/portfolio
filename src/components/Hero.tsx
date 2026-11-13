@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, FileDown, Clock, Cloud, Mail } from "lucide-react";
 import { siteContent } from "@/data/content";
+import { avatarBase64 } from "@/data/avatarBase64";
 import AgentModal from "./AgentModal";
 
 export default function Hero() {
@@ -72,19 +72,28 @@ export default function Hero() {
         transition={{ duration: 0.6, delay: 0.1 }}
         className="space-y-6"
       >
-        <div className="relative w-16 h-16 rounded-[18px] overflow-hidden border border-white/10 shadow-lg bg-[#141414]">
-          <Image
-            src={siteContent.avatarUrl || "/adarsh.png"}
-            alt={siteContent.name}
-            fill
-            sizes="64px"
-            className="object-cover"
-            priority
-            onError={(e) => {
-              // Fallback to SVG if png not found
-              const target = e.target as HTMLImageElement;
-              target.src = "/avatar.svg";
+        {/* Avatar & Profile */}
+        <div
+          className="relative w-16 h-16 rounded-[18px] overflow-hidden border border-white/10 shadow-lg bg-[#141414] select-none"
+          onContextMenu={(e) => e.preventDefault()}
+        >
+          {/* CSS Background div using inlined Base64 (Zero network requests, no 'Open in new tab' context menu) */}
+          <div
+            style={{
+              backgroundImage: `url(${avatarBase64})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
             }}
+            className="w-full h-full pointer-events-none select-none"
+            aria-label={siteContent.name}
+            role="img"
+          />
+
+          {/* Protective overlay against right-clicks, downloads and dragging */}
+          <div
+            className="absolute inset-0 z-10 select-none cursor-default"
+            onContextMenu={(e) => e.preventDefault()}
+            onDragStart={(e) => e.preventDefault()}
           />
         </div>
 
@@ -108,14 +117,14 @@ export default function Hero() {
           {siteContent.bioParagraph2}
         </p>
 
-        {/* Action Buttons: Talk to agent + Resume */}
+        {/* Action Buttons: Contact (dark orange filled pill, unfilled mail icon) + Talk to agent + Resume */}
         <div className="pt-2 flex flex-wrap items-center gap-3">
           <a
             href="#contact"
-            className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.07] hover:bg-white/[0.12] border border-white/[0.1] text-xs sm:text-sm font-medium text-[#EDEDEA] hover:text-white transition-all cursor-pointer shadow-sm hover:scale-[1.02] active:scale-[0.98]"
+            className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#EA580C] hover:bg-[#C2410C] border border-orange-500/20 text-xs sm:text-sm font-semibold text-white transition-all cursor-pointer shadow-md shadow-orange-950/40 hover:scale-[1.02] active:scale-[0.98]"
             aria-label="Contact Adarsh"
           >
-            <Mail className="w-3.5 h-3.5 text-[#EA580C] fill-[#EA580C] stroke-[#121214] stroke-[1.8] group-hover:rotate-12 transition-transform" />
+            <Mail className="w-3.5 h-3.5 text-white stroke-current stroke-[2] fill-none group-hover:rotate-12 transition-transform" />
             <span>Contact</span>
           </a>
 

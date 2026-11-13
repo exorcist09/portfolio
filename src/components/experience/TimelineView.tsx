@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { experiences, ExperienceItem } from "@/data/experience";
+import { experiences } from "@/data/experience";
 
 export default function TimelineView() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -10,44 +10,57 @@ export default function TimelineView() {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
-  // Distinct experiences fetched by ID to guarantee ZERO duplication
+  // Distinct experiences fetched by ID
   const skycladExp = experiences.find((e) => e.id === "skyclad");
   const bloopExp = experiences.find((e) => e.id === "bloop");
   const meteoriteExp = experiences.find((e) => e.id === "meteorite");
   const iiitExp = experiences.find((e) => e.id === "iiit");
 
-  // Timeline coordinate configuration:
-  // Empty years (2020-2021) are SHORT/compressed.
-  // Active years (2025-2026) are EXPANDED with months (Jan, Jun, Dec, May).
-  const timelineWidth = 1180; // px
-  const yLine = 175; // Y position of the horizontal axis
+  // Timeline coordinate configuration matching user wireframe (media_1794526993896_4f3a48bd.png)
+  const timelineWidth = 1750; // px
+  const yLine = 200; // Y position of the horizontal axis
+  const canvasHeight = 420; // px
 
-  // Compressed early years, expanded milestone years
-  const yearMarks = [
-    { label: "2020", x: 50, isYear: true },
-    { label: "2021", x: 105, isYear: true }, // 55px gap (short/compact)
-    { label: "2022", sub: "Nov", x: 175, isYear: true }, // 70px gap (IIIT begins)
-    { label: "2023", x: 280, isYear: true }, // 105px gap
-    { label: "2024", x: 385, isYear: true }, // 105px gap
-    // 2025: EXPANDED WITH MONTHS for each internship
-    { label: "2025", sub: "Jan", x: 500, isYear: true, isMonth: true }, // Meteorite (Jan-Feb)
-    { label: "Jun – Aug", x: 690, isMonth: true }, // Bloop (Jun-Aug)
-    { label: "Dec", x: 880, isMonth: true }, // Skyclad (Dec)
-    // 2026: Graduation & Present
-    { label: "2026", sub: "May", x: 980, isYear: true, isMonth: true }, // IIIT graduation
-    { label: "Now", x: 1020, isCurrent: true },
+  // Specific marker coordinates along the axis line
+  const xCoords = {
+    y2021: 60,
+    y2022: 160, // Left boundary of IIIT
+    y2023: 260,
+    y2024: 360,
+    y2025: 460,
+    mJan: 560, // Meteorite start
+    mFeb: 760, // Meteorite end (width: 200px)
+    mJune: 870, // Bloop start
+    mAug: 1090, // Bloop end (width: 220px)
+    mDec: 1200, // Skyclad start
+    y2026: 1280,
+    mMay: 1460, // IIIT end (width: 1300px)
+    mJune26: 1530,
+    y2027: 1650,
+  };
+
+  // Markers on the timeline: Solid Filled Circles for years, Solid Filled Diamonds for months
+  const markers = [
+    { label: "2021", x: xCoords.y2021, type: "circle" },
+    { label: "2022", x: xCoords.y2022, type: "circle" },
+    { label: "2023", x: xCoords.y2023, type: "circle" },
+    { label: "2024", x: xCoords.y2024, type: "circle" },
+    { label: "2025", x: xCoords.y2025, type: "circle" },
+    { label: "Jan", x: xCoords.mJan, type: "diamond" },
+    { label: "Feb", x: xCoords.mFeb, type: "diamond" },
+    { label: "June", x: xCoords.mJune, type: "diamond" },
+    { label: "Aug", x: xCoords.mAug, type: "diamond" },
+    { label: "Dec", x: xCoords.mDec, type: "diamond" },
+    { label: "2026", x: xCoords.y2026, type: "circle" },
+    { label: "May", x: xCoords.mMay, type: "diamond" },
+    { label: "June", x: xCoords.mJune26, type: "diamond" },
+    { label: "2027", x: xCoords.y2027, type: "circle" },
   ];
 
-  const xIIITStart = 175; // Nov 2022
-  const xIIITEnd = 980; // May 2026
-  const xMeteorite = 500; // Jan 2025
-  const xBloop = 690; // Jun - Aug 2025
-  const xSkyclad = 880; // Dec 2025 - Present
-
-  // Scroll to focus on active years on initial load
+  // Scroll to active span on initial load
   useEffect(() => {
     if (containerRef.current) {
-      containerRef.current.scrollLeft = 200;
+      containerRef.current.scrollLeft = 280;
     }
   }, []);
 
@@ -75,51 +88,62 @@ export default function TimelineView() {
     containerRef.current.scrollLeft = scrollLeft - walk;
   };
 
-  // Reusable Timeline Card Component matching user reference image
-  const TimelineCard = ({
-    exp,
+  // Card component strictly matching Headout design & user wireframe
+  // Outer capsule is rounded-2xl; Inner logo box has rounded-md (border-md) only as requested
+  const WireframeCard = ({
+    logo,
+    logoBg,
+    logoColor,
+    logoText,
+    title,
+    subtitle,
     className = "",
+    style,
   }: {
-    exp: ExperienceItem;
+    logo?: string;
+    logoBg?: string;
+    logoColor?: string;
+    logoText?: string;
+    title: string;
+    subtitle: string;
     className?: string;
+    style?: React.CSSProperties;
   }) => (
-    <div
-      className={`group flex items-center gap-3 p-2.5 px-3.5 rounded-2xl border border-white/10 bg-[#121214] shadow-md hover:border-white/25 transition-all select-none ${className}`}
+    <motion.div
+      style={style}
+      whileHover={{ y: -2 }}
+      className={`group flex items-center gap-3 px-3.5 py-2 rounded-2xl border border-white/10 bg-[#111113] shadow-md hover:border-white/25 hover:bg-[#161619] transition-all select-none cursor-default overflow-hidden ${className}`}
     >
-      {/* Squircle Icon / Image */}
+      {/* Left Image Box with rounded-md (border-md) only */}
       <div
-        className="w-8 h-8 rounded-xl flex items-center justify-center font-mono-custom text-xs font-bold shrink-0 overflow-hidden shadow-sm border border-white/10"
+        className="w-9 h-9 rounded-md flex items-center justify-center font-mono-custom text-xs font-bold shrink-0 overflow-hidden shadow-sm border border-white/10 bg-black/40"
         style={{
-          backgroundColor: exp.logoBg || "#1A1A1A",
-          color: exp.logoColor || "#EDEDEA",
+          backgroundColor: logoBg || "#1A1A1A",
+          color: logoColor || "#EDEDEA",
         }}
       >
-        {exp.image ? (
-          <img
-            src={exp.image}
-            alt={exp.company}
-            className="w-full h-full object-cover"
-          />
+        {logo ? (
+          <img src={logo} alt={title} className="w-full h-full object-cover rounded-md" />
         ) : (
-          <span>{exp.logoText}</span>
+          <span>{logoText}</span>
         )}
       </div>
 
-      {/* Company Name & Role (Clean 2-line layout without date clutter) */}
-      <div className="min-w-0 pr-1 text-left">
-        <h4 className="text-sm font-semibold text-white tracking-tight truncate leading-tight">
-          {exp.company}
+      {/* Title & Period / Role matching Headout structure */}
+      <div className="min-w-0 flex-1 pr-1 text-left">
+        <h4 className="text-xs sm:text-sm font-semibold text-white tracking-tight truncate leading-tight font-sans">
+          {title}
         </h4>
-        <p className="text-xs text-[#8A8A85] tracking-tight truncate leading-tight mt-0.5">
-          {exp.role}
+        <p className="text-[10px] sm:text-[11px] text-[#8A8A85] tracking-tight truncate leading-tight mt-0.5 font-inter">
+          {subtitle}
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 
   return (
     <div className="w-full my-3">
-      {/* Scrollable Timeline Canvas - NO SIDE BORDER, only subtle top/bottom borders */}
+      {/* Scrollable Timeline Canvas */}
       <div
         ref={containerRef}
         onMouseDown={handleMouseDown}
@@ -130,277 +154,168 @@ export default function TimelineView() {
           isDragging ? "cursor-grabbing" : "cursor-grab"
         }`}
       >
-        <div style={{ width: `${timelineWidth}px` }} className="relative h-[325px]">
+        <div style={{ width: `${timelineWidth}px` }} className="relative h-[420px]">
           {/* ========================================================== */}
-          {/* 1. HORIZONTAL AXIS LINE (SOLID GREY & DASHED FUTURE RAIL)  */}
+          {/* 1. ARCHITECTURAL VERTICAL DASHED LINES (FADING TOP/BOTTOM) */}
           {/* ========================================================== */}
-          {/* Solid grey line across active timeline (2020 to Now) */}
+
+          {/* Above axis lines (Fading out towards the top) */}
+          {[xCoords.mJan, xCoords.mFeb, xCoords.mJune, xCoords.mAug, xCoords.mDec].map(
+            (xPos, idx) => (
+              <div
+                key={`top-line-${idx}`}
+                style={{
+                  left: `${xPos}px`,
+                  top: "0px",
+                  height: `${yLine}px`,
+                  maskImage: "linear-gradient(to top, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)",
+                  WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)",
+                }}
+                className="absolute w-0 border-l border-dashed border-white/25 pointer-events-none"
+              />
+            )
+          )}
+
+          {/* Below axis lines (Fading out towards the bottom) */}
+          {[xCoords.y2022, xCoords.mMay].map((xPos, idx) => (
+            <div
+              key={`bottom-line-${idx}`}
+              style={{
+                left: `${xPos}px`,
+                top: `${yLine}px`,
+                height: `${canvasHeight - yLine}px`,
+                maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)",
+                WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)",
+              }}
+              className="absolute w-0 border-l border-dashed border-white/25 pointer-events-none"
+            />
+          ))}
+
+          {/* ========================================================== */}
+          {/* 2. MAIN HORIZONTAL AXIS LINE                               */}
+          {/* ========================================================== */}
           <div
             style={{
-              left: "50px",
-              width: `${1020 - 50}px`,
+              left: "40px",
+              width: `${xCoords.y2027 - 40 + 50}px`,
               top: `${yLine}px`,
             }}
             className="absolute h-[2px] bg-white/20 rounded-full pointer-events-none"
           />
 
-          {/* Dashed grey future extension with arrow */}
-          <div
-            style={{
-              left: "1020px",
-              width: "110px",
-              top: `${yLine}px`,
-            }}
-            className="absolute h-0 border-t-2 border-dashed border-white/20 pointer-events-none flex items-center justify-end"
-          >
-            <span className="text-[#8A8A85] text-xs font-mono-custom -mr-1.5 -mt-[1px] select-none">
-              ▸
-            </span>
-          </div>
-
           {/* ========================================================== */}
-          {/* 2. LEADER STEMS (UP & DOWN) TO MONTH POSITIONS             */}
+          {/* 3. AXIS MARKERS (SOLID FILLED CIRCLES & DIAMONDS)          */}
           {/* ========================================================== */}
-
-          {/* Stem for Meteorite: Jan 2025 (UP to top: 38px) */}
-          {meteoriteExp && (
+          {markers.map((m, i) => (
             <div
-              style={{
-                left: `${xMeteorite}px`,
-                top: "90px",
-                height: `${yLine - 90}px`,
-              }}
-              className="absolute w-[1.5px] bg-white/20 -translate-x-[0.5px] pointer-events-none"
-            />
-          )}
-
-          {/* Stem for Bloop: Jun–Aug 2025 (DOWN to top: 104px) */}
-          {bloopExp && (
-            <div
-              style={{
-                left: `${xBloop}px`,
-                top: "156px",
-                height: `${yLine - 156}px`,
-              }}
-              className="absolute w-[1.5px] bg-white/20 -translate-x-[0.5px] pointer-events-none"
-            />
-          )}
-
-          {/* Stem for Skyclad Ventures: Dec 2025 (UP to top: 38px) */}
-          {skycladExp && (
-            <div
-              style={{
-                left: `${xSkyclad}px`,
-                top: "90px",
-                height: `${yLine - 90}px`,
-              }}
-              className="absolute w-[1.5px] bg-white/20 -translate-x-[0.5px] pointer-events-none"
-            />
-          )}
-
-          {/* Stems & Rail for IIITDMJ: Spanning full from Nov 2022 to May 2026 */}
-          {iiitExp && (
-            <>
-              {/* Left stem at Nov 2022 dropping down to IIIT track */}
+              key={i}
+              style={{ left: `${m.x}px` }}
+              className="absolute top-0 bottom-0 pointer-events-none flex flex-col items-center"
+            >
+              {/* Marker shape on the axis line (SOLID FILLED) */}
               <div
-                style={{
-                  left: `${xIIITStart}px`,
-                  top: `${yLine}px`,
-                  height: "56px",
-                }}
-                className="absolute w-[1.5px] bg-cyan-500/30 -translate-x-[0.5px] pointer-events-none"
-              />
-              {/* Right stem at May 2026 dropping down to IIIT track */}
-              <div
-                style={{
-                  left: `${xIIITEnd}px`,
-                  top: `${yLine}px`,
-                  height: "56px",
-                }}
-                className="absolute w-[1.5px] bg-cyan-500/30 -translate-x-[0.5px] pointer-events-none"
-              />
-              {/* Academic Span Bar from Nov 2022 to May 2026 */}
-              <div
-                style={{
-                  left: `${xIIITStart}px`,
-                  width: `${xIIITEnd - xIIITStart}px`,
-                  top: "231px",
-                }}
-                className="absolute h-[2px] bg-cyan-500/30 rounded-full pointer-events-none"
-              />
-              {/* Left terminal dot at Nov 2022 */}
-              <div
-                style={{ left: `${xIIITStart}px`, top: "231px" }}
-                className="absolute -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-[#06B6D4] ring-2 ring-black"
-              />
-              {/* Right terminal dot at May 2026 */}
-              <div
-                style={{ left: `${xIIITEnd}px`, top: "231px" }}
-                className="absolute -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-[#06B6D4] ring-2 ring-black"
-              />
-            </>
-          )}
-
-          {/* ========================================================== */}
-          {/* 3. YEAR & EXPANDED MONTH TICKS & LABELS                    */}
-          {/* ========================================================== */}
-          {yearMarks.map((mark, i) => {
-            const isMilestone = [175, 500, 690, 880, 980].includes(mark.x);
-
-            return (
-              <div
-                key={i}
-                style={{ left: `${mark.x}px` }}
-                className="absolute top-0 bottom-0 pointer-events-none flex flex-col items-center"
+                style={{ top: `${yLine}px` }}
+                className="absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center z-10"
               >
-                {/* Milestone Dot on the line */}
-                <div
-                  style={{ top: `${yLine}px` }}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center"
-                >
-                  {mark.isCurrent ? (
-                    // Now (Current Beacon)
-                    <div className="relative flex items-center justify-center">
-                      <span className="w-4 h-4 rounded-full border border-white/30 bg-[#161616]" />
-                      <span className="absolute w-2 h-2 rounded-full bg-[#10B981]" />
-                    </div>
-                  ) : isMilestone ? (
-                    // Milestone Dot (White filled center)
-                    <div className="w-3 h-3 rounded-full border border-white/25 bg-[#141416] flex items-center justify-center">
-                      <span className="w-1.5 h-1.5 rounded-full bg-white/70" />
-                    </div>
-                  ) : (
-                    // Subtle intermediate tick
-                    <div className="w-2 h-2 rounded-full bg-white/25" />
-                  )}
-                </div>
-
-                {/* Primary Label below the line (Year / Month) */}
-                <div
-                  style={{ top: `${yLine + 12}px` }}
-                  className="absolute -translate-x-1/2 flex flex-col items-center whitespace-nowrap select-none"
-                >
-                  <span
-                    className={`font-mono-custom text-[11px] ${
-                      mark.isCurrent
-                        ? "text-[#10B981] font-semibold"
-                        : mark.isMonth
-                        ? "text-[#EDEDEA]/90 font-medium"
-                        : "text-[#8A8A85]"
-                    }`}
-                  >
-                    {mark.label}
-                  </span>
-
-                  {/* Sub-month badge if applicable (e.g. Nov '22, Jan '25, May '26) */}
-                  {mark.sub && (
-                    <span className="font-mono-custom text-[9px] text-[#8A8A85]/70 -mt-0.5">
-                      {mark.sub}
-                    </span>
-                  )}
-                </div>
+                {m.type === "diamond" ? (
+                  // Solid filled grey diamond marker for months (same color as date, no glow)
+                  <div className="w-2.5 h-2.5 rotate-45 bg-[#8A8A85]" />
+                ) : (
+                  // Solid filled grey circular dot for years (same color as date, no glow)
+                  <div className="w-3 h-3 rounded-full bg-[#8A8A85]" />
+                )}
               </div>
-            );
-          })}
+
+              {/* Inter Monospace Label below the line */}
+              <span
+                style={{ top: `${yLine + 14}px` }}
+                className="absolute -translate-x-1/2 font-mono-custom text-[11px] text-[#8A8A85] whitespace-nowrap select-none tracking-tight font-medium"
+              >
+                {m.label}
+              </span>
+            </div>
+          ))}
 
           {/* ========================================================== */}
-          {/* 4. WORK EXPERIENCE CARDS (MATCHING REFERENCE IMAGE)        */}
+          {/* 4. WORK EXPERIENCE CARDS ABOVE THE LINE (MATCHING SKETCH)  */}
           {/* ========================================================== */}
 
-          {/* Card 1: Meteorite (Jan 2025) - Staggered UP (top: 38px) */}
+          {/* Card 1: Meteorite (Spans from Jan to Feb 2025) */}
           {meteoriteExp && (
-            <motion.div
+            <WireframeCard
+              logo={meteoriteExp.image || "/meteorite.jpg"}
+              logoBg={meteoriteExp.logoBg}
+              logoColor={meteoriteExp.logoColor}
+              logoText={meteoriteExp.logoText}
+              title={meteoriteExp.company}
+              subtitle="Jan – Feb 2025"
+              className="absolute z-20"
               style={{
-                left: `${xMeteorite}px`,
-                top: "38px",
-                transform: "translateX(-50%)",
+                left: `${xCoords.mJan}px`,
+                width: `${xCoords.mFeb - xCoords.mJan}px`,
+                top: "92px",
+                height: "56px",
               }}
-              whileHover={{ y: -2 }}
-              className="absolute"
-            >
-              <TimelineCard exp={meteoriteExp} className="w-[195px]" />
-            </motion.div>
+            />
           )}
 
-          {/* Card 2: Bloop (Jun–Aug 2025) - Staggered DOWN (top: 104px) */}
+          {/* Card 2: Bloop (Spans from June to Aug 2025) */}
           {bloopExp && (
-            <motion.div
+            <WireframeCard
+              logo={bloopExp.image}
+              logoBg={bloopExp.logoBg || "#2A124D"}
+              logoColor={bloopExp.logoColor || "#A855F7"}
+              logoText={bloopExp.logoText || "BL"}
+              title={bloopExp.company}
+              subtitle="June – Aug 2025"
+              className="absolute z-20"
               style={{
-                left: `${xBloop}px`,
-                top: "104px",
-                transform: "translateX(-50%)",
+                left: `${xCoords.mJune}px`,
+                width: `${xCoords.mAug - xCoords.mJune}px`,
+                top: "92px",
+                height: "56px",
               }}
-              whileHover={{ y: -2 }}
-              className="absolute"
-            >
-              <TimelineCard exp={bloopExp} className="w-[195px]" />
-            </motion.div>
+            />
           )}
 
-          {/* Card 3: Skyclad Ventures (Dec 2025) - Staggered UP (top: 38px) */}
+          {/* Card 3: Skyclad Ventures (Spans from Dec 2025 across 2026+) */}
           {skycladExp && (
-            <motion.div
+            <WireframeCard
+              logo={skycladExp.image || "/skyclad_ventures.jpg"}
+              logoBg={skycladExp.logoBg || "#0F281E"}
+              logoColor={skycladExp.logoColor || "#10B981"}
+              logoText={skycladExp.logoText || "SV"}
+              title={skycladExp.company}
+              subtitle="2025 – Present"
+              className="absolute z-20"
               style={{
-                left: `${xSkyclad}px`,
-                top: "38px",
-                transform: "translateX(-50%)",
+                left: `${xCoords.mDec}px`,
+                width: `${1620 - xCoords.mDec}px`,
+                top: "92px",
+                height: "56px",
               }}
-              whileHover={{ y: -2 }}
-              className="absolute"
-            >
-              <TimelineCard exp={skycladExp} className="w-[195px]" />
-            </motion.div>
+            />
           )}
 
           {/* ========================================================== */}
-          {/* 5. IIITDMJ: SPANNING FULL FROM NOV 2022 TO MAY 2026        */}
+          {/* 5. IIIT JABALPUR CARD BELOW THE LINE (SPANS 2022 TO MAY)  */}
           {/* ========================================================== */}
           {iiitExp && (
-            <motion.div
+            <WireframeCard
+              logo={iiitExp.image || "/iiitdmj.jpg"}
+              logoBg={iiitExp.logoBg || "#083337"}
+              logoColor={iiitExp.logoColor || "#06B6D4"}
+              logoText={iiitExp.logoText || "IIIT"}
+              title="IIIT Jabalpur"
+              subtitle="Bachelor of Technology • 2022–2026"
+              className="absolute z-20"
               style={{
-                left: `${(xIIITStart + xIIITEnd) / 2}px`,
-                top: "244px",
-                transform: "translateX(-50%)",
+                left: `${xCoords.y2022}px`,
+                width: `${xCoords.mMay - xCoords.y2022}px`,
+                top: "250px",
+                height: "58px",
               }}
-              whileHover={{ y: -2 }}
-              className="absolute"
-            >
-              <div className="flex items-center gap-3 p-2.5 px-3.5 rounded-2xl border border-cyan-500/25 bg-[#0A181C]/95 backdrop-blur-md shadow-md hover:border-cyan-500/50 transition-all select-none w-[440px] sm:w-[480px]">
-                {/* Logo / Image */}
-                <div
-                  className="w-8 h-8 rounded-xl flex items-center justify-center font-mono-custom text-xs font-bold shrink-0 overflow-hidden shadow-sm border border-cyan-500/30"
-                  style={{
-                    backgroundColor: iiitExp.logoBg || "#083337",
-                    color: iiitExp.logoColor || "#06B6D4",
-                  }}
-                >
-                  {iiitExp.image ? (
-                    <img
-                      src={iiitExp.image}
-                      alt={iiitExp.company}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <span>{iiitExp.logoText || "IIIT"}</span>
-                  )}
-                </div>
-
-                {/* Company & Role */}
-                <div className="min-w-0 flex-1 pr-1 text-left">
-                  <h4 className="text-sm font-semibold text-white tracking-tight truncate leading-tight">
-                    {iiitExp.company}
-                  </h4>
-                  <p className="text-xs text-[#8A8A85] tracking-tight truncate leading-tight mt-0.5">
-                    {iiitExp.role}
-                  </p>
-                </div>
-
-                {/* Duration Badge spanning Nov 2022 to May 2026 */}
-                <div className="px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-[#06B6D4] font-mono-custom text-[10px] shrink-0 whitespace-nowrap">
-                  2022 — 2026
-                </div>
-              </div>
-            </motion.div>
+            />
           )}
         </div>
       </div>

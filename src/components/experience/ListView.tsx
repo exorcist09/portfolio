@@ -41,10 +41,18 @@ export default function ListView() {
                 <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                   {/* Logo square tile */}
                   <div
-                    className="relative z-10 shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center font-mono-custom text-xs font-bold border border-white/[0.08] shadow-md"
+                    className="relative z-10 shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center font-mono-custom text-xs font-bold border border-white/[0.08] shadow-md overflow-hidden"
                     style={{ backgroundColor: exp.logoBg, color: exp.logoColor }}
                   >
-                    {exp.logoText}
+                    {exp.image ? (
+                      <img
+                        src={exp.image}
+                        alt={exp.company}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      exp.logoText
+                    )}
 
                     {/* Active pulse dot on current position */}
                     {exp.active && (

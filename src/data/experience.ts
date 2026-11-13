@@ -8,7 +8,7 @@ export interface ExperienceItem {
   lane: number;
   active?: boolean;
   isTileOnly?: boolean;
-  image?: string; // Optional custom logo image URL (e.g. /my-logo.png)
+  image?: string; // Custom logo image URL from /public
   description: string;
   bullets?: string[];
   logoText: string;
@@ -26,6 +26,7 @@ export const experiences: ExperienceItem[] = [
     endYear: 2027.0,
     lane: 1,
     active: true,
+    image: "/skyclad_ventures.jpg",
     description: "Scalable backend engineering and product development.",
     bullets: [
       "Building scalable backend services and high-concurrency architecture.",
@@ -60,6 +61,7 @@ export const experiences: ExperienceItem[] = [
     startYear: 2025.08,
     endYear: 2025.17,
     lane: 1,
+    image: "/meteorite.jpg",
     description: "Frontend development, responsive user interfaces, and component architectures.",
     bullets: [
       "Built responsive UI components and interactive web interfaces.",
@@ -78,6 +80,7 @@ export const experiences: ExperienceItem[] = [
     endYear: 2026.4,
     lane: 2,
     isTileOnly: true,
+    image: "/iiitdmj.jpg",
     description: "Computer Science & Engineering foundation, algorithms, systems design.",
     bullets: [
       "Indian Institute of Information Technology, Design and Manufacturing, Jabalpur.",
