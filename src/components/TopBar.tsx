@@ -166,7 +166,7 @@ export default function TopBar() {
                   title="Copy Email"
                 >
                   {copied ? (
-                    <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#EA580C] stroke-[2.2]" />
+                    <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[var(--accent)] stroke-[2.2]" />
                   ) : (
                     <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[1.8]" />
                   )}

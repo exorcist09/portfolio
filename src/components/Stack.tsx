@@ -77,7 +77,7 @@ export default function Stack() {
       <div className="mt-8 text-center select-none">
         <Link
           href="/skills"
-          className="font-handwriting text-xl sm:text-2xl text-[#EA580C] hover:text-orange-400 transition-colors cursor-pointer select-none inline-block"
+          className="font-handwriting text-xl sm:text-2xl text-[var(--accent)] hover:text-[var(--accent-light)] transition-colors cursor-pointer select-none inline-block"
         >
           + check ..
         </Link>

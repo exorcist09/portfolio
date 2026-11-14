@@ -69,8 +69,8 @@ export default function TypeEraseText({
     >
       <span>{displayText}</span>
 
-      {/* Blinking Cursor in dark orange */}
-      <span className="ml-1 inline-block w-[3px] sm:w-[5px] h-[0.9em] bg-[#EA580C] animate-pulse rounded-full align-middle" />
+      {/* Blinking Cursor in accent color */}
+      <span className="ml-1 inline-block w-[3px] sm:w-[5px] h-[0.9em] bg-[var(--accent)] animate-pulse rounded-full align-middle" />
     </div>
   );
 }

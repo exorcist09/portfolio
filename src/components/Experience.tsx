@@ -104,7 +104,7 @@ export default function Experience() {
           <button
             type="button"
             onClick={() => setActiveTab("list")}
-            className="font-handwriting text-xl sm:text-2xl text-[#EA580C] hover:text-orange-400 transition-colors cursor-pointer select-none"
+            className="font-handwriting text-xl sm:text-2xl text-[var(--accent)] hover:text-[var(--accent-light)] transition-colors cursor-pointer select-none"
           >
             + know more
           </button>

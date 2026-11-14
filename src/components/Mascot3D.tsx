@@ -5,7 +5,9 @@ import * as THREE from "three";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Sparkles, ArrowRight } from "lucide-react";
 
-export default function Mascot3D() {
+export default function Mascot3D({ hidden = true }: { hidden?: boolean }) {
+  if (hidden) return null;
+
   const mountRef = useRef<HTMLDivElement>(null);
   const [phase, setPhase] = useState<"entering" | "waving" | "idle">("entering");
   const [speechVisible, setSpeechVisible] = useState(false);
@@ -647,8 +649,8 @@ export default function Mascot3D() {
             className="pointer-events-auto relative mb-2 mr-3 w-64 sm:w-72 rounded-2xl border border-white/10 bg-[#111113]/92 backdrop-blur-xl p-3.5 shadow-2xl text-left"
           >
             <div className="flex items-center justify-between mb-2">
-              <span className="flex items-center gap-1.5 text-[10px] font-mono-custom uppercase tracking-wider text-[#EA580C] font-semibold">
-                <Sparkles className="w-3 h-3 fill-[#EA580C]" />
+              <span className="flex items-center gap-1.5 text-[10px] font-mono-custom uppercase tracking-wider text-[var(--accent)] font-semibold">
+                <Sparkles className="w-3 h-3 fill-[var(--accent)]" />
                 Companion
               </span>
               <button
@@ -675,12 +677,12 @@ export default function Mascot3D() {
                   className="text-[10px] font-mono-custom px-2.5 py-1 rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-[#EDEDEA] border border-white/[0.08] transition-all cursor-pointer flex items-center gap-1"
                 >
                   <span>{s.label}</span>
-                  <ArrowRight className="w-2.5 h-2.5 text-[#EA580C]" />
+                  <ArrowRight className="w-2.5 h-2.5 text-[var(--accent)]" />
                 </button>
               ))}
               <button
                 onClick={() => scrollToSection("contact")}
-                className="text-[10px] font-mono-custom px-2.5 py-1 rounded-full bg-[#EA580C]/20 hover:bg-[#EA580C]/30 text-[#EA580C] border border-[#EA580C]/40 transition-all cursor-pointer flex items-center gap-1 font-semibold"
+                className="text-[10px] font-mono-custom px-2.5 py-1 rounded-full bg-[var(--accent)]/20 hover:bg-[var(--accent)]/30 text-[var(--accent)] border border-[var(--accent)]/40 transition-all cursor-pointer flex items-center gap-1 font-semibold"
               >
                 <span>Contact</span>
                 <ArrowRight className="w-2.5 h-2.5" />

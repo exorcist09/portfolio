@@ -117,11 +117,11 @@ export default function Hero() {
           {siteContent.bioParagraph2}
         </p>
 
-        {/* Action Buttons: Contact (dark orange filled pill, unfilled mail icon) + Talk to agent + Resume */}
+        {/* Action Buttons: Contact (accent filled pill, unfilled mail icon) + Resume */}
         <div className="pt-2 flex flex-wrap items-center gap-3">
           <a
             href="#contact"
-            className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#EA580C] hover:bg-[#C2410C] border border-orange-500/20 text-xs sm:text-sm font-semibold text-white transition-all cursor-pointer shadow-md shadow-orange-950/40 hover:scale-[1.02] active:scale-[0.98]"
+            className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] border border-[var(--accent-light)]/30 text-xs sm:text-sm font-semibold text-white transition-all cursor-pointer shadow-md shadow-indigo-950/40 hover:scale-[1.02] active:scale-[0.98]"
             aria-label="Contact Adarsh"
           >
             <Mail className="w-3.5 h-3.5 text-white stroke-current stroke-[2] fill-none group-hover:rotate-12 transition-transform" />

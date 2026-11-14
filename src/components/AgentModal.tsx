@@ -95,7 +95,7 @@ export default function AgentModal({
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.08]">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-full bg-[#EA580C]/10 border border-[#EA580C]/30 flex items-center justify-center text-[#EA580C]">
+                <div className="w-8 h-8 rounded-full bg-[var(--accent)]/15 border border-[var(--accent)]/30 flex items-center justify-center text-[var(--accent)]">
                   <Sparkles className="w-4 h-4" />
                 </div>
                 <div>
@@ -134,14 +134,14 @@ export default function AgentModal({
                   <div
                     className={`max-w-[82%] text-xs sm:text-sm leading-relaxed rounded-2xl px-3.5 py-2.5 ${
                       m.sender === "user"
-                        ? "bg-[#EA580C] text-black font-medium"
+                        ? "bg-[var(--accent)] text-white font-medium"
                         : "bg-white/[0.06] text-[#EDEDEA] border border-white/[0.08]"
                     }`}
                   >
                     {m.text}
                   </div>
                   {m.sender === "user" && (
-                    <div className="w-6 h-6 rounded-full bg-[#EA580C]/20 flex items-center justify-center text-[#EA580C] shrink-0 mt-0.5">
+                    <div className="w-6 h-6 rounded-full bg-[var(--accent)]/20 flex items-center justify-center text-[var(--accent)] shrink-0 mt-0.5">
                       <User className="w-3.5 h-3.5" />
                     </div>
                   )}
@@ -183,7 +183,7 @@ export default function AgentModal({
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask Adarsh's agent something..."
-                className="flex-1 bg-white/[0.05] border border-white/[0.1] rounded-full px-4 py-2 text-xs sm:text-sm text-[#EDEDEA] placeholder:text-[#8A8A85] focus:outline-none focus:border-[#EA580C]"
+                className="flex-1 bg-white/[0.05] border border-white/[0.1] rounded-full px-4 py-2 text-xs sm:text-sm text-[#EDEDEA] placeholder:text-[#8A8A85] focus:outline-none focus:border-[var(--accent)]"
               />
               <button
                 type="submit"

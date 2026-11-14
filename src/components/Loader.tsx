@@ -3,28 +3,53 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// Module-level state: resets to false on full page load/reload,
+// but stays true during client-side router navigation (returning from /work, /skills, /work-together)
+let hasLoadedInSession = false;
+
 export default function Loader({ onComplete }: { onComplete?: () => void }) {
-  const [show, setShow] = useState(false);
+  // Start with true on initial load/reload so the black backdrop renders immediately (no FOUC/flash)
+  const [show, setShow] = useState(!hasLoadedInSession);
+  const [fontReady, setFontReady] = useState(false);
 
   useEffect(() => {
-    // Only show intro animation once per session so navigating back does not reload/replay it
-    const hasSeenIntro = sessionStorage.getItem("portfolio_intro_seen");
-    if (hasSeenIntro) {
+    if (!show) {
       onComplete?.();
       return;
     }
 
-    setShow(true);
+    // Wait for the cursive font (Caveat) to load so the text doesn't pop or shift layout
+    let mounted = true;
+    const fontFallbackTimer = setTimeout(() => {
+      if (mounted) setFontReady(true);
+    }, 250);
 
-    // Fill completes at ~1.7s, exit at 2.1s
+    if (typeof document !== "undefined" && document.fonts) {
+      document.fonts.ready.then(() => {
+        if (mounted) setFontReady(true);
+      });
+    } else {
+      setFontReady(true);
+    }
+
+    return () => {
+      mounted = false;
+      clearTimeout(fontFallbackTimer);
+    };
+  }, [show, onComplete]);
+
+  useEffect(() => {
+    if (!show || !fontReady) return;
+
+    // Fill animation runs for 1.7s, total delay before fade-out is 2.1s
     const timer = setTimeout(() => {
       setShow(false);
-      sessionStorage.setItem("portfolio_intro_seen", "true");
+      hasLoadedInSession = true;
       onComplete?.();
-    }, 2200);
+    }, 2100);
 
     return () => clearTimeout(timer);
-  }, [onComplete]);
+  }, [show, fontReady, onComplete]);
 
   return (
     <AnimatePresence>
@@ -32,11 +57,11 @@ export default function Loader({ onComplete }: { onComplete?: () => void }) {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black select-none"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black select-none pointer-events-auto"
         >
           {/* Cursive Name - Big text with left-to-right fill inside text only */}
           <div className="relative inline-block select-none px-6 py-4">
-            {/* Dim outline shape of text */}
+            {/* Dim outline shape of cursive text */}
             <span
               className="font-handwriting text-8xl sm:text-9xl md:text-[10rem] lg:text-[12rem] text-white/15 select-none block leading-tight tracking-wide"
               style={{ fontFamily: "'Caveat', cursive, sans-serif" }}
@@ -45,19 +70,21 @@ export default function Loader({ onComplete }: { onComplete?: () => void }) {
             </span>
 
             {/* Pure white text fill animating strictly within glyphs from left to right */}
-            <motion.div
-              initial={{ clipPath: "inset(0 100% 0 0)" }}
-              animate={{ clipPath: "inset(0 0% 0 0)" }}
-              transition={{ duration: 1.7, ease: [0.65, 0, 0.35, 1] }}
-              className="absolute inset-0 px-6 py-4 select-none"
-            >
-              <span
-                className="font-handwriting text-8xl sm:text-9xl md:text-[10rem] lg:text-[12rem] text-white select-none block leading-tight tracking-wide"
-                style={{ fontFamily: "'Caveat', cursive, sans-serif" }}
+            {fontReady && (
+              <motion.div
+                initial={{ clipPath: "inset(0 100% 0 0)" }}
+                animate={{ clipPath: "inset(0 0% 0 0)" }}
+                transition={{ duration: 1.6, ease: [0.65, 0, 0.35, 1] }}
+                className="absolute inset-0 px-6 py-4 select-none"
               >
-                Adarsh
-              </span>
-            </motion.div>
+                <span
+                  className="font-handwriting text-8xl sm:text-9xl md:text-[10rem] lg:text-[12rem] text-white select-none block leading-tight tracking-wide"
+                  style={{ fontFamily: "'Caveat', cursive, sans-serif" }}
+                >
+                  Adarsh
+                </span>
+              </motion.div>
+            )}
           </div>
         </motion.div>
       )}

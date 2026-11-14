@@ -142,7 +142,7 @@ export default function WorkTogetherPage() {
   ).toLocaleString("default", { month: "short" });
 
   return (
-    <div className="min-h-screen bg-black text-[#EDEDEA] selection:bg-[#EA580C]/25 selection:text-[#EA580C]">
+    <div className="min-h-screen bg-black text-[#EDEDEA] selection:bg-[var(--accent)]/25 selection:text-[var(--accent)]">
       <main className="w-full max-w-[760px] mx-auto px-5 sm:px-6 py-12 sm:py-20">
         {/* Header: Back button (rounded-lg with border) beside the heading "Work together" (not uppercase) */}
         <div className="flex items-center gap-3.5 sm:gap-4 mb-10">
@@ -221,7 +221,7 @@ export default function WorkTogetherPage() {
                 <button
                   type="button"
                   onClick={handleCopyEmail}
-                  className="inline-flex items-center gap-2 text-xs text-[#EA580C] hover:text-orange-400 font-sans transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-2 text-xs text-[var(--accent)] hover:text-[var(--accent-light)] font-sans transition-colors cursor-pointer"
                 >
                   <Mail className="w-3.5 h-3.5 text-[#8A8A85]" />
                   <span>{siteContent.email}</span>
@@ -306,7 +306,7 @@ export default function WorkTogetherPage() {
                               isPast
                                 ? "text-white/20 cursor-not-allowed"
                                 : isSelected
-                                ? "bg-[#EA580C] text-white font-bold shadow-md shadow-orange-950/40"
+                                ? "bg-[var(--accent)] text-white font-bold shadow-md shadow-indigo-950/40"
                                 : "text-[#EDEDEA] hover:bg-white/[0.08] hover:text-white cursor-pointer"
                             }`}
                           >
@@ -338,7 +338,7 @@ export default function WorkTogetherPage() {
                             onClick={() => setSelectedTime(time)}
                             className={`px-3 py-2 rounded-lg text-xs font-sans border transition-all cursor-pointer ${
                               isSelected
-                                ? "bg-[#EA580C] border-orange-500 text-white font-semibold shadow-md"
+                                ? "bg-[var(--accent)] border-[var(--accent-light)] text-white font-semibold shadow-md"
                                 : "bg-[#141414] border-white/[0.08] text-[#EDEDEA] hover:border-white/20 hover:bg-[#1A1A1A]"
                             }`}
                           >
@@ -354,7 +354,7 @@ export default function WorkTogetherPage() {
                         type="button"
                         onClick={() => setStep("form")}
                         disabled={!selectedDate || !selectedTime}
-                        className="w-full py-2.5 rounded-lg bg-[#EA580C] hover:bg-[#C2410C] text-white text-xs sm:text-sm font-semibold transition-all cursor-pointer shadow-md shadow-orange-950/40"
+                        className="w-full py-2.5 rounded-lg bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white text-xs sm:text-sm font-semibold transition-all cursor-pointer shadow-md shadow-indigo-950/40"
                       >
                         Next: Enter Your Details →
                       </button>
@@ -395,7 +395,7 @@ export default function WorkTogetherPage() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Alex Mercer"
-                      className="w-full px-3.5 py-2.5 rounded-lg bg-[#141414] border border-white/10 text-xs sm:text-sm text-[#EDEDEA] placeholder:text-white/30 focus:outline-none focus:border-[#EA580C] transition-colors"
+                      className="w-full px-3.5 py-2.5 rounded-lg bg-[#141414] border border-white/10 text-xs sm:text-sm text-[#EDEDEA] placeholder:text-white/30 focus:outline-none focus:border-[var(--accent)] transition-colors"
                     />
                   </div>
 
@@ -409,7 +409,7 @@ export default function WorkTogetherPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="alex@company.com"
-                      className="w-full px-3.5 py-2.5 rounded-lg bg-[#141414] border border-white/10 text-xs sm:text-sm text-[#EDEDEA] placeholder:text-white/30 focus:outline-none focus:border-[#EA580C] transition-colors"
+                      className="w-full px-3.5 py-2.5 rounded-lg bg-[#141414] border border-white/10 text-xs sm:text-sm text-[#EDEDEA] placeholder:text-white/30 focus:outline-none focus:border-[var(--accent)] transition-colors"
                     />
                   </div>
 
@@ -422,14 +422,14 @@ export default function WorkTogetherPage() {
                       value={projectBrief}
                       onChange={(e) => setProjectBrief(e.target.value)}
                       placeholder="E.g., discussing MVP timelines, architecture, or collaboration..."
-                      className="w-full px-3.5 py-2.5 rounded-lg bg-[#141414] border border-white/10 text-xs sm:text-sm text-[#EDEDEA] placeholder:text-white/30 focus:outline-none focus:border-[#EA580C] transition-colors resize-none"
+                      className="w-full px-3.5 py-2.5 rounded-lg bg-[#141414] border border-white/10 text-xs sm:text-sm text-[#EDEDEA] placeholder:text-white/30 focus:outline-none focus:border-[var(--accent)] transition-colors resize-none"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-2.5 rounded-lg bg-[#EA580C] hover:bg-[#C2410C] text-white text-xs sm:text-sm font-semibold transition-all cursor-pointer shadow-md shadow-orange-950/40 flex items-center justify-center gap-2"
+                    className="w-full py-2.5 rounded-lg bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white text-xs sm:text-sm font-semibold transition-all cursor-pointer shadow-md shadow-indigo-950/40 flex items-center justify-center gap-2"
                   >
                     {isSubmitting ? (
                       <span>Scheduling...</span>
@@ -450,7 +450,7 @@ export default function WorkTogetherPage() {
                   animate={{ opacity: 1, scale: 1 }}
                   className="text-center py-6 space-y-5"
                 >
-                  <div className="w-12 h-12 rounded-full bg-orange-950/60 border border-orange-500/30 text-[#EA580C] flex items-center justify-center mx-auto shadow-lg shadow-orange-950/30">
+                  <div className="w-12 h-12 rounded-full bg-[var(--accent)]/20 border border-[var(--accent)]/40 text-[var(--accent)] flex items-center justify-center mx-auto shadow-lg shadow-indigo-950/30">
                     <Check className="w-6 h-6 stroke-[2.5]" />
                   </div>
 

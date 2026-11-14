@@ -8,7 +8,7 @@ import FolderCard from "./FolderCard";
 
 export default function Work() {
   const featuredProjects = projects.filter((p) => p.featured).slice(0, 2);
-  const otherProjects = projects.filter((p) => !p.featured);
+  const otherProjects = projects.filter((p) => !p.featured).slice(0, 2);
 
   return (
     <section id="work" className="py-20 w-full max-w-[760px] mx-auto px-5 sm:px-6">
@@ -47,7 +47,7 @@ export default function Work() {
               href={project.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group block rounded-2xl border border-white/[0.08] bg-[#0E0E0E] hover:bg-[#151515] hover:border-white/20 p-5 transition-all duration-200 select-none shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EA580C]"
+              className="group block rounded-2xl border border-white/[0.08] bg-[#0E0E0E] hover:bg-[#151515] hover:border-white/20 p-5 transition-all duration-200 select-none shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
             >
               <div className="flex items-start justify-between gap-4">
                 {/* Left side: Name, description, and tech stack */}
@@ -67,7 +67,7 @@ export default function Work() {
                       {project.techStack.map((tech) => (
                         <span
                           key={tech}
-                          className="text-[10px] font-mono-custom px-2 py-0.5 rounded-md bg-white/[0.05] border border-white/[0.08] text-[#8A8A85]"
+                          className="text-[11px] font-sans px-2.5 py-0.5 rounded-md bg-white/[0.05] border border-white/[0.08] text-[#8A8A85] tracking-normal"
                         >
                           {tech}
                         </span>
@@ -76,14 +76,17 @@ export default function Work() {
                   )}
                 </div>
 
-                {/* Right side: Arrow link button */}
-                 <div className="w-8 h-8 rounded-full border border-white/10 bg-white/[0.04] flex items-center justify-center text-[#8A8A85] group-hover:text-white group-hover:border-white/30 group-hover:bg-white/[0.1] transition-all shrink-0">
-                  <Github className="w-4 h-4" />
-                </div>
-                <div className="w-8 h-8 rounded-full border border-white/10 bg-white/[0.04] flex items-center justify-center text-[#8A8A85] group-hover:text-white group-hover:border-white/30 group-hover:bg-white/[0.1] transition-all shrink-0">
-                  <ArrowUpRight className="w-4 h-4" />
-                </div>
-                
+                {/* Right side: Action link buttons */}
+                {project.github && (
+                  <div className="w-8 h-8 rounded-full border border-white/10 bg-white/[0.04] flex items-center justify-center text-[#8A8A85] group-hover:text-white group-hover:border-white/30 group-hover:bg-white/[0.1] transition-all shrink-0">
+                    <Github className="w-4 h-4" />
+                  </div>
+                )}
+                {project.live && (
+                  <div className="w-8 h-8 rounded-full border border-white/10 bg-white/[0.04] flex items-center justify-center text-[#8A8A85] group-hover:text-white group-hover:border-white/30 group-hover:bg-white/[0.1] transition-all shrink-0">
+                    <ArrowUpRight className="w-4 h-4" />
+                  </div>
+                )}
               </div>
             </a>
           ))}
@@ -94,7 +97,7 @@ export default function Work() {
       <div className="mt-8 text-center select-none">
         <Link
           href="/work"
-          className="font-handwriting text-xl sm:text-2xl text-[#EA580C] hover:text-orange-400 transition-colors cursor-pointer select-none inline-block"
+          className="font-handwriting text-xl sm:text-2xl text-[var(--accent)] hover:text-[var(--accent-light)] transition-colors cursor-pointer select-none inline-block"
         >
           + more ..
         </Link>

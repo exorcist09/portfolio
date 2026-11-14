@@ -14,7 +14,7 @@ export default function WorkPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-[#EDEDEA] overflow-x-clip selection:bg-[#EA580C]/25 selection:text-[#EA580C]">
+    <div className="min-h-screen bg-black text-[#EDEDEA] overflow-x-clip selection:bg-[var(--accent)]/25 selection:text-[var(--accent)]">
       <main className="w-full max-w-[760px] mx-auto px-5 sm:px-6 py-12 sm:py-20">
         {/* Header: Back button (rounded-lg with border) beside the clean heading "Work" */}
         <div className="flex items-center gap-3.5 sm:gap-4 mb-10">
@@ -50,11 +50,11 @@ export default function WorkPage() {
                   aria-label={`Preview of ${project.title}`}
                   title={`Open ${project.title}`}
                 >
-                  <div className="w-52 sm:w-60 md:w-64 aspect-[4/3] rounded-xl overflow-hidden border border-white/20 bg-[#121214] shadow-2xl shadow-black/90 hover:border-white/40 transition-colors">
+                  <div className="w-56 sm:w-60 md:w-64 h-36 sm:h-40 md:h-44 rounded-xl overflow-hidden border border-white/20 bg-[#121214] shadow-2xl shadow-black/90 hover:border-white/40 transition-colors flex items-center justify-center shrink-0">
                     <img
                       src={project.image}
                       alt={project.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover object-top shrink-0 block"
                       loading="lazy"
                     />
                   </div>
@@ -83,7 +83,7 @@ export default function WorkPage() {
                         {project.techStack.map((tech) => (
                           <span
                             key={tech}
-                            className="text-[10px] font-mono-custom px-2 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.08] text-[#8A8A85]"
+                            className="text-[11px] font-sans px-2.5 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.08] text-[#8A8A85] tracking-normal"
                           >
                             {tech}
                           </span>
@@ -107,16 +107,18 @@ export default function WorkPage() {
                       </a>
                     )}
 
-                    <a
-                      href={project.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-8 h-8 rounded-lg border border-white/10 bg-white/[0.04] hover:bg-white/[0.1] hover:border-white/30 flex items-center justify-center text-[#8A8A85] hover:text-white transition-all cursor-pointer"
-                      aria-label={`Live site for ${project.title}`}
-                      title="Open Live Deployment"
-                    >
-                      <ArrowUpRight className="w-4 h-4" />
-                    </a>
+                    {project.live && (
+                      <a
+                        href={project.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-8 h-8 rounded-lg border border-white/10 bg-white/[0.04] hover:bg-white/[0.1] hover:border-white/30 flex items-center justify-center text-[#8A8A85] hover:text-white transition-all cursor-pointer"
+                        aria-label={`Live site for ${project.title}`}
+                        title="Open Live Deployment"
+                      >
+                        <ArrowUpRight className="w-4 h-4" />
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
@@ -128,7 +130,7 @@ export default function WorkPage() {
         <div className="mt-14 text-center select-none pt-8">
           <Link
             href="/work-together"
-            className="font-handwriting text-xl sm:text-2xl text-[#EA580C] hover:text-orange-400 transition-colors cursor-pointer select-none inline-block"
+            className="font-handwriting text-xl sm:text-2xl text-[var(--accent)] hover:text-[var(--accent-light)] transition-colors cursor-pointer select-none inline-block"
           >
             + work together ..
           </Link>

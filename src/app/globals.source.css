@@ -3,32 +3,48 @@
 
 @theme {
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-light: var(--accent-light);
 }
 
 @layer base {
   :root {
+    /* Primary Accent Color - change this 1 variable to change the theme across all pages */
+    --accent: #A61C44; /* Rich Burgundy */
+    --accent-hover: #881337; /* Deep Wine Burgundy */
+    --accent-light: #C02653; /* Luminous Burgundy */
+    --accent-glow: rgba(166, 28, 68, 0.28);
+    --accent-border: rgba(166, 28, 68, 0.45);
+
     --bg-primary: #050505;
     --text-primary: #EDEDEA;
     --text-muted: #8A8A85;
     --border-dim: rgba(255, 255, 255, 0.08);
     --border-active: rgba(255, 255, 255, 0.16);
-    --accent-amber: #EA580C;
+    --accent-amber: var(--accent);
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --default-font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
-  html, body {
+  html,
+  body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
     overflow-x: hidden;
   }
 
-  button, input, select, textarea {
+  button,
+  input,
+  select,
+  textarea {
     font-family: inherit;
   }
 }
@@ -53,6 +69,7 @@
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -63,6 +80,7 @@
   0% {
     transform: translateX(0%);
   }
+
   100% {
     transform: translateX(-50%);
   }
@@ -72,6 +90,7 @@
   0% {
     transform: translateX(-50%);
   }
+
   100% {
     transform: translateX(0%);
   }
@@ -92,4 +111,39 @@
 .animate-marquee-slow-left:hover,
 .animate-marquee-slow-right:hover {
   animation-play-state: paused;
+}
+
+/* Global Accent Color Utilities (driven by the single --accent variable) */
+.text-accent {
+  color: var(--accent) !important;
+}
+
+.hover\:text-accent-light:hover {
+  color: var(--accent-light) !important;
+}
+
+.bg-accent {
+  background-color: var(--accent) !important;
+}
+
+.hover\:bg-accent-hover:hover {
+  background-color: var(--accent-hover) !important;
+}
+
+.border-accent {
+  border-color: var(--accent) !important;
+}
+
+.border-accent-subtle {
+  border-color: var(--accent-border) !important;
+}
+
+.focus\:border-accent:focus {
+  border-color: var(--accent) !important;
+}
+
+.selection-accent::selection,
+.selection-accent *::selection {
+  background-color: var(--accent-glow) !important;
+  color: var(--accent) !important;
 }

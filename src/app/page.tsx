@@ -18,7 +18,7 @@ export default function Home() {
   const [loadingComplete, setLoadingComplete] = useState(false);
 
   return (
-    <div className="relative min-h-screen bg-black text-[#EDEDEA] overflow-x-hidden selection:bg-[#EA580C]/25 selection:text-[#EA580C]">
+    <div className="relative min-h-screen bg-black text-[#EDEDEA] overflow-x-hidden selection:bg-[var(--accent)]/25 selection:text-[var(--accent)]">
       {/* Cursive Name Intro Loader */}
       <Loader onComplete={() => setLoadingComplete(true)} />
 
@@ -58,8 +58,8 @@ export default function Home() {
         <Contact />
       </main>
 
-      {/* 3D Interactive Mascot (Walking entrance, waving & interactive companion) */}
-      <Mascot3D />
+      {/* 3D Interactive Mascot Companion (Temporarily hidden as requested, not removed) */}
+      <Mascot3D hidden={true} />
     </div>
   );
 }

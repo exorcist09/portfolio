@@ -225,7 +225,7 @@ export default function SkillsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-[#EDEDEA] selection:bg-[#EA580C]/25 selection:text-[#EA580C]">
+    <div className="min-h-screen bg-black text-[#EDEDEA] selection:bg-[var(--accent)]/25 selection:text-[var(--accent)]">
       <main className="w-full max-w-[760px] mx-auto px-5 sm:px-6 py-12 sm:py-20">
         {/* Header: Back button (rounded-lg with border) beside the clean heading "Skills" (not uppercase) */}
         <div className="flex items-center gap-3.5 sm:gap-4 mb-10">
@@ -350,7 +350,7 @@ export default function SkillsPage() {
         <div className="mt-16 text-center select-none pt-8">
           <Link
             href="/work-together"
-            className="font-handwriting text-xl sm:text-2xl text-[#EA580C] hover:text-orange-400 transition-colors cursor-pointer select-none inline-block"
+            className="font-handwriting text-xl sm:text-2xl text-[var(--accent)] hover:text-[var(--accent-light)] transition-colors cursor-pointer select-none inline-block"
           >
             + work together ..
           </Link>
