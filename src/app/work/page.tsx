@@ -14,26 +14,26 @@ export default function WorkPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-[#EDEDEA] overflow-x-clip selection:bg-[var(--accent)]/25 selection:text-[var(--accent)]">
-      <main className="w-full max-w-[760px] mx-auto px-5 sm:px-6 py-12 sm:py-20">
-        {/* Header: Back button (rounded-lg with border) beside the clean heading "Work" */}
-        <div className="flex items-center gap-3.5 sm:gap-4 mb-10">
-          <Link
-            href="/"
-            onClick={handleBack}
-            className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg border border-white/15 bg-[#0E0E0E] hover:bg-[#181818] hover:border-white/30 flex items-center justify-center text-[#8A8A85] hover:text-white transition-all cursor-pointer group shrink-0"
-            aria-label="Back to home page"
-            title="Back to home"
-          >
-            <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:-translate-x-0.5" />
-          </Link>
+    <div className="min-h-screen bg-black text-[#EDEDEA] overflow-x-clip selection:bg-[var(--accent)]/25 selection:text-[var(--accent)] relative">
+      {/* Extreme Left: Back Button + Heading (pinned out of center space) */}
+      <div className="lg:fixed lg:top-14 xl:top-16 lg:left-8 xl:left-12 2xl:left-16 z-40 flex items-center gap-2.5 sm:gap-3 select-none px-5 pt-6 sm:pt-8 lg:p-0">
+        <Link
+          href="/"
+          onClick={handleBack}
+          className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg border border-white/15 bg-[#0E0E0E] hover:bg-[#181818] hover:border-white/30 flex items-center justify-center text-[#8A8A85] hover:text-white transition-all cursor-pointer group shrink-0 shadow-sm"
+          aria-label="Back to home page"
+          title="Back to home"
+        >
+          <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5" />
+        </Link>
 
-          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[#EDEDEA]">
-            Work
-          </h1>
-        </div>
+        <h1 className="text-base sm:text-lg font-medium tracking-tight text-[#EDEDEA]">
+          Work
+        </h1>
+      </div>
 
-        {/* Project Cards: Image pops out from the BACK of the card */}
+      {/* Centered Content: In the center space without border/bg wrapper */}
+      <main className="w-full max-w-[760px] mx-auto px-5 sm:px-6 py-8 sm:py-14 lg:py-20">
         <div className="space-y-4 sm:space-y-5">
           {projects.map((project: Project) => (
             <div
