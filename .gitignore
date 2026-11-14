@@ -38,6 +38,12 @@ skills-lock.json
 .agents
 .vercel
 
+AGENTS.md
+
+.next
+
+.agents
+
 
 
 .env
