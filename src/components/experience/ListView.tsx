@@ -76,7 +76,7 @@ export default function ListView() {
 
                 {/* Period & Chevron */}
                 <div className="flex items-center gap-2 text-right shrink-0">
-                  <span className="text-[11px] sm:text-xs font-mono-custom text-[#8A8A85]">
+                  <span className="text-[11px] sm:text-xs text-[#8A8A85]">
                     {exp.period}
                   </span>
                   <motion.div
@@ -99,9 +99,11 @@ export default function ListView() {
                     transition={{ duration: 0.25, ease: "easeInOut" }}
                     className="overflow-hidden pl-11 sm:pl-13 pr-2 pt-1 pb-3 text-xs sm:text-sm text-[#8A8A85] space-y-2.5"
                   >
-                    <p className="leading-relaxed text-[#EDEDEA]/90">
-                      {exp.description}
-                    </p>
+                    {exp.description && (
+                      <p className="leading-relaxed text-[#EDEDEA]/90">
+                        {exp.description}
+                      </p>
+                    )}
 
                     {exp.bullets && exp.bullets.length > 0 && (
                       <ul className="space-y-1.5 pt-1">

@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import SkillIcon from "@/components/SkillIcon";
 
 interface SkillItem {
   name: string;
@@ -76,152 +77,10 @@ export default function SkillsPage() {
     { name: "RabbitMQ", slug: "rabbitmq" },
   ];
 
-  // Guaranteed icons using user-uploaded public assets and inline SVGs
+  // Guaranteed icons using shared SkillIcon component
   const renderIcon = (slug: string, name: string, isTop = false) => {
     const imgSize = isTop ? "w-5 h-5 sm:w-6 sm:h-6" : "w-4 h-4";
-
-    // 1. Cursor: user-uploaded public asset /cursor.png
-    if (slug === "cursor") {
-      return (
-        <img
-          src="/cursor.png"
-          alt="Cursor"
-          className={`${imgSize} object-contain`}
-        />
-      );
-    }
-
-    // 2. Claude: user-uploaded public asset /claudecode.png
-    if (slug === "claude") {
-      return (
-        <img
-          src="/claudecode.png"
-          alt="Claude"
-          className={`${imgSize} object-contain`}
-        />
-      );
-    }
-
-    // 3. AWS: user-uploaded public asset /aws.png
-    if (slug === "aws" || slug === "amazonwebservices") {
-      return (
-        <img
-          src="/aws.png"
-          alt="AWS"
-          className={`${imgSize} object-contain`}
-        />
-      );
-    }
-
-    // 4. Java: Steaming coffee mug ("coffee dude")
-    if (slug === "java") {
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className={`${imgSize} text-white shrink-0`}
-          aria-label="Java"
-        >
-          <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
-          <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
-          <line x1="6" y1="2" x2="6" y2="4" />
-          <line x1="10" y1="2" x2="10" y2="4" />
-          <line x1="14" y1="2" x2="14" y2="4" />
-        </svg>
-      );
-    }
-
-    // 5. Zustand: Authentic Zustand bear face
-    if (slug === "zustand") {
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          className={`${imgSize} text-white shrink-0`}
-          aria-label="Zustand"
-        >
-          <circle cx="6" cy="7" r="2.8" />
-          <circle cx="18" cy="7" r="2.8" />
-          <path d="M12 5c-4.4 0-7.8 3.5-7.8 8 0 4.1 3 7 7.8 7s7.8-2.9 7.8-7c0-4.5-3.4-8-7.8-8z" />
-          <ellipse cx="12" cy="15" rx="3.5" ry="2.5" fill="#0E0E0E" />
-          <circle cx="9" cy="11.5" r="1" fill="#0E0E0E" />
-          <circle cx="15" cy="11.5" r="1" fill="#0E0E0E" />
-          <ellipse cx="12" cy="14" rx="1.5" ry="1" fill="currentColor" />
-        </svg>
-      );
-    }
-
-    // 6. Agentic AI: Autonomous agent bot
-    if (slug === "agentic-ai" || slug === "dependabot") {
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className={`${imgSize} text-white shrink-0`}
-        >
-          <path d="M12 8V4H8" />
-          <rect width="16" height="12" x="4" y="8" rx="2" />
-          <path d="M2 14h2" />
-          <path d="M20 14h2" />
-          <path d="M15 13v2" />
-          <path d="M9 13v2" />
-        </svg>
-      );
-    }
-
-    // 7. WebSockets: Real-time streams
-    if (slug === "websockets") {
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className={`${imgSize} text-white shrink-0`}
-        >
-          <path d="m5 12 7-7 7 7" />
-          <path d="M12 19V5" />
-          <circle cx="12" cy="19" r="1" fill="currentColor" />
-        </svg>
-      );
-    }
-
-    // 8. HTML5 / CSS3
-    if (slug === "html5") {
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          className={`${imgSize} text-white shrink-0`}
-        >
-          <path d="M3 2l1.6 18 7.4 2 7.4-2L21 2H3zm14.6 6.3h-7l.2 2.2h6.6l-.6 6.3-4.8 1.3-4.8-1.3-.3-3.6h2.2l.2 1.9 2.7.7 2.7-.7.3-3.1H7.8l-.6-6.1h10.7l-.3 2.4z" />
-        </svg>
-      );
-    }
-
-    // Default: SimpleIcons pure white SVG
-    return (
-      <img
-        src={`https://cdn.simpleicons.org/${slug}/ffffff`}
-        alt={name}
-        className={`${imgSize} object-contain brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity`}
-        loading="lazy"
-        onError={(e) => {
-          (e.target as HTMLImageElement).src = `https://cdn.simpleicons.org/${slug}`;
-          (e.target as HTMLImageElement).classList.add("brightness-0", "invert");
-        }}
-      />
-    );
+    return <SkillIcon slug={slug} name={name} className={imgSize} />;
   };
 
   return (

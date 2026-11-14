@@ -6,11 +6,13 @@ import { Sparkles, FileDown, Clock, Cloud, Mail } from "lucide-react";
 import { siteContent } from "@/data/content";
 import { avatarBase64 } from "@/data/avatarBase64";
 import AgentModal from "./AgentModal";
+import ResumeModal from "./ResumeModal";
 
 export default function Hero() {
   const [timeString, setTimeString] = useState<string>("");
   const [copied, setCopied] = useState(false);
   const [isAgentOpen, setIsAgentOpen] = useState(false);
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
 
   // Live local time with timezone
   useEffect(() => {
@@ -128,21 +130,28 @@ export default function Hero() {
             <span>Contact</span>
           </a>
 
-          <a
-            href={siteContent.resumeUrl}
-            download="AdarshVermaResume.pdf"
+          <button
+            type="button"
+            onClick={() => setIsResumeOpen(true)}
             className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.07] hover:bg-white/[0.12] border border-white/[0.1] text-xs sm:text-sm font-medium text-[#EDEDEA] hover:text-white transition-all cursor-pointer shadow-sm hover:scale-[1.02] active:scale-[0.98]"
-            aria-label="Download Resume"
-            title="Download Resume"
+            aria-label="View Resume"
+            title="View Resume"
           >
             <FileDown className="w-4 h-4 stroke-[1.8]" />
             <span>Resume</span>
-          </a>
+          </button>
         </div>
       </motion.div>
 
       {/* Talk to Agent Modal */}
       <AgentModal isOpen={isAgentOpen} onClose={() => setIsAgentOpen(false)} />
+
+      {/* Resume Preview Dialog */}
+      <ResumeModal
+        isOpen={isResumeOpen}
+        onClose={() => setIsResumeOpen(false)}
+        resumeUrl={siteContent.resumeUrl}
+      />
     </section>
   );
 }

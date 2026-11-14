@@ -3,20 +3,12 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { skillRows, SkillRow, SkillItem } from "@/data/skills";
+import SkillIcon from "./SkillIcon";
 
 function SkillPill({ item }: { item: SkillItem }) {
   return (
     <div className="shrink-0 flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/[0.08] bg-[#0E0E0E] text-xs font-mono-custom text-[#EDEDEA] hover:border-white/20 transition-all select-none">
-      {item.slug ? (
-        <img
-          src={`https://cdn.simpleicons.org/${item.slug}/ffffff`}
-          alt=""
-          className="w-3.5 h-3.5 object-contain opacity-90"
-          loading="lazy"
-        />
-      ) : (
-        <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
-      )}
+      <SkillIcon slug={item.slug} name={item.name} className="w-3.5 h-3.5" />
       <span>{item.name}</span>
     </div>
   );
@@ -36,7 +28,7 @@ function MarqueeLine({ row }: { row: SkillRow }) {
       <div className={row.speedClass}>
         <div className="flex items-center gap-3 pr-3">
           {repeated.map((item, idx) => (
-            <SkillPill key={`${item.id}-${idx}`} item={item} />
+            <SkillPill key={`${row.id}-${item.id || item.name}-${idx}`} item={item} />
           ))}
         </div>
       </div>

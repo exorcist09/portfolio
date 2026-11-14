@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Github, Linkedin, FileDown, Mail, Check } from "lucide-react";
 import { siteContent } from "@/data/content";
+import ResumeModal from "./ResumeModal";
 
 export default function TopBar() {
   const [isVisible, setIsVisible] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("hero");
   const [copied, setCopied] = useState(false);
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
 
   // Appears only after scrolling past the hero section; hidden when in hero section
   useEffect(() => {
@@ -149,15 +151,15 @@ export default function TopBar() {
                   <Github className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[1.8]" />
                 </a>
                 
-                {/* <a
-                  href={siteContent.resumeUrl}
-                  download="AdarshVermaResume.pdf"
+                <button
+                  type="button"
+                  onClick={() => setIsResumeOpen(true)}
                   className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-[#8A8A85] hover:text-white hover:bg-white/10 transition-all cursor-pointer"
-                  aria-label="Download Resume"
-                  title="Download Resume"
+                  aria-label="View Resume"
+                  title="View Resume"
                 >
                   <FileDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[1.8]" />
-                </a> */}
+                </button>
 
                 <button
                   onClick={handleCopyEmail}
@@ -189,6 +191,13 @@ export default function TopBar() {
           </div>
         </motion.header>
       )}
+
+      {/* Resume Preview Dialog */}
+      <ResumeModal
+        isOpen={isResumeOpen}
+        onClose={() => setIsResumeOpen(false)}
+        resumeUrl={siteContent.resumeUrl}
+      />
     </AnimatePresence>
   );
 }

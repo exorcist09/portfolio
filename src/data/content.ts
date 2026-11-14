@@ -35,9 +35,9 @@ export const siteContent: SiteContent = {
     condition: "☁",
   },
   bioParagraph1:
-    "Software Engineer building reliable, scalable products across the stack. I enjoy turning complex problems into well-designed systems, thoughtful features, and intuitive experiences.",
+    "Software Engineer focused on building reliable, scalable products and solving complex problems through thoughtful engineering. I enjoy working across the stack, turning ideas into well-architected systems, meaningful features, and seamless user experiences.",
   bioParagraph2:
-    "Currently diving deeper into distributed systems, cloud infrastructure, and AI-powered applications. Always learning, building, and refining how I engineer.",
+    "Currently exploring distributed systems, cloud infrastructure, and AI-powered applications while continuously refining my approach to building software. Driven by curiosity, a passion for learning, and the ambition to build products that make a difference.",
   email: "vermaadarsh1024@gmail.com",
   githubUrl: "https://github.com/exorcist09",
   linkedinUrl: "https://www.linkedin.com/in/adarsh-verma-exorcist09/",

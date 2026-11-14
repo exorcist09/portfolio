@@ -25,7 +25,7 @@ export const freelanceData: FreelanceData = {
     {
       id: "mvp-engineering",
       category: "FULL-STACK ENGINEERING & BACKEND",
-      title: "Rapid MVP & Product Builds",
+      title: "Product Engineering & MVP Development",
       description:
         "End-to-end development from zero to production. High-performance Backend architectures with clean APIs, database schemas, and rock-solid auth.",
       timeline: "2–4 weeks",
@@ -36,7 +36,7 @@ export const freelanceData: FreelanceData = {
       category: "FRONTEND SYSTEMS",
       title: "Scalable UI & Design Systems",
       description:
-        "Building accessible, token-driven component libraries that bridge Figma with code. Fast, responsive interfaces your engineers love shipping with.",
+        "Creating responsive, intuitive interfaces with thoughtful interactions, reusable components, and performance-focused frontend architecture.",
       timeline: "1–3 weeks",
       deliverables: ["Token Architecture", "Accessible Components", "Framer Motion Polish", "Storybook Documentation"],
     },
@@ -45,7 +45,7 @@ export const freelanceData: FreelanceData = {
       category: "Artificial Intelligence",
       title: "AI Integrations And Machine Learning",
       description:
-        "Spatial web storytelling, fluid micro-interactions, and LLM agent pipelines that turn standard websites into memorable product experiences.",
+        "Integrating LLMs, intelligent agents, and machine learning into applications to build smarter products and automate complex workflows.",
       timeline: "1–2 weeks",
       deliverables: ["Micro-interactions & Motion", "Custom LLM Agents & RAG", "Interactive 3D / WebGL", "High-conversion Landers"],
     },
