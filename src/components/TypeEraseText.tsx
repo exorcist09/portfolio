@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { useInView } from "framer-motion";
 
 export default function TypeEraseText({
   initialText = "@Adarsh",
   targetText = "@exorcist",
-  eraseSpeed = 90,
-  typeSpeed = 100,
-  pauseDelay = 1200,
+  eraseSpeed = 80,
+  typeSpeed = 90,
+  pauseDelay = 2000,
 }: {
   initialText?: string;
   targetText?: string;
@@ -19,48 +19,67 @@ export default function TypeEraseText({
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: false, margin: "-40px" });
 
+  const words = useMemo(() => [initialText, targetText], [initialText, targetText]);
+  const [wordIndex, setWordIndex] = useState(0);
   const [displayText, setDisplayText] = useState(initialText);
-  const [phase, setPhase] = useState<"idle" | "erasing" | "typing" | "settled">("idle");
+  const [phase, setPhase] = useState<"pausing" | "erasing" | "typing">("pausing");
 
   useEffect(() => {
     if (!isInView) {
       setDisplayText(initialText);
-      setPhase("idle");
+      setWordIndex(0);
+      setPhase("pausing");
       return;
     }
 
     let timeout: NodeJS.Timeout;
+    const currentFullWord = words[wordIndex];
+    const nextWordIndex = (wordIndex + 1) % words.length;
+    const nextFullWord = words[nextWordIndex];
 
-    if (phase === "idle") {
-      // Wait for section to settle in view, then start erasing
+    if (phase === "pausing") {
+      // Pause at full word so user can read it, then begin erasing
       timeout = setTimeout(() => {
         setPhase("erasing");
       }, pauseDelay);
     } else if (phase === "erasing") {
-      if (displayText.length > 1) {
-        // Erase back to '@'
+      // Keep '@' prefix if both words start with '@'
+      const minLen = currentFullWord.startsWith("@") && nextFullWord.startsWith("@") ? 1 : 0;
+      if (displayText.length > minLen) {
         timeout = setTimeout(() => {
           setDisplayText((prev) => prev.slice(0, -1));
         }, eraseSpeed);
       } else {
-        // Paused at '@', begin typing target word
+        // Paused at prefix, switch to next word and start typing
         timeout = setTimeout(() => {
+          setWordIndex(nextWordIndex);
           setPhase("typing");
-        }, 300);
+        }, 250);
       }
     } else if (phase === "typing") {
-      if (displayText.length < targetText.length) {
+      const target = words[wordIndex];
+      if (displayText.length < target.length) {
         timeout = setTimeout(() => {
-          setDisplayText(targetText.slice(0, displayText.length + 1));
+          setDisplayText(target.slice(0, displayText.length + 1));
         }, typeSpeed);
       } else {
-        // Finished typing
-        setPhase("settled");
+        // Finished typing the word, pause before erasing again
+        setPhase("pausing");
       }
     }
 
     return () => clearTimeout(timeout);
-  }, [isInView, phase, displayText, initialText, targetText, eraseSpeed, typeSpeed, pauseDelay]);
+  }, [
+    isInView,
+    phase,
+    displayText,
+    wordIndex,
+    words,
+    initialText,
+    eraseSpeed,
+    typeSpeed,
+    pauseDelay,
+  ]);
 
   return (
     <div
@@ -74,4 +93,3 @@ export default function TypeEraseText({
     </div>
   );
 }
-

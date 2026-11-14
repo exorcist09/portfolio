@@ -40,7 +40,7 @@ export const siteContent: SiteContent = {
   bioParagraph2:
     "Currently exploring distributed systems, cloud infrastructure, and AI-powered applications while continuously refining my approach to building software. Driven by curiosity, a passion for learning, and the ambition to build products that make a difference.",
   email: "vermaadarsh1024@gmail.com",
-  calUrl: "", // e.g. "https://cal.com/your-username" or "https://calendly.com/your-username"
+  calUrl: "https://cal.com/adarsh-verma/intro",
   githubUrl: "https://github.com/exorcist09",
   linkedinUrl: "https://www.linkedin.com/in/adarsh-verma-exorcist09/",
   resumeUrl: "/AdarshVermaResume.pdf",
