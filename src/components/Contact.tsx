@@ -44,7 +44,7 @@ export default function Contact() {
           get in touch
         </h2>
         <p className="mt-1 text-xs sm:text-sm text-[#8A8A85]">
-          Open for collaborations, creative engineering, and high-impact systems.
+          Open to collaborating on new ideas and high-impact systems
         </p>
       </motion.div>
 
@@ -59,16 +59,14 @@ export default function Contact() {
           transition={{ type: "spring", stiffness: 450, damping: 32 }}
           onMouseEnter={() => setActivePill("email")}
           onClick={() => setActivePill("email")}
-          className={`h-11 rounded-full border border-white/[0.1] bg-[#0E0E0E] hover:bg-[#161616] hover:border-white/20 flex items-center overflow-hidden cursor-pointer select-none transition-colors duration-200 ${
-            activePill === "email" ? "shadow-lg shadow-white/5" : ""
-          }`}
+          className={`h-11 rounded-full border border-white/[0.1] bg-[#0E0E0E] hover:bg-[#161616] hover:border-white/20 flex items-center overflow-hidden cursor-pointer select-none transition-colors duration-200 ${activePill === "email" ? "shadow-lg shadow-white/5" : ""
+            }`}
         >
           {/* Always centered 44px icon container */}
           <div className="w-11 h-11 shrink-0 flex items-center justify-center">
             <Mail
-              className={`w-4 h-4 transition-colors duration-200 ${
-                activePill === "email" ? "text-white" : "text-white"
-              }`}
+              className={`w-4 h-4 transition-colors duration-200 ${activePill === "email" ? "text-white" : "text-white"
+                }`}
             />
           </div>
 
@@ -118,9 +116,8 @@ export default function Contact() {
           transition={{ type: "spring", stiffness: 450, damping: 32 }}
           onMouseEnter={() => setActivePill("linkedin")}
           onClick={() => setActivePill("linkedin")}
-          className={`h-11 rounded-full border border-white/[0.1] bg-[#0E0E0E] hover:bg-[#161616] hover:border-white/20 flex items-center overflow-hidden cursor-pointer select-none transition-colors duration-200 ${
-            activePill === "linkedin" ? "shadow-lg shadow-white/5" : ""
-          }`}
+          className={`h-11 rounded-full border border-white/[0.1] bg-[#0E0E0E] hover:bg-[#161616] hover:border-white/20 flex items-center overflow-hidden cursor-pointer select-none transition-colors duration-200 ${activePill === "linkedin" ? "shadow-lg shadow-white/5" : ""
+            }`}
         >
           <div className="w-11 h-11 shrink-0 flex items-center justify-center">
             <Linkedin className="w-4 h-4 text-white" />
@@ -154,9 +151,8 @@ export default function Contact() {
           transition={{ type: "spring", stiffness: 450, damping: 32 }}
           onMouseEnter={() => setActivePill("github")}
           onClick={() => setActivePill("github")}
-          className={`h-11 rounded-full border border-white/[0.1] bg-[#0E0E0E] hover:bg-[#161616] hover:border-white/20 flex items-center overflow-hidden cursor-pointer select-none transition-colors duration-200 ${
-            activePill === "github" ? "shadow-lg shadow-white/5" : ""
-          }`}
+          className={`h-11 rounded-full border border-white/[0.1] bg-[#0E0E0E] hover:bg-[#161616] hover:border-white/20 flex items-center overflow-hidden cursor-pointer select-none transition-colors duration-200 ${activePill === "github" ? "shadow-lg shadow-white/5" : ""
+            }`}
         >
           <div className="w-11 h-11 shrink-0 flex items-center justify-center">
             <Github className="w-4 h-4 text-white" />

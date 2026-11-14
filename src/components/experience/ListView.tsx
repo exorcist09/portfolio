@@ -41,25 +41,19 @@ export default function ListView() {
                 <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                   {/* Logo square tile */}
                   <div
-                    className="relative z-10 shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center font-mono-custom text-xs font-bold border border-white/[0.08] shadow-md overflow-hidden"
+                    className={`relative z-10 shrink-0 w-8 h-8 sm:w-9 sm:h-9 ${exp.id === "iiit" ? "rounded-lg" : "rounded-xl"
+                      } flex items-center justify-center font-mono-custom text-xs font-bold border border-white/[0.08] shadow-md overflow-hidden`}
                     style={{ backgroundColor: exp.logoBg, color: exp.logoColor }}
                   >
                     {exp.image ? (
                       <img
                         src={exp.image}
                         alt={exp.company}
-                        className="w-full h-full object-cover"
+                        className={`w-full h-full object-cover ${exp.id === "iiit" ? "rounded-lg" : ""
+                          }`}
                       />
                     ) : (
                       exp.logoText
-                    )}
-
-                    {/* Active pulse dot on current position */}
-                    {exp.active && (
-                      <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75" />
-                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#10B981]" />
-                      </span>
                     )}
                   </div>
 
@@ -108,10 +102,8 @@ export default function ListView() {
                     {exp.bullets && exp.bullets.length > 0 && (
                       <ul className="space-y-1.5 pt-1">
                         {exp.bullets.map((bullet, i) => (
-                          <li key={i} className="flex items-start gap-2 leading-relaxed">
-                            <span className="text-[var(--accent)] font-bold select-none text-xs mt-0.5">
-                              *
-                            </span>
+                          <li key={i} className="flex items-start gap-2.5 leading-relaxed">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] mt-2 shrink-0 select-none" />
                             <span>{bullet}</span>
                           </li>
                         ))}

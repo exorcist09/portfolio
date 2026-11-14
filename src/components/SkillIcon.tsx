@@ -150,18 +150,18 @@ export default function SkillIcon({
     );
   }
 
-  // 9. Python: Local SVG fallback or SimpleIcons
+  // 9. Python: Pure white inline vector
   if (normalized === "python") {
     return (
-      <img
-        src="/python.svg"
-        alt="Python"
-        className={`${className} object-contain shrink-0`}
-        loading="lazy"
-        onError={(e) => {
-          (e.target as HTMLImageElement).src = "https://cdn.simpleicons.org/python/ffffff";
-        }}
-      />
+      <svg
+        viewBox="0 0 110 110"
+        fill="currentColor"
+        className={`${className} text-white shrink-0`}
+        aria-label="Python"
+      >
+        <path d="M54.5 5.5c-27 0-25.3 11.7-25.3 11.7l.1 12.1h25.8v3.6H17.8C7 32.9 0 39.4 0 54.5c0 15 6.3 22.8 15.3 22.8h8.8v-12.7c0-14.7 12.8-15.3 15.3-15.3h25.7c2.6 0 15.3-.6 15.3-15.3V17.2S81.5 5.5 54.5 5.5zM41.7 13.7a4.8 4.8 0 1 1 0 9.6 4.8 4.8 0 0 1 0-9.6z" />
+        <path d="M55.5 104.5c27 0 25.3-11.7 25.3-11.7l-.1-12.1H54.9v-3.6h37.3c10.8 0 17.8-6.5 17.8-21.6 0-15-6.3-22.8-15.3-22.8h-8.8v12.7c0 14.7-12.8 15.3-15.3 15.3H44.9c-2.6 0-15.3.6-15.3 15.3v16.9s-1.1 11.7 25.9 11.7zm12.8-8.2a4.8 4.8 0 1 1 0-9.6 4.8 4.8 0 0 1 0 9.6z" />
+      </svg>
     );
   }
 

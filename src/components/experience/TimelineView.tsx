@@ -112,7 +112,7 @@ export default function TimelineView() {
     <motion.div
       style={style}
       whileHover={{ y: -2 }}
-      className={`group flex items-center gap-3 px-3.5 py-2 rounded-2xl border border-white/10 bg-[#111113] shadow-md hover:border-white/25 hover:bg-[#161619] transition-all select-none cursor-default overflow-hidden ${className}`}
+      className={`group flex items-center gap-3 px-3.5 py-2 rounded-lg border border-white/10 bg-[#111113] shadow-md hover:border-white/25 hover:bg-[#161619] transition-all select-none cursor-default overflow-hidden ${className}`}
     >
       {/* Left Image Box with rounded-md (border-md) only */}
       <div
