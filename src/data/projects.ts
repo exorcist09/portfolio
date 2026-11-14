@@ -8,6 +8,7 @@ export interface Project {
   tagline: string;
   description: string;
   href?: string;
+  readmeUrl?: string;
   live?: string;
   github?: string;
   image?: string;
@@ -31,7 +32,8 @@ export const projects: Project[] = [
     tagline: "Visual workflow automation platform for distributed processes",
     description:
       "Visual workflow automation platform for automating business and engineering processes through an interactive DAG visual interface. Built with real-time state machines, reliable webhook consumers, and fault-tolerant retry loops.",
-    href: "https://kairoworkflow-landing.vercel.app/",
+    href: "/work/kairo",
+    readmeUrl: "/work/kairo",
     live: "https://kairoworkflow-landing.vercel.app/",
     github: "https://github.com/exorcist09/kairo-v2",
     image: "/kairo.png",
@@ -53,7 +55,8 @@ export const projects: Project[] = [
     tagline: "Multi-modal NLP reasoning agent & tool-orchestration engine",
     description:
       "Autonomous AI assistant capable of multi-step tool execution, semantic document indexing, contextual memory retrieval, and natural language database querying.",
-    href: "https://github.com/exorcist09/fyn",
+    href: "/work/kai",
+    readmeUrl: "/work/kai",
     github: "https://github.com/exorcist09/fyn",
     // No live link, no image as of now per user request
     featured: true,

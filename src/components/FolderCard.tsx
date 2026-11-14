@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { Project } from "@/data/projects";
@@ -17,11 +18,15 @@ export default function FolderCard({ project }: { project: Project }) {
     accentGlow: "rgba(30, 52, 79, 0.15)",
   };
 
+  const basePath = project.readmeUrl || project.href || "#";
+  const targetUrl = project.readmeUrl ? `${project.readmeUrl}?from=home` : basePath;
+  const isInternal = targetUrl.startsWith("/");
+
   return (
-    <a
-      href={project.href}
-      target="_blank"
-      rel="noopener noreferrer"
+    <Link
+      href={targetUrl}
+      target={isInternal ? undefined : "_blank"}
+      rel={isInternal ? undefined : "noopener noreferrer"}
       className="group relative block w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 rounded-3xl"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -105,6 +110,6 @@ export default function FolderCard({ project }: { project: Project }) {
           </div>
         </motion.div>
       </div>
-    </a>
+    </Link>
   );
 }

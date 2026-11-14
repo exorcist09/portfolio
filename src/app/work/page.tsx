@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, ArrowUpRight, Github } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Github, FileText } from "lucide-react";
 import { projects, Project } from "@/data/projects";
 
 export default function WorkPage() {
@@ -94,6 +94,17 @@ export default function WorkPage() {
 
                   {/* Right Side: Action Links */}
                   <div className="flex items-center gap-2 shrink-0 self-start">
+                    {project.readmeUrl && (
+                      <Link
+                        href={project.readmeUrl}
+                        className="px-2.5 h-8 rounded-lg border border-white/10 bg-white/[0.04] hover:bg-white/[0.1] hover:border-white/30  text-[#8A8A85] flex items-center gap-1.5 text-[11px] font-mono-custom transition-all cursor-pointer shadow-sm"
+                        title="Read Architecture Spec & README"
+                      >
+                        <FileText className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">Spec</span>
+                      </Link>
+                    )}
+
                     {project.github && (
                       <a
                         href={project.github}

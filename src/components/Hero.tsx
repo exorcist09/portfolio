@@ -126,7 +126,7 @@ export default function Hero() {
             className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] border border-[var(--accent-light)]/30 text-xs sm:text-sm font-semibold text-white transition-all cursor-pointer shadow-md shadow-indigo-950/40 hover:scale-[1.02] active:scale-[0.98]"
             aria-label="Contact Adarsh"
           >
-            <Mail className="w-3.5 h-3.5 text-white stroke-current stroke-[2] fill-none group-hover:rotate-12 transition-transform" />
+            <Mail className="w-3.5 h-3.5 text-white stroke-current stroke-[2] fill-none " />
             <span>Contact</span>
           </a>
 
