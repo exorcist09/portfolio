@@ -144,7 +144,7 @@ export default function Freelance() {
       {/* Bottom "+ work together .." action button linking to /work-together */}
       <div className="mt-8 text-center select-none">
         <Link
-          href="/work-together"
+          href="/work-together?from=home"
           className="font-handwriting text-xl sm:text-2xl text-[var(--accent)] hover:text-[var(--accent-light)] transition-colors cursor-pointer select-none inline-block"
         >
           + schedule a call  ..

@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Adarsh Verma",
-  description: "Personal portfolio of Adarsh Verma ",
+  title: {
+    default: "Adarsh Verma",
+    template: "Adarsh Verma",
+  },
+  description: "Personal portfolio of Adarsh Verma",
 };
 
 export default function RootLayout({

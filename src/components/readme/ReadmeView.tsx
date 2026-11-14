@@ -559,7 +559,7 @@ export default function ReadmeView({ data, fromHome }: ReadmeViewProps) {
           </Link>
 
           <Link
-            href="/work-together"
+            href={`/work-together?from=${data.slug}`}
             className="font-handwriting text-xl text-[var(--accent)] hover:text-[var(--accent-light)] transition-colors cursor-pointer"
           >
             + work together on systems like this ..

@@ -209,7 +209,7 @@ export default function SkillsPage() {
         {/* Bottom CTA to Book / Work Together */}
         <div className="mt-16 text-center select-none pt-8">
           <Link
-            href="/work-together"
+            href="/work-together?from=skills"
             className="font-handwriting text-xl sm:text-2xl text-[var(--accent)] hover:text-[var(--accent-light)] transition-colors cursor-pointer select-none inline-block"
           >
             + work together ..

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,6 +21,7 @@ import { siteContent } from "@/data/content";
 
 export default function WorkTogetherPage() {
   const router = useRouter();
+  const [returnPath, setReturnPath] = useState<string>("/");
 
   // Dynamic calendar month state (defaults to November 2026)
   const [viewDate, setViewDate] = useState(new Date(2026, 10, 1));
@@ -36,9 +37,40 @@ export default function WorkTogetherPage() {
   const [selectedTime, setSelectedTime] = useState<string>("11:15 AM");
   const [step, setStep] = useState<"slot" | "form" | "confirmed">("slot");
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const from = params.get("from");
+      if (from === "work") {
+        setReturnPath("/work");
+      } else if (from === "skills") {
+        setReturnPath("/skills");
+      } else if (from === "kairo") {
+        setReturnPath("/work/kairo");
+      } else if (from === "kai") {
+        setReturnPath("/work/kai");
+      } else if (from?.startsWith("/")) {
+        setReturnPath(from);
+      } else if (document.referrer && document.referrer.includes(window.location.host)) {
+        try {
+          const refUrl = new URL(document.referrer);
+          if (refUrl.pathname !== "/work-together") {
+            setReturnPath(refUrl.pathname + refUrl.search);
+          }
+        } catch {
+          // fallback
+        }
+      }
+    }
+  }, []);
+
   const handleBack = (e: React.MouseEvent) => {
     e.preventDefault();
-    router.push("/");
+    if (returnPath) {
+      router.push(returnPath);
+    } else {
+      router.push("/");
+    }
   };
 
   // Form fields
@@ -247,18 +279,25 @@ export default function WorkTogetherPage() {
       {/* Extreme Left: Back Button + Heading (pinned out of center space) */}
       <div className="lg:fixed lg:top-14 xl:top-16 lg:left-8 xl:left-12 2xl:left-16 z-40 flex items-center gap-2.5 sm:gap-3 select-none px-5 pt-6 sm:pt-8 lg:p-0 mb-6 lg:mb-0 w-full max-w-[760px] lg:w-auto">
         <Link
-          href="/"
+          href={returnPath}
           onClick={handleBack}
           className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg border border-white/15 bg-[#0E0E0E] hover:bg-[#181818] hover:border-white/30 flex items-center justify-center text-[#8A8A85] hover:text-white transition-all cursor-pointer group shrink-0 shadow-sm"
-          aria-label="Back to home page"
-          title="Back to home"
+          aria-label="Back"
+          title="Back"
         >
           <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5" />
         </Link>
 
-        <h1 className="text-base sm:text-lg font-medium tracking-tight text-[#EDEDEA]">
-          Work together
-        </h1>
+        <Link
+          href={returnPath}
+          onClick={handleBack}
+          className="cursor-pointer group"
+          title="Back"
+        >
+          <h1 className="text-base sm:text-lg font-medium tracking-tight text-[#EDEDEA] group-hover:text-white transition-colors">
+            Work together
+          </h1>
+        </Link>
       </div>
 
       {/* Centered Content: Dead center of the viewport */}
@@ -510,7 +549,7 @@ export default function WorkTogetherPage() {
 
                       <div className="space-y-1.5">
                         <label className="text-xs font-sans text-[#8A8A85]">
-                          Work Email *
+                          Your Email *
                         </label>
                         <input
                           type="email"

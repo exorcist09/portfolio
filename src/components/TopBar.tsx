@@ -78,10 +78,12 @@ export default function TopBar() {
   ];
 
   return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.header
-          initial={{ opacity: 0, y: -56 }}
+    <>
+      <AnimatePresence>
+        {isVisible && (
+          <motion.header
+            key="topbar-header"
+            initial={{ opacity: 0, y: -56 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -56 }}
           transition={{ duration: 0.25, ease: "easeInOut" }}
@@ -176,6 +178,7 @@ export default function TopBar() {
                   <AnimatePresence>
                     {copied && (
                       <motion.div
+                        key="topbar-copied-toast"
                         initial={{ opacity: 0, y: 6, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 6, scale: 0.95 }}
@@ -191,13 +194,14 @@ export default function TopBar() {
           </div>
         </motion.header>
       )}
-
-      {/* Resume Preview Dialog */}
-      <ResumeModal
-        isOpen={isResumeOpen}
-        onClose={() => setIsResumeOpen(false)}
-        resumeUrl={siteContent.resumeUrl}
-      />
     </AnimatePresence>
-  );
+
+    {/* Resume Preview Dialog */}
+    <ResumeModal
+      isOpen={isResumeOpen}
+      onClose={() => setIsResumeOpen(false)}
+      resumeUrl={siteContent.resumeUrl}
+    />
+  </>
+);
 }

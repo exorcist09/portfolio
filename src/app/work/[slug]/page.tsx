@@ -17,19 +17,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const project = projectReadmes[slug.toLowerCase()];
-
-  if (!project) {
-    return {
-      title: "Project Not Found",
-    };
-  }
-
+export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: `${project.title} | Architecture & Engineering Spec`,
-    description: project.tagline,
+    title: "Adarsh Verma",
   };
 }
 
