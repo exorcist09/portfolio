@@ -219,7 +219,7 @@ export default function TimelineView() {
               >
                 {m.type === "diamond" ? (
                   // Solid filled grey diamond marker for months (same color as date, no glow)
-                  <div className="w-2.5 h-2.5 rotate-45 bg-[#8A8A85]" />
+                  <div className="w-1.5 h-1.5 rotate-45 bg-[#8A8A85]" />
                 ) : (
                   // Solid filled grey circular dot for years (same color as date, no glow)
                   <div className="w-3 h-3 rounded-full bg-[#8A8A85]" />
