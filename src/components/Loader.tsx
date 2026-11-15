@@ -15,6 +15,9 @@ export default function Loader({ onComplete }: { onComplete?: () => void }) {
   useEffect(() => {
     if (!show) {
       onComplete?.();
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("portfolio:loader-complete"));
+      }
       return;
     }
 
@@ -46,6 +49,9 @@ export default function Loader({ onComplete }: { onComplete?: () => void }) {
       setShow(false);
       hasLoadedInSession = true;
       onComplete?.();
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("portfolio:loader-complete"));
+      }
     }, 2100);
 
     return () => clearTimeout(timer);

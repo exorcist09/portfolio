@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import GlobalSpider from "@/components/spider/GlobalSpider";
 
 export const metadata: Metadata = {
   title: {
@@ -26,6 +27,8 @@ export default function RootLayout({
       </head>
       <body className="min-h-full bg-black text-[#EDEDEA] font-sans selection:bg-[var(--accent)]/25 selection:text-[var(--accent)]">
         {children}
+        {/* Spidy Mascot across all screen pages and on top of everything */}
+        <GlobalSpider />
       </body>
     </html>
   );
