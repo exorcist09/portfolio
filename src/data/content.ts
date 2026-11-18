@@ -26,7 +26,7 @@ export const siteContent: SiteContent = {
   name: "Adarsh Verma",
   role: "Engineer",
   handle: "@Adarsh",
-  alternateHandle: "@exorcist",
+  alternateHandle: "@exorcist09",
   avatarUrl: "/adarsh.png",
   location: "India",
   countryFlag: "🇮🇳",

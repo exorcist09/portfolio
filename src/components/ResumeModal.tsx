@@ -51,23 +51,23 @@ export default function ResumeModal({
             aria-label="Close resume preview"
           />
 
-          {/* Modal Container */}
+          {/* Modal Container: border removed on mobile screen (border-0 sm:border) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.96, y: 12 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 12 }}
             transition={{ type: "spring", stiffness: 350, damping: 28 }}
-            className="relative z-10 w-full max-w-4xl h-[90vh] sm:h-[86vh] rounded-2xl sm:rounded-3xl border border-white/20 bg-[#0E0E10] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.9)] p-2 sm:p-3 flex flex-col"
+            className="relative z-10 w-full max-w-4xl h-[90vh] sm:h-[86vh] rounded-2xl sm:rounded-3xl border-0 sm:border border-white/20 bg-[#0E0E10] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.9)] p-2 sm:p-3 flex flex-col"
           >
-            {/* Action Buttons: Attached to Top-Right outside on >=sm, row header on mobile */}
+            {/* Action Buttons: Cross on extreme right on mobile (order-3 sm:order-1) */}
             <div className="sm:absolute sm:top-0 sm:-right-13 md:-right-14 z-30 flex sm:flex-col items-center justify-end gap-2.5 mb-2 sm:mb-0">
-              {/* 1. Close Button */}
+              {/* 1. Close Button (Cross) - Extreme right on mobile (order-3), top on desktop (sm:order-1) */}
               <button
                 type="button"
                 onClick={onClose}
                 aria-label="Close dialog"
                 title="Close (Esc)"
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#18181B]/95 hover:bg-[#27272A] border border-white/20 text-[#EDEDEA] hover:text-white backdrop-blur-xl shadow-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer group"
+                className="order-3 sm:order-1 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#18181B]/95 hover:bg-[#27272A] border border-white/20 text-[#EDEDEA] hover:text-white backdrop-blur-xl shadow-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer group"
               >
                 <X className="w-4 h-4 stroke-[2.2] group-hover:rotate-90 transition-transform duration-200" />
               </button>
@@ -79,25 +79,25 @@ export default function ResumeModal({
                 rel="noopener noreferrer"
                 aria-label="Open resume in new tab"
                 title="Open in new tab"
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#18181B]/95 hover:bg-[#27272A] border border-white/20 text-[#EDEDEA] hover:text-white backdrop-blur-xl shadow-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer group"
+                className="order-2 sm:order-2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#18181B]/95 hover:bg-[#27272A] border border-white/20 text-[#EDEDEA] hover:text-white backdrop-blur-xl shadow-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer group"
               >
                 <ExternalLink className="w-4 h-4 stroke-[2] group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
               </a>
 
-              {/* 3. Download Button */}
+              {/* 3. Download Button - On the left on mobile (order-1), bottom on desktop (sm:order-3) */}
               <a
                 href={resumeUrl}
                 download="AdarshVermaResume.pdf"
                 aria-label="Download resume"
                 title="Download PDF"
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#18181B]/95 hover:bg-[#27272A] border border-white/20 text-[#EDEDEA] hover:text-white backdrop-blur-xl shadow-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer group"
+                className="order-1 sm:order-3 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#18181B]/95 hover:bg-[#27272A] border border-white/20 text-[#EDEDEA] hover:text-white backdrop-blur-xl shadow-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer group"
               >
                 <Download className="w-4 h-4 stroke-[2] group-hover:translate-y-0.5 transition-transform" />
               </a>
             </div>
 
             {/* Embedded Resume Container */}
-            <div className="relative w-full flex-1 rounded-xl sm:rounded-2xl overflow-hidden bg-white shadow-inner border border-black/20">
+            <div className="relative w-full flex-1 rounded-xl sm:rounded-2xl overflow-hidden bg-white shadow-inner border-0 sm:border border-black/20">
               <iframe
                 src={`${resumeUrl}#toolbar=0&navpanes=0&scrollbar=1`}
                 className="w-full h-full border-0 rounded-xl sm:rounded-2xl bg-white"

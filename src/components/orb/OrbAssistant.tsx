@@ -6,14 +6,14 @@ import { X, ArrowUp, ArrowRight, Check, Copy } from "lucide-react";
 import Link from "next/link";
 import { siteContent } from "@/data/content";
 
-interface SpiderAssistantProps {
+interface OrbAssistantProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
 interface Message {
   id: string;
-  sender: "spider" | "user";
+  sender: "orb" | "user";
   text: string;
   action?: {
     label: string;
@@ -32,7 +32,7 @@ const PROMPTS = [
   "How do I book a call with Adarsh?",
 ];
 
-export default function SpiderAssistant({ isOpen, onClose }: SpiderAssistantProps) {
+export default function OrbAssistant({ isOpen, onClose }: OrbAssistantProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [typedIntro, setTypedIntro] = useState("");
   const [isTypingDone, setIsTypingDone] = useState(false);
@@ -56,7 +56,7 @@ export default function SpiderAssistant({ isOpen, onClose }: SpiderAssistantProp
         clearInterval(interval);
         setIsTypingDone(true);
       }
-    }, 14);
+    }, 12);
 
     return () => clearInterval(interval);
   }, [isOpen]);
@@ -89,7 +89,6 @@ export default function SpiderAssistant({ isOpen, onClose }: SpiderAssistantProp
     const query = textToSend.trim();
     if (!query) return;
 
-    // Immediately complete intro typing if ongoing
     setTypedIntro(FULL_INTRO_TEXT);
     setIsTypingDone(true);
 
@@ -166,7 +165,7 @@ export default function SpiderAssistant({ isOpen, onClose }: SpiderAssistantProp
         ...prev,
         {
           id: (Date.now() + 1).toString(),
-          sender: "spider",
+          sender: "orb",
           text: replyText,
           action,
         },
@@ -178,10 +177,10 @@ export default function SpiderAssistant({ isOpen, onClose }: SpiderAssistantProp
     <AnimatePresence>
       {isOpen && (
         <div
-          className="fixed inset-0 z-[90] flex items-end justify-center sm:justify-end p-4 sm:p-0 sm:bottom-9 sm:right-16 pointer-events-none"
+          className="fixed bottom-[135px] right-4 sm:bottom-[142px] sm:right-7 z-[125] flex flex-col pointer-events-none"
           role="dialog"
           aria-modal="true"
-          aria-label="Spidy AI Assistant"
+          aria-label="Portfolio AI Assistant"
         >
           {/* Subtle mobile backdrop */}
           <motion.div
@@ -192,16 +191,17 @@ export default function SpiderAssistant({ isOpen, onClose }: SpiderAssistantProp
             className="fixed inset-0 bg-black/60 backdrop-blur-sm sm:hidden pointer-events-auto"
           />
 
-          {/* Assistant Card: Glass effect */}
+          {/* Compact Assistant Card: Sleek monochrome glass, opening upwards from the orb */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.94, y: 16 }}
+            initial={{ opacity: 0, scale: 0.92, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.94, y: 16 }}
-            transition={{ type: "spring", stiffness: 380, damping: 28 }}
-            className="relative w-full max-w-[325px] sm:w-[335px] h-[580px] sm:h-[610px] max-h-[88vh] rounded-[28px] bg-[#0d0e12]/80 backdrop-blur-xl border border-white/[0.10] shadow-2xl shadow-black/80 flex flex-col z-[90] text-left font-sans pointer-events-auto overflow-hidden"
+            exit={{ opacity: 0, scale: 0.92, y: 16 }}
+            transition={{ type: "spring", stiffness: 420, damping: 29 }}
+            style={{ transformOrigin: "bottom right" }}
+            className="relative w-full max-w-[320px] sm:w-[330px] h-[440px] sm:h-[470px] max-h-[64vh] rounded-[24px] bg-[#0c0d11]/90 backdrop-blur-xl border border-white/[0.12] shadow-2xl shadow-black/95 flex flex-col z-[130] text-left font-sans pointer-events-auto overflow-hidden"
           >
             {/* Top Close Button */}
-            <div className="absolute top-4 right-4 z-10">
+            <div className="absolute top-3.5 right-3.5 z-10">
               <button
                 type="button"
                 onClick={onClose}
@@ -213,31 +213,28 @@ export default function SpiderAssistant({ isOpen, onClose }: SpiderAssistantProp
             </div>
 
             {/* Main Content Area */}
-            <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between overflow-y-auto no-scrollbar">
-              {/* Top Greeting & Intro - Title in compact size */}
-              <div>
-                <h2 className="text-[17px] sm:text-[18px] font-semibold text-white tracking-tight mb-1.5">
-                  Hey, I&apos;m Spidy.
-                </h2>
-                <p className="text-[12px] sm:text-[12.5px] text-[#A1A1AA] leading-relaxed min-h-[50px]">
+            <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between overflow-y-auto no-scrollbar">
+              {/* Typewriter Intro Paragraph (No heading, no sparkle icon) */}
+              <div className="pr-7 pt-1">
+                <p className="text-[12.5px] sm:text-[13px] text-[#A1A1AA] leading-relaxed min-h-[46px]">
                   {typedIntro}
                   {!isTypingDone && (
-                    <span className="inline-block w-1 h-3 ml-0.5 bg-[var(--accent)] animate-pulse" />
+                    <span className="inline-block w-1 h-3 ml-0.5 bg-white/70 animate-pulse" />
                   )}
                 </p>
               </div>
 
-              {/* Chat Stream if messages exist, otherwise Prompt List sitting immediately above input */}
+              {/* Chat Stream if messages exist, otherwise Prompt List */}
               {messages.length === 0 ? (
-                <div className="mt-auto mb-2.5 space-y-2">
+                <div className="mt-auto mb-2 space-y-1.5">
                   {PROMPTS.map((prompt, idx) => (
                     <button
                       key={idx}
                       type="button"
                       onClick={() => handleSend(prompt)}
-                      className="w-full text-left flex items-start gap-2 text-[12.5px] text-[#8A8A85] hover:text-white transition-colors cursor-pointer group py-1"
+                      className="w-full text-left flex items-start gap-2 text-[12px] text-[#8A8A85] hover:text-white transition-colors cursor-pointer group py-0.5"
                     >
-                      <span className="text-[#8A8A85] group-hover:text-[var(--accent)] transition-colors select-none">
+                      <span className="text-[#8A8A85] group-hover:text-white transition-colors select-none">
                         ↳
                       </span>
                       <span className="leading-snug">{prompt}</span>
@@ -245,7 +242,7 @@ export default function SpiderAssistant({ isOpen, onClose }: SpiderAssistantProp
                   ))}
                 </div>
               ) : (
-                <div className="my-2 space-y-2.5 flex-1 overflow-y-auto no-scrollbar pr-1">
+                <div className="my-2 space-y-2 flex-1 overflow-y-auto no-scrollbar pr-1">
                   {messages.map((m) => (
                     <div
                       key={m.id}
@@ -253,38 +250,37 @@ export default function SpiderAssistant({ isOpen, onClose }: SpiderAssistantProp
                         m.sender === "user" ? "items-end" : "items-start"
                       }`}
                     >
-                      {/* Glass background for Spidy's messages */}
                       <div
                         className={`max-w-[88%] text-xs leading-relaxed ${
                           m.sender === "user"
-                            ? "bg-white/10 text-white font-medium rounded-[18px] px-3.5 py-2"
-                            : "rounded-[18px] px-3.5 py-2 text-xs font-sans tracking-tight bg-white/[0.08] backdrop-blur-md border border-white/[0.12] text-[#EDEDEA] shadow-sm inline-flex items-center gap-0.5"
+                            ? "bg-white/12 text-white font-medium rounded-[16px] px-3.5 py-1.5"
+                            : "rounded-[16px] px-3.5 py-1.5 text-xs font-sans tracking-tight bg-white/[0.06] backdrop-blur-md border border-white/[0.10] text-[#EDEDEA] shadow-sm inline-flex items-center gap-0.5"
                         }`}
                       >
                         <span>{m.text}</span>
-                        {m.sender === "spider" && (
-                          <span className="inline-block font-light ml-0.5 animate-pulse select-none text-[var(--accent)]">
+                        {m.sender === "orb" && (
+                          <span className="inline-block font-light ml-0.5 animate-pulse select-none text-white/70">
                             |
                           </span>
                         )}
                       </div>
 
                       {m.action && (
-                        <div className="mt-1.5">
+                        <div className="mt-1">
                           {m.action.href ? (
                             <Link
                               href={m.action.href}
                               onClick={onClose}
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.08] hover:bg-white/[0.15] border border-white/10 text-[11px] text-white font-medium transition-colors"
+                              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.08] hover:bg-white/[0.15] border border-white/10 text-[11px] text-white font-medium transition-colors"
                             >
                               <span>{m.action.label}</span>
-                              <ArrowRight className="w-3 h-3 text-[var(--accent)]" />
+                              <ArrowRight className="w-3 h-3 text-white/80" />
                             </Link>
                           ) : (
                             <button
                               type="button"
                               onClick={m.action.onClick}
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.08] hover:bg-white/[0.15] border border-white/10 text-[11px] text-white font-medium transition-colors cursor-pointer"
+                              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.08] hover:bg-white/[0.15] border border-white/10 text-[11px] text-white font-medium transition-colors cursor-pointer"
                             >
                               <span>{m.action.label}</span>
                               {copied ? (
@@ -308,22 +304,22 @@ export default function SpiderAssistant({ isOpen, onClose }: SpiderAssistantProp
                   e.preventDefault();
                   handleSend(input);
                 }}
-                className="mt-3 w-full rounded-full bg-white/[0.06] backdrop-blur-sm border border-white/[0.10] p-1.5 pl-3.5 flex items-center justify-between gap-2 focus-within:border-white/25 transition-colors"
+                className="mt-2.5 w-full rounded-full bg-white/[0.05] backdrop-blur-sm border border-white/[0.10] p-1.5 pl-3.5 flex items-center justify-between gap-2 focus-within:border-white/30 transition-colors"
               >
                 <input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask Spidy about Adarsh..."
+                  placeholder="Ask about Adarsh's work..."
                   className="w-full bg-transparent text-xs text-[#EDEDEA] placeholder:text-[#606064] focus:outline-none"
                 />
                 <button
                   type="submit"
                   disabled={!input.trim()}
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30 text-white flex items-center justify-center transition-all cursor-pointer shrink-0"
+                  className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/25 disabled:opacity-25 text-white flex items-center justify-center transition-all cursor-pointer shrink-0"
                   aria-label="Send query"
                 >
-                  <ArrowUp className="w-4 h-4" />
+                  <ArrowUp className="w-3.5 h-3.5" />
                 </button>
               </form>
             </div>

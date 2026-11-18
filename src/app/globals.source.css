@@ -49,6 +49,14 @@
   }
 }
 
+/* Hide orb overlay during initial loader screen */
+html[data-site-loading="true"] [data-orb-container] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 .font-sans {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
 }

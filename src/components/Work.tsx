@@ -27,7 +27,7 @@ export default function Work() {
           selected projects
         </h2>
         <p className="mt-1 text-xs sm:text-sm text-[#8A8A85]">
-          Selected works in full-Stack, ai/ml & software engineering
+          Selected works in full-stack, ai/ml & software engineering
         </p>
       </motion.div>
 

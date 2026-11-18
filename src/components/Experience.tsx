@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ListView from "./experience/ListView";
 import TimelineView from "./experience/TimelineView";
@@ -8,27 +8,34 @@ import TimelineView from "./experience/TimelineView";
 export default function Experience() {
   const [activeTab, setActiveTab] = useState<"list" | "timeline">("timeline");
 
+  // On mobile screen (< 640px), default to list view
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth < 640) {
+      setActiveTab("list");
+    }
+  }, []);
+
   return (
     <section
       id="experience"
       className="py-20 w-full max-w-[760px] mx-auto px-5 sm:px-6"
     >
-      {/* Consistent Left-Aligned Header + Right-Aligned Toggle */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8 text-left">
-        <div>
+      {/* Consistent Left-Aligned Header + Right-Aligned Toggle (kept on same row on mobile) */}
+      <div className="flex flex-row items-end justify-between gap-3 sm:gap-6 mb-8 text-left">
+        <div className="flex-1 min-w-0 pr-2 sm:pr-0">
           <span className="text-[11px] font-mono-custom tracking-[0.2em] uppercase text-[#8A8A85]">
-            EXPERIENCE
+            EXPERIENCE & Education 
           </span>
           <h2 className="mt-1.5 text-2xl sm:text-3xl font-semibold tracking-tight text-[#EDEDEA]">
             where I have stayed
           </h2>
-          <p className="mt-1 text-xs sm:text-sm text-[#8A8A85]">
+          <p className="mt-1 text-xs sm:text-sm text-[#8A8A85] hidden xs:block sm:block">
             Work history, timeline, and core product engineering roles.
           </p>
         </div>
 
-        {/* Toggle Pill + Active Pill Fill */}
-        <div className="relative flex items-center self-start sm:self-auto pt-2 sm:pt-0">
+        {/* Toggle Pill + Active Pill Fill: Aligned to extreme right on the same row */}
+        <div className="relative flex items-center shrink-0 self-end">
           <div className="relative flex items-center p-1 rounded-full bg-[#121212] border border-white/[0.08] shadow-inner">
             <button
               onClick={() => setActiveTab("timeline")}

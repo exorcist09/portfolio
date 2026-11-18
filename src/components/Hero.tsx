@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, FileDown, Clock, Cloud, Mail } from "lucide-react";
+import { Sparkles, FileDown, Clock, Cloud, Mail, Circle } from "lucide-react";
 import { siteContent } from "@/data/content";
 import { avatarBase64 } from "@/data/avatarBase64";
 import AgentModal from "./AgentModal";
@@ -123,10 +123,15 @@ export default function Hero() {
         <div className="pt-2 flex flex-wrap items-center gap-3">
           <a
             href="#contact"
-            className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] border border-[var(--accent-light)]/30 text-xs sm:text-sm font-semibold text-white transition-all cursor-pointer shadow-md shadow-indigo-950/40 hover:scale-[1.02] active:scale-[0.98]"
+            style={{
+              backgroundColor: "var(--accent)",
+              borderColor: "var(--accent)",
+              boxShadow: "0 4px 14px var(--accent-glow)",
+            }}
+            className="group inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold text-white transition-all cursor-pointer  hover:scale-[1.02] active:scale-[0.98] border"
             aria-label="Contact Adarsh"
           >
-            <Mail className="w-3.5 h-3.5 text-white stroke-current stroke-[2] fill-none " />
+            <Mail className="w-3.5 h-3.5 text-white stroke-current stroke-[2] fill-none" />
             <span>Contact</span>
           </a>
 
@@ -139,6 +144,18 @@ export default function Hero() {
           >
             <FileDown className="w-4 h-4 stroke-[1.8]" />
             <span>Resume</span>
+          </button>
+
+          {/* Mobile Only: Chat button next to Resume (opens AI assistant modal) */}
+          <button
+            type="button"
+            onClick={() => setIsAgentOpen(true)}
+            className="sm:hidden group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.07] hover:bg-white/[0.12] border border-white/[0.1] text-xs font-medium text-[#EDEDEA] hover:text-white transition-all cursor-pointer shadow-sm active:scale-[0.98]"
+            aria-label="Chat with AI Agent"
+            title="Chat with AI Agent"
+          >
+            <Circle className="w-2.5 h-2.5 fill-white text-white shrink-0" />
+            <span>Chat</span>
           </button>
         </div>
       </motion.div>

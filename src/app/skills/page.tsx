@@ -102,8 +102,8 @@ export default function SkillsPage() {
         </h1>
       </div>
 
-      {/* Centered Content: In the center space without border/bg wrapper */}
-      <main className="w-full max-w-[760px] mx-auto px-5 sm:px-6 py-8 sm:py-14 lg:py-20">
+      {/* Centered Content: Moved further below back button and heading on mobile view */}
+      <main className="w-full max-w-[760px] mx-auto px-5 sm:px-6 pt-12 pb-16 sm:py-14 lg:py-20 mt-2 sm:mt-0">
         {/* Top Section matching Wireframe (media_1794551049149_9255301c.png) */}
         <div className="mb-20 sm:mb-24 space-y-4">
           {/* Row 1: 4 Highlighted Tiles (TS, Python, Claude, Cursor) with border-lg, then a gap, then 3 tiles */}

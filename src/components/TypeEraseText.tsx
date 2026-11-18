@@ -5,7 +5,7 @@ import { useInView } from "framer-motion";
 
 export default function TypeEraseText({
   initialText = "@Adarsh",
-  targetText = "@exorcist",
+  targetText = "@exorcist09",
   eraseSpeed = 80,
   typeSpeed = 90,
   pauseDelay = 2000,

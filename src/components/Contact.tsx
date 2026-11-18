@@ -48,10 +48,10 @@ export default function Contact() {
         </p>
       </motion.div>
 
-      {/* Monochrome Glass Pills - Synchronously expanding & collapsing with zero reflow lag */}
+      {/* Monochrome Glass Pills - In 1 column on mobile screen, horizontal wrap on desktop */}
       <div
         onMouseLeave={() => setActivePill("email")}
-        className="mt-6 p-2 pt-10 flex flex-wrap items-center justify-center gap-3"
+        className="mt-6 p-2 pt-6 sm:pt-10 flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-3 sm:gap-3"
       >
         {/* Email Pill - Open by default */}
         <motion.div

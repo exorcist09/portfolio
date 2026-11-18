@@ -497,8 +497,8 @@ export default function WorkTogetherPage() {
       <main style={{ maxWidth: "800px" }} className="w-full px-5 sm:px-6">
         <div className="w-full rounded-2xl bg-[#0E0E0E] shadow-2xl overflow-hidden text-left">
           <div className="grid grid-cols-1 md:grid-cols-12 divide-y md:divide-y-0 md:divide-x divide-white/[0.08] min-h-[580px] sm:min-h-[600px]">
-            {/* Left Column: Meeting Info & Host Profile */}
-            <div className="md:col-span-5 p-6 sm:p-7 space-y-6 flex flex-col justify-between bg-[#0A0A0A] min-h-[580px] sm:min-h-[600px]">
+            {/* Left Column: Meeting Info & Host Profile (compact height on mobile, full height on desktop) */}
+            <div className="md:col-span-5 p-5 sm:p-7 space-y-4 md:space-y-6 flex flex-col justify-between bg-[#0A0A0A] min-h-0 md:min-h-[580px] lg:min-h-[600px]">
               <div className="space-y-4">
                 {/* Host Badge */}
                 <div className="flex items-center gap-3">

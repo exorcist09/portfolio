@@ -12,6 +12,18 @@ export default function Loader({ onComplete }: { onComplete?: () => void }) {
   const [show, setShow] = useState(!hasLoadedInSession);
   const [fontReady, setFontReady] = useState(false);
 
+  // Mark document during loading so fixed overlays like orb are strictly hidden
+  useEffect(() => {
+    if (show) {
+      document.documentElement.setAttribute("data-site-loading", "true");
+    } else {
+      document.documentElement.removeAttribute("data-site-loading");
+    }
+    return () => {
+      document.documentElement.removeAttribute("data-site-loading");
+    };
+  }, [show]);
+
   useEffect(() => {
     if (!show) {
       onComplete?.();
@@ -50,6 +62,7 @@ export default function Loader({ onComplete }: { onComplete?: () => void }) {
       hasLoadedInSession = true;
       onComplete?.();
       if (typeof window !== "undefined") {
+        (window as unknown as { __portfolio_loaded?: boolean }).__portfolio_loaded = true;
         window.dispatchEvent(new CustomEvent("portfolio:loader-complete"));
       }
     }, 2100);
@@ -63,7 +76,7 @@ export default function Loader({ onComplete }: { onComplete?: () => void }) {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black select-none pointer-events-auto"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black select-none pointer-events-auto"
         >
           {/* Cursive Name - Big text with left-to-right fill inside text only */}
           <div className="relative inline-block select-none px-6 py-4">

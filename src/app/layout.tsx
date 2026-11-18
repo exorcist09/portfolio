@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import GlobalSpider from "@/components/spider/GlobalSpider";
+import GlobalOrb from "@/components/orb/GlobalOrb";
 
 export const metadata: Metadata = {
   title: {
@@ -8,6 +8,11 @@ export const metadata: Metadata = {
     template: "Adarsh Verma",
   },
   description: "Personal portfolio of Adarsh Verma",
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
@@ -27,8 +32,8 @@ export default function RootLayout({
       </head>
       <body className="min-h-full bg-black text-[#EDEDEA] font-sans selection:bg-[var(--accent)]/25 selection:text-[var(--accent)]">
         {children}
-        {/* Spidy Mascot across all screen pages and on top of everything */}
-        <GlobalSpider />
+        {/* Interactive Three.js GLSL Plasma Orb across all pages */}
+        <GlobalOrb />
       </body>
     </html>
   );
