@@ -87,6 +87,29 @@ html[data-site-loading="true"] [data-orb-container] {
   scrollbar-width: none;
 }
 
+/* Elegant dark-mode scrollbar for chatbox message stream */
+.chat-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
+.chat-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.chat-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 9999px;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.32);
+}
+
 /* Keyframes for calm, slow smooth infinite marquees */
 @keyframes marquee-left {
   0% {

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ArrowUp, ArrowRight, Check, Copy } from "lucide-react";
+import { X, ArrowUp, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { siteContent } from "@/data/content";
 
@@ -11,21 +11,17 @@ interface OrbAssistantProps {
   onClose: () => void;
 }
 
-interface Message {
+interface ChatMessage {
   id: string;
-  sender: "orb" | "user";
+  sender: "user" | "orb";
   text: string;
-  action?: {
-    label: string;
-    href?: string;
-    onClick?: () => void;
-  };
+  linkText?: string;
+  linkHref?: string;
+  afterLinkText?: string;
+  followUps?: string[];
 }
 
-const FULL_INTRO_TEXT =
-  "HI, I'm Orb, I know my way around Adarsh's work. Ask me about his projects, skills, or how he brings ideas to life with code. I can point you in the right direction.";
-
-const PROMPTS = [
+const INITIAL_PROMPTS = [
   "Which project should I start with?",
   "What do you do best?",
   "What's your design + code background?",
@@ -33,12 +29,8 @@ const PROMPTS = [
 ];
 
 export default function OrbAssistant({ isOpen, onClose }: OrbAssistantProps) {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [typedIntro, setTypedIntro] = useState("");
-  const [isTypingDone, setIsTypingDone] = useState(false);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
-  const [copied, setCopied] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const modalContainerRef = useRef<HTMLDivElement>(null);
   const scrollableContentRef = useRef<HTMLDivElement>(null);
 
@@ -105,14 +97,16 @@ export default function OrbAssistant({ isOpen, onClose }: OrbAssistantProps) {
     window.addEventListener("resize", applyLock);
 
     // Non-passive touchmove prevention on mobile: prevents iOS / Android rubber banding
-    // and touch dragging everywhere except within the scrollable messages container
+    // while keeping natural smooth scrolling inside the chatbox content area
     const container = modalContainerRef.current;
     const handleTouchMove = (e: TouchEvent) => {
       if (window.innerWidth >= 640) return;
+      const target = e.target as HTMLElement | null;
       const scrollable = scrollableContentRef.current;
-      if (!scrollable || !scrollable.contains(e.target as Node)) {
-        if (e.cancelable) e.preventDefault();
+      if (scrollable && (scrollable === target || scrollable.contains(target))) {
+        return;
       }
+      if (e.cancelable) e.preventDefault();
     };
 
     if (container) {
@@ -139,109 +133,146 @@ export default function OrbAssistant({ isOpen, onClose }: OrbAssistantProps) {
     };
   }, [isOpen]);
 
-  // Typewriter effect for intro paragraph on open
+  // Smooth scroll within chatbox when new messages arrive
   useEffect(() => {
-    if (!isOpen) {
-      setTypedIntro("");
-      setIsTypingDone(false);
-      return;
+    if (scrollableContentRef.current) {
+      scrollableContentRef.current.scrollTo({
+        top: scrollableContentRef.current.scrollHeight,
+        behavior: "smooth",
+      });
     }
-
-    let i = 0;
-    const interval = setInterval(() => {
-      i++;
-      setTypedIntro(FULL_INTRO_TEXT.slice(0, i));
-      if (i >= FULL_INTRO_TEXT.length) {
-        clearInterval(interval);
-        setIsTypingDone(true);
-      }
-    }, 12);
-
-    return () => clearInterval(interval);
-  }, [isOpen]);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText(siteContent.email);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleReset = () => {
+    setMessages([]);
+    setInput("");
+    if (scrollableContentRef.current) {
+      scrollableContentRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
-  const handleSend = (userText: string) => {
-    if (!userText.trim()) return;
+  const handleSend = (userText: string, fromSuggestion: boolean = false) => {
+    const trimmed = userText.trim();
+    if (!trimmed) return;
 
-    const userMsg: Message = {
+    const userMsg: ChatMessage = {
       id: Date.now().toString(),
       sender: "user",
-      text: userText,
+      text: trimmed,
     };
 
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
 
-    // Conversational, concise responses crafted to Adarsh's portfolio
+    // Generate response matching the reference style in the user wireframe
     setTimeout(() => {
-      let replyText = "";
-      let action: Message["action"] = undefined;
+      const q = trimmed.toLowerCase();
+      let orbReply: ChatMessage;
 
-      const q = userText.toLowerCase();
+      // Candidate suggestions tailored to the subject matter
+      let candidateFollowUps: string[] = [];
+      if (q.includes("best") || q.includes("what do you do")) {
+        candidateFollowUps = [
+          "Which project should I start with?",
+          "What's your design + code background?",
+          "How do I book a call with Adarsh?",
+        ];
+      } else if (q.includes("project") || q.includes("start with")) {
+        candidateFollowUps = [
+          "What do you do best?",
+          "What's your design + code background?",
+          "How do I book a call with Adarsh?",
+        ];
+      } else if (q.includes("background") || q.includes("experience")) {
+        candidateFollowUps = [
+          "What do you do best?",
+          "Which project should I start with?",
+          "How do I book a call with Adarsh?",
+        ];
+      } else if (
+        q.includes("call") ||
+        q.includes("book") ||
+        q.includes("hire") ||
+        q.includes("contact")
+      ) {
+        candidateFollowUps = [
+          "What do you do best?",
+          "Which project should I start with?",
+          "What's your design + code background?",
+        ];
+      } else {
+        candidateFollowUps = [
+          "Which project should I start with?",
+          "What do you do best?",
+          "What's your design + code background?",
+          "How do I book a call with Adarsh?",
+        ];
+      }
 
-      if (q.includes("project") || q.includes("start with")) {
-        replyText =
-          "Start with NexMeet (real-time video conferencing) or DocuFlow (AI document intelligence). Both show complete full-stack execution and responsive UI systems.";
-        action = {
-          label: "View all projects",
-          href: "/work",
+      // "Keep exploring" only appears when user clicked a suggested prompt
+      const followUps = fromSuggestion
+        ? candidateFollowUps.filter((item) => item.toLowerCase() !== q)
+        : undefined;
+
+      if (q.includes("best") || q.includes("what do you do")) {
+        orbReply = {
+          id: (Date.now() + 1).toString(),
+          sender: "orb",
+          text: "Adarsh is best at bridging high-performance systems with robust backend architectures — from distributed Node.js/Python microservices to real-time WebSockets and responsive interfaces. You can see the range in ",
+          linkText: "his work",
+          linkHref: "/work",
+          afterLinkText: ".",
+          followUps,
         };
-      } else if (q.includes("best") || q.includes("what do you do")) {
-        replyText =
-          "Adarsh excels at bridging high-performance systems with robust backend architectures — Nodejs, Python, Typescript, and distributed APIs.";
-        action = {
-          label: "Explore technical stack",
-          href: "/skills",
+      } else if (q.includes("project") || q.includes("start with")) {
+        orbReply = {
+          id: (Date.now() + 1).toString(),
+          sender: "orb",
+          text: "Start with NexMeet (real-time WebRTC conferencing) or DocuFlow (AI document intelligence with vector search). Both demonstrate full-stack execution and responsive UI systems. Explore all in ",
+          linkText: "his projects",
+          linkHref: "/work",
+          afterLinkText: ".",
+          followUps,
         };
-      } else if (q.includes("background")) {
-        replyText =
-          "Adarsh is a Software engineer";
-        action = {
-          label: "Check experience history",
-          href: "#experience",
+      } else if (q.includes("background") || q.includes("experience")) {
+        orbReply = {
+          id: (Date.now() + 1).toString(),
+          sender: "orb",
+          text: "Adarsh is a Software Engineer who builds scalable products, intuitive web applications, and high-throughput backends. Review his full timeline in ",
+          linkText: "his experience",
+          linkHref: "#experience",
+          afterLinkText: ".",
+          followUps,
         };
-      } else if (q.includes("call") || q.includes("book") || q.includes("hire") || q.includes("contact")) {
-        replyText =
-          "You can schedule a direct 15-minute intro call or drop an email anytime.";
-        action = {
-          label: "Book a 15-min call",
-          href: "/work-together?from=assistant",
-        };
-      } else if (q.includes("email") || q.includes("reach")) {
-        replyText = `Direct contact: ${siteContent.email}. Available for engineering and product roles.`;
-        action = {
-          label: copied ? "Copied!" : "Copy Email",
-          onClick: handleCopyEmail,
+      } else if (
+        q.includes("call") ||
+        q.includes("book") ||
+        q.includes("hire") ||
+        q.includes("contact")
+      ) {
+        orbReply = {
+          id: (Date.now() + 1).toString(),
+          sender: "orb",
+          text: "You can book a direct 15-minute intro call or send a project inquiry right from ",
+          linkText: "work together",
+          linkHref: "/work-together?from=assistant",
+          afterLinkText: `. You can also email directly at ${siteContent.email}.`,
+          followUps,
         };
       } else {
-        replyText =
-          "I can help you explore Adarsh's featured work, stack capabilities, or schedule an introductory call.";
-        action = {
-          label: "Book an intro call",
-          href: "/work-together?from=assistant",
+        orbReply = {
+          id: (Date.now() + 1).toString(),
+          sender: "orb",
+          text: "I can help you explore Adarsh's featured work, tech stack, or schedule an introductory call. Discover more in ",
+          linkText: "his work",
+          linkHref: "/work",
+          afterLinkText: ".",
+          followUps,
         };
       }
 
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: (Date.now() + 1).toString(),
-          sender: "orb",
-          text: replyText,
-          action,
-        },
-      ]);
-    }, 350);
+      setMessages((prev) => [...prev, orbReply]);
+    }, 280);
   };
 
   return (
@@ -265,132 +296,160 @@ export default function OrbAssistant({ isOpen, onClose }: OrbAssistantProps) {
           />
 
           {/* Modal Wrapper holding Close button outside above + Chatbox card */}
-          <div className="relative z-10 flex flex-col items-end pointer-events-auto w-full max-w-[340px] sm:w-[340px]">
-            {/* Close Button: Positioned outside above the chatbox (matching ResumeModal style) */}
-            <div className="w-full flex justify-end mb-2.5 sm:mb-2">
+          <div className="relative z-10 flex flex-col items-end pointer-events-auto w-full max-w-[360px] sm:w-[360px]">
+            {/* Header Action Buttons: Rotate Reset button (appears only when chat happened) + Close Button */}
+            <div className="w-full flex justify-end items-center gap-2 mb-2.5 sm:mb-2">
+              {messages.length > 0 && (
+                <button
+                  type="button"
+                  onClick={handleReset}
+                  aria-label="Reset chat"
+                  title="Reset conversation"
+                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#20212a]/85 hover:bg-[#2c2d38]/95 text-[#A1A1AA] hover:text-white backdrop-blur-xl shadow-lg flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer group border-0"
+                >
+                  <RotateCcw className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2] group-hover:-rotate-90 transition-transform duration-200" />
+                </button>
+              )}
               <button
                 type="button"
                 onClick={onClose}
                 aria-label="Close assistant"
                 title="Close (Esc)"
-                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#18181B]/95 hover:bg-[#27272A] border border-white/20 text-[#EDEDEA] hover:text-white backdrop-blur-xl shadow-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer group"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#20212a]/85 hover:bg-[#2c2d38]/95 text-[#EDEDEA] hover:text-white backdrop-blur-xl shadow-lg flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer group border-0"
               >
                 <X className="w-4 h-4 stroke-[2.2] group-hover:rotate-90 transition-transform duration-200" />
               </button>
             </div>
 
-            {/* Compact Assistant Card: Sleek monochrome glass, identical design on mobile and desktop */}
+            {/* Chatbox Card: Refined dark graphite glass, clearly visible against black page background */}
             <motion.div
               initial={{ opacity: 0, scale: 0.94, y: 14 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.94, y: 14 }}
               transition={{ type: "spring", stiffness: 400, damping: 28 }}
-              className="relative w-full h-[470px] max-h-[76vh] sm:max-h-[70vh] rounded-[24px] bg-[#0c0d11]/95 backdrop-blur-2xl border border-white/[0.12] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.95)] flex flex-col text-left font-sans overflow-hidden overscroll-contain"
+              className="relative w-full h-[510px] max-h-[82vh] sm:max-h-[76vh] rounded-[24px] bg-gradient-to-b from-[#20212a]/90 via-[#16171f]/88 to-[#101116]/92 backdrop-blur-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9),0_0_40px_rgba(255,255,255,0.04)] flex flex-col text-left font-sans overflow-hidden select-text border-0"
             >
-              {/* Main Content Area */}
+              {/* Single Unified Scrollable Content Area */}
               <div
                 ref={scrollableContentRef}
-                className="p-4 sm:p-5 flex-1 flex flex-col justify-between overflow-y-auto no-scrollbar"
+                className="p-5 sm:p-6 flex-1 overflow-y-auto chat-scroll flex flex-col overscroll-contain"
               >
-                {/* Typewriter Intro Paragraph */}
-                <div className="pt-1">
-                  <p className="text-[12.5px] sm:text-[13px] text-[#A1A1AA] leading-relaxed min-h-[46px]">
-                    {typedIntro}
-                    {!isTypingDone && (
-                      <span className="inline-block w-1 h-3 ml-0.5 bg-white/70 animate-pulse" />
-                    )}
-                  </p>
-                </div>
-
-                {/* Chat Stream if messages exist, otherwise Prompt List */}
+                {/* Initial View: Static greeting & prompts when no messages have been sent */}
                 {messages.length === 0 ? (
-                  <div className="mt-auto mb-2 space-y-1.5">
-                    {PROMPTS.map((prompt, idx) => (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => handleSend(prompt)}
-                        className="w-full text-left flex items-start gap-2 text-[12px] text-[#8A8A85] hover:text-white transition-colors cursor-pointer group py-0.5"
-                      >
-                        <span className="text-[#8A8A85] group-hover:text-white transition-colors select-none">
-                          ↳
-                        </span>
-                        <span className="leading-snug">{prompt}</span>
-                      </button>
-                    ))}
+                  <div className="flex-1 flex flex-col justify-between">
+                    <div>
+                      {/* Bold Header */}
+                      <h2 className="text-xl sm:text-[22px] font-bold text-white tracking-tight">
+                        Hi, I&apos;m Orb.
+                      </h2>
+
+                      {/* Clean Intro Paragraph (No typewriter delay) */}
+                      <p className="text-[13px] sm:text-[13.5px] text-[#A1A1AA] leading-relaxed mt-2.5">
+                        I know my way around Adarsh&apos;s work. Ask me about his
+                        projects, skills, or how he brings ideas to life with code.
+                        I can point you in the right direction.
+                      </p>
+                    </div>
+
+                    {/* Initial Suggested Prompts */}
+                    <div className="pt-6 space-y-3">
+                      {INITIAL_PROMPTS.map((prompt, idx) => (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => handleSend(prompt, true)}
+                          className="w-full text-left flex items-start gap-3 text-[13.5px] text-[#E4E4E7] hover:text-white transition-colors cursor-pointer group py-0.5"
+                        >
+                          <span className="text-[#71717A] group-hover:text-white transition-colors text-base leading-none select-none">
+                            ↳
+                          </span>
+                          <span className="font-medium leading-snug">
+                            {prompt}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 ) : (
-                  <div className="my-2 space-y-2 flex-1 overflow-y-auto no-scrollbar pr-1">
-                    {messages.map((m) => (
-                      <div
-                        key={m.id}
-                        className={`flex flex-col ${
-                          m.sender === "user" ? "items-end" : "items-start"
-                        }`}
-                      >
-                        <div
-                          className={`max-w-[88%] text-xs leading-relaxed ${
-                            m.sender === "user"
-                              ? "bg-white/12 text-white font-medium rounded-[16px] px-3.5 py-1.5"
-                              : "rounded-[16px] px-3.5 py-1.5 text-xs font-sans tracking-tight bg-white/[0.06] backdrop-blur-md border border-white/[0.10] text-[#EDEDEA] shadow-sm inline-flex items-center gap-0.5"
-                          }`}
-                        >
-                          <span>{m.text}</span>
-                          {m.sender === "orb" && (
-                            <span className="inline-block font-light ml-0.5 animate-pulse select-none text-white/70">
-                              |
-                            </span>
-                          )}
-                        </div>
+                  /* Active Conversation Thread View */
+                  <div className="space-y-4">
+                    {messages.map((m, idx) => (
+                      <div key={m.id || idx}>
+                        {m.sender === "user" ? (
+                          /* User Question: Glassy Dark Pill on the Right */
+                          <div className="flex justify-end pt-1">
+                            <div className="max-w-[88%] text-[13px] sm:text-[13.5px] font-medium leading-relaxed bg-white/[0.08] backdrop-blur-md text-white rounded-2xl px-4 py-2 shadow-sm">
+                              {m.text}
+                            </div>
+                          </div>
+                        ) : (
+                          /* Orb Response: Clean prose directly on card background */
+                          <div className="pt-2 text-left">
+                            <p className="text-[13.5px] text-[#EDEDEA] leading-relaxed font-normal">
+                              {m.text}
+                              {m.linkText && m.linkHref && (
+                                <Link
+                                  href={m.linkHref}
+                                  onClick={onClose}
+                                  className="underline underline-offset-2 decoration-white/40 hover:decoration-white text-white font-medium transition-colors"
+                                >
+                                  {m.linkText}
+                                </Link>
+                              )}
+                              {m.afterLinkText}
+                            </p>
 
-                        {m.action && (
-                          <div className="mt-1">
-                            {m.action.href ? (
-                              <Link
-                                href={m.action.href}
-                                onClick={onClose}
-                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.08] hover:bg-white/[0.15] border border-white/10 text-[11px] text-white font-medium transition-colors"
-                              >
-                                <span>{m.action.label}</span>
-                                <ArrowRight className="w-3 h-3 text-white/80" />
-                              </Link>
-                            ) : (
-                              <button
-                                type="button"
-                                onClick={m.action.onClick}
-                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.08] hover:bg-white/[0.15] border border-white/10 text-[11px] text-white font-medium transition-colors cursor-pointer"
-                              >
-                                <span>{m.action.label}</span>
-                                {copied ? (
-                                  <Check className="w-3 h-3 text-emerald-400" />
-                                ) : (
-                                  <Copy className="w-3 h-3 text-[#8A8A85]" />
-                                )}
-                              </button>
+                            {/* Divider & Keep Exploring Suggestions (Only rendered if followUps exist) */}
+                            {m.followUps && m.followUps.length > 0 && (
+                              <div className="mt-4 pt-3.5 border-t border-white/[0.08]">
+                                <p className="text-[12px] font-medium text-[#71717A] mb-2.5 select-none">
+                                  Keep exploring
+                                </p>
+                                <div className="space-y-2.5">
+                                  {m.followUps.map((fu, fIdx) => (
+                                    <button
+                                      key={fIdx}
+                                      type="button"
+                                      onClick={() => handleSend(fu, true)}
+                                      className="w-full text-left flex items-start gap-2.5 text-[13px] text-[#EDEDEA] hover:text-white transition-colors cursor-pointer group py-0.5"
+                                    >
+                                      <span className="text-[#71717A] group-hover:text-white transition-colors text-sm leading-none select-none">
+                                        ↳
+                                      </span>
+                                      <span className="font-medium leading-snug">
+                                        {fu}
+                                      </span>
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
                             )}
                           </div>
                         )}
                       </div>
                     ))}
-                    <div ref={messagesEndRef} />
                   </div>
                 )}
+              </div>
 
-                {/* Bottom Pill Input */}
+              {/* Fixed Bottom Input Bar: Gradient continues seamlessly through the footer */}
+              <div className="p-3 sm:p-4 pt-1.5 bg-transparent shrink-0">
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
-                    handleSend(input);
+                    handleSend(input, false);
                   }}
-                  className="mt-2.5 w-full rounded-full bg-white/[0.05] backdrop-blur-sm border border-white/[0.10] p-1.5 pl-3.5 flex items-center justify-between gap-2 focus-within:border-white/30 transition-colors"
+                  className="w-full rounded-full bg-gradient-to-b from-white/[0.08] to-white/[0.04] hover:from-white/[0.11] hover:to-white/[0.06] backdrop-blur-md p-1.5 pl-3.5 pr-1.5 flex items-center justify-between gap-2 focus-within:from-white/[0.13] focus-within:to-white/[0.08] transition-all"
                 >
                   <input
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Ask about Adarsh's work..."
-                    className="w-full bg-transparent text-xs text-[#EDEDEA] placeholder:text-[#606064] focus:outline-none"
+                    className="w-full bg-transparent text-[13px] text-[#EDEDEA] placeholder:text-[#71717A] focus:outline-none"
                   />
+
+                  {/* Send Button */}
                   <button
                     type="submit"
                     disabled={!input.trim()}
