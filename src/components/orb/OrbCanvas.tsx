@@ -208,7 +208,7 @@ export default function OrbCanvas({
 
     const styles = getComputedStyle(document.documentElement);
     const accentHex = styles.getPropertyValue("--accent") || "#EA580C";
-    const accentLightHex = styles.getPropertyValue("--accent-light") || "#FB923C";
+    const accentLightHex = styles.getPropertyValue("--accent") || "#EA580C";
     const accentDarkHex = styles.getPropertyValue("--accent-hover") || "#C2410C";
 
     const vAccent = parseColorToVec3(accentHex, [0.918, 0.345, 0.047]);
