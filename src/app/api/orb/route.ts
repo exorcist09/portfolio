@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
-import { buildSystemInstruction } from "@/lib/orb/knowledge";
+import { buildSystemInstruction, getLocalFallbackReply } from "@/lib/orb/knowledge";
 import fs from "fs";
 import path from "path";
 
@@ -95,25 +95,19 @@ export async function POST(req: NextRequest) {
     const systemInstruction = buildSystemInstruction(currentDate, currentHumanDate);
     const ai = new GoogleGenAI({ apiKey });
 
-    // Primary Google model from portfolio-v3: gemma-4-26b-a4b-it
-    // Fallback to gemini-2.5-flash if Gemma is unavailable
+    const lastUserMessage =
+      [...rawMessages].reverse().find((m) => m.role === "user")?.content || "";
+
+    // Candidate models:
+    // 1. gemini-2.5-flash (fast, reliable production endpoint on Google GenAI)
+    // 2. gemma-4-26b-a4b-it (portfolio-v3 model)
+    const candidateModels = ["gemini-2.5-flash", "gemma-4-26b-a4b-it"];
     let replyText = "";
-    try {
-      const response = await ai.models.generateContent({
-        model: "gemma-4-26b-a4b-it",
-        contents,
-        config: {
-          systemInstruction,
-          temperature: 0.7,
-          maxOutputTokens: 2048,
-        },
-      });
-      replyText = response.text?.trim() || "";
-    } catch (gemmaError) {
-      console.warn("Gemma model attempt failed, falling back to gemini-2.5-flash:", gemmaError);
+
+    for (const modelName of candidateModels) {
       try {
-        const fallbackResponse = await ai.models.generateContent({
-          model: "gemini-2.5-flash",
+        const response = await ai.models.generateContent({
+          model: modelName,
           contents,
           config: {
             systemInstruction,
@@ -121,33 +115,35 @@ export async function POST(req: NextRequest) {
             maxOutputTokens: 2048,
           },
         });
-        replyText = fallbackResponse.text?.trim() || "";
-      } catch (fallbackError) {
-        throw fallbackError;
+        const candidateText = response.text?.trim();
+        if (candidateText && candidateText.length > 0) {
+          replyText = candidateText;
+          break;
+        }
+      } catch (modelErr) {
+        console.warn(`Orb model [${modelName}] attempt failed:`, modelErr);
       }
     }
 
     if (!replyText) {
-      replyText = "I seem to have drifted a bit quiet. Ask me again!";
+      replyText = getLocalFallbackReply(lastUserMessage);
     }
 
     return NextResponse.json({ message: replyText });
   } catch (error: unknown) {
-    console.error("Orb Gemini error:", error);
-    const errString = String(error);
-    let userMsg = "Looks like I lost connection for a moment. Please try again.";
-
-    if (
-      errString.includes("429") ||
-      errString.includes("RESOURCE_EXHAUSTED") ||
-      errString.includes("Quota")
-    ) {
-      userMsg =
-        "The AI currents are a bit crowded right now (quota limit). Please wait a few seconds and ask again!";
-    } else if (errString.includes("503") || errString.includes("UNAVAILABLE")) {
-      userMsg = "The AI service is momentarily busy. Please try again in a few seconds!";
+    console.error("Orb API error:", error);
+    let fallbackQuery = "";
+    try {
+      const fallbackBody = await req.json();
+      fallbackQuery =
+        typeof fallbackBody?.message === "string"
+          ? fallbackBody.message
+          : Array.isArray(fallbackBody?.messages)
+          ? fallbackBody.messages[fallbackBody.messages.length - 1]?.content || ""
+          : "";
+    } catch {
+      // ignore
     }
-
-    return NextResponse.json({ message: userMsg });
+    return NextResponse.json({ message: getLocalFallbackReply(fallbackQuery) });
   }
 }

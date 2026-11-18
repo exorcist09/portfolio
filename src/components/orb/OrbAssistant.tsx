@@ -19,7 +19,6 @@ interface ChatMessage {
 
 const INITIAL_PROMPTS = [
   "Which project should I start with?",
-  "What does Adarsh do best?",
   "What's Adarsh's background?",
   "How do I book a call with Adarsh?",
 ];
@@ -253,21 +252,13 @@ export default function OrbAssistant({ isOpen, onClose }: OrbAssistantProps) {
     // Contextual follow-up suggestions for "Keep exploring"
     const q = trimmed.toLowerCase();
     let candidateFollowUps: string[] = [];
-    if (q.includes("best") || q.includes("what do you do")) {
+    if (q.includes("project") || q.includes("start with")) {
       candidateFollowUps = [
-        "Which project should I start with?",
-        "What's Adarsh's background?",
-        "How do I book a call with Adarsh?",
-      ];
-    } else if (q.includes("project") || q.includes("start with")) {
-      candidateFollowUps = [
-        "What does Adarsh do best?",
         "What's Adarsh's background?",
         "How do I book a call with Adarsh?",
       ];
     } else if (q.includes("background") || q.includes("experience")) {
       candidateFollowUps = [
-        "What does Adarsh do best?",
         "Which project should I start with?",
         "How do I book a call with Adarsh?",
       ];
@@ -278,14 +269,12 @@ export default function OrbAssistant({ isOpen, onClose }: OrbAssistantProps) {
       q.includes("contact")
     ) {
       candidateFollowUps = [
-        "What does Adarsh do best??",
         "Which project should I start with?",
         "What's Adarsh's background?",
       ];
     } else {
       candidateFollowUps = [
         "Which project should I start with?",
-        "What does Adarsh do best?",
         "What's Adarsh's background?",
         "How do I book a call with Adarsh?",
       ];
@@ -318,7 +307,12 @@ export default function OrbAssistant({ isOpen, onClose }: OrbAssistantProps) {
         responseText = data?.message || "";
       }
 
-      if (!responseText) {
+      if (
+        !responseText ||
+        responseText.includes("momentarily busy") ||
+        responseText.includes("lost connection") ||
+        responseText.includes("AI currents are a bit crowded")
+      ) {
         // Fallback response if API key is not configured or error occurs
         if (q.includes("best") || q.includes("what do you do")) {
           responseText =

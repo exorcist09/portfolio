@@ -87,7 +87,7 @@ const fragmentShader = /* glsl */ `
       if (rUV >= 0.82 && rUV < 0.98) {
         float auraFade = smoothstep(0.98, 0.83, rUV);
         float halo = exp(-pow((rUV - 0.83) * 26.0, 2.0));
-        vec3 haloCol = mix(uAccent, uAccentLight, halo);
+        vec3 haloCol = uAccent; // Pure accent color, zero yellow cast
         float a = clamp(halo * 0.95 + auraFade * 0.3, 0.0, 1.0);
         gl_FragColor = vec4(haloCol, a);
       } else {
@@ -111,7 +111,7 @@ const fragmentShader = /* glsl */ `
     float rim1 = pow(clamp(1.0 - NdotV, 0.0, 1.0), 2.2);
     float rim2 = exp(-pow((NdotV - 0.26) * 7.5, 2.0));
     float doubleRim = rim1 * 1.6 + rim2 * 1.1;
-    vec3 rimColor = mix(uAccent, uAccentLight, clamp(rim1 * 0.7 + rim2 * 0.4, 0.0, 1.0));
+    vec3 rimColor = uAccent; // Strictly accent color
 
     // 2. Rotating S-curve plasma chamber
     vec3 pRot = rotMat * p1;
@@ -124,8 +124,8 @@ const fragmentShader = /* glsl */ `
 
     vec3 colBase = uAccentDark;
     vec3 colMid = uAccent;
-    vec3 colLight = uAccentLight;
-    vec3 colCore = mix(uAccentLight, vec3(1.0, 1.0, 0.92), 0.85);
+    vec3 colLight = uAccent;
+    vec3 colCore = mix(uAccent, vec3(1.0, 1.0, 1.0), 0.7);
 
     vec3 chamberCol = mix(colBase, colMid, chamber);
     chamberCol = mix(chamberCol, colLight, smoothstep(0.2, 0.85, chamber));
@@ -136,7 +136,7 @@ const fragmentShader = /* glsl */ `
     vec3 halfKey = normalize(keyLight - rd);
     float specSharp = pow(clamp(dot(n1, halfKey), 0.0, 1.0), 38.0);
     float specBroad = pow(clamp(dot(n1, halfKey), 0.0, 1.0), 7.0) * 0.5;
-    vec3 specHighlight = vec3(1.0, 0.98, 0.95) * specSharp * 2.2 + uAccentLight * specBroad;
+    vec3 specHighlight = vec3(1.0, 1.0, 1.0) * specSharp * 2.0 + uAccent * (specBroad * 0.4);
 
     // Secondary rim reflection
     vec3 rimLight = normalize(vec3(0.68, -0.65, -0.25));
@@ -147,9 +147,11 @@ const fragmentShader = /* glsl */ `
     // Lower void
     vec3 lowerVoid = vec3(0.015, 0.005, 0.002);
 
-    // Combine
+    // Combine: mix in rim smoothly so it never blows out to yellow
     vec3 finalColor = mix(lowerVoid, chamberCol, clamp(chamber * 0.88 + crest * 0.4, 0.0, 1.0));
-    finalColor += rimColor * doubleRim * 1.4;
+    float rimFactor = clamp(doubleRim * 0.75, 0.0, 1.0);
+    finalColor = mix(finalColor, rimColor, rimFactor * 0.8);
+    finalColor += rimColor * (doubleRim * 0.35);
     finalColor += specHighlight + specRimCol;
 
     // Pulse brightness
@@ -212,7 +214,7 @@ export default function OrbCanvas({
     const accentDarkHex = styles.getPropertyValue("--accent-hover") || "#C2410C";
 
     const vAccent = parseColorToVec3(accentHex, [0.918, 0.345, 0.047]);
-    const vAccentLight = parseColorToVec3(accentLightHex, [0.984, 0.573, 0.235]);
+    const vAccentLight = parseColorToVec3(accentHex, [0.918, 0.345, 0.047]);
     const vAccentDark = parseColorToVec3(accentDarkHex, [0.761, 0.255, 0.047]);
 
     let animationFrameId: number;
@@ -291,8 +293,8 @@ export default function OrbCanvas({
 
       // Base sphere body
       const baseGrad = ctx.createRadialGradient(cx - r * 0.2, cy - r * 0.25, r * 0.1, cx, cy, r);
-      baseGrad.addColorStop(0, "#FB923C");
-      baseGrad.addColorStop(0.4, "#EA580C");
+      baseGrad.addColorStop(0, accentHex);
+      baseGrad.addColorStop(0.4, accentHex);
       baseGrad.addColorStop(0.85, "#9A3412");
       baseGrad.addColorStop(1, "#180702");
       ctx.fillStyle = baseGrad;
@@ -308,7 +310,7 @@ export default function OrbCanvas({
 
       const waveGrad = ctx.createLinearGradient(0, 0, size, size);
       waveGrad.addColorStop(0, "rgba(255, 255, 255, 0.4)");
-      waveGrad.addColorStop(0.5, "rgba(251, 146, 60, 0.6)");
+      waveGrad.addColorStop(0.5, "rgba(234, 88, 12, 0.6)");
       waveGrad.addColorStop(1, "transparent");
 
       ctx.fillStyle = waveGrad;
@@ -325,8 +327,8 @@ export default function OrbCanvas({
 
       ctx.restore();
 
-      // Glass rim
-      ctx.strokeStyle = "rgba(251, 146, 60, 0.75)";
+      // Glass rim strictly matching accent color
+      ctx.strokeStyle = "rgba(234, 88, 12, 0.85)";
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.arc(cx, cy, r - 0.75, 0, Math.PI * 2);

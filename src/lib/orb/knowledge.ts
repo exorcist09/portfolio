@@ -175,3 +175,81 @@ You may answer basic date/time questions accurately using the server date:
 ${ORB_KNOWLEDGE}
 `;
 }
+
+/**
+ * Intelligent local knowledge fallback in case Google's AI Studio endpoints
+ * experience temporary spikes or 503 unavailable responses.
+ */
+export function getLocalFallbackReply(query: string): string {
+  const q = (query || "").toLowerCase();
+
+  if (q.includes("best") || q.includes("strength") || q.includes("do best") || q.includes("what do you do")) {
+    return `Adarsh is a Software Engineer who excels at building **reliable, scalable products** with deep expertise in backend architecture, distributed systems, and AI-powered applications.
+
+Key strengths include:
+* **Backend Systems & High Concurrency:** Architecting fault-tolerant microservices, event-driven pipelines, and distributed data systems.
+* **Cloud Infrastructure:** Scalable containerized deployments using **AWS**, **Docker**, and **Redis**.
+* **AI & Agentic Systems:** Developing multi-modal reasoning workflows and LLM tool orchestration (check out [KAI](/work/kai)).
+* **Product Execution:** Turning complex engineering requirements into intuitive, performant user experiences.
+
+Feel free to explore his [featured projects](/work) or check out his code on [GitHub](https://github.com/exorcist09).`;
+  }
+
+  if (q.includes("project") || q.includes("start with") || q.includes("work") || q.includes("featured")) {
+    return `Start with **[Kairo](/work/kairo)** (visual workflow automation engine) or **[KAI](/work/kai)** (multi-modal reasoning agent). Both showcase deep full-stack execution, distributed event queues, and real-time reliability.
+
+You can also check out:
+* **[Caseflow](https://caseflow-validate.vercel.app/)** — Large-scale CSV data validation & case management.
+* **[Fyn](https://fynmanager.netlify.app/)** — Personal finance & expense intelligence platform.
+* Explore the complete list in his [projects portfolio](/work).`;
+  }
+
+  if (
+    q.includes("call") ||
+    q.includes("book") ||
+    q.includes("schedule") ||
+    q.includes("hire") ||
+    q.includes("meet") ||
+    q.includes("contact")
+  ) {
+    return `You can book a direct 15-minute intro call with Adarsh right on the website at **[/work-together](/work-together?from=assistant)** or directly via his calendar at **[cal.com/adarsh-verma/intro](https://cal.com/adarsh-verma/intro)**.
+
+You can also reach him directly via email at [vermaadarsh1024@gmail.com](mailto:vermaadarsh1024@gmail.com) or connect on [LinkedIn](https://www.linkedin.com/in/adarsh-verma-exorcist09/).`;
+  }
+
+  if (
+    q.includes("background") ||
+    q.includes("experience") ||
+    q.includes("internship") ||
+    q.includes("education") ||
+    q.includes("college") ||
+    q.includes("iiit")
+  ) {
+    return `Adarsh holds a B.Tech from **IIIT Jabalpur (IIITDMJ)** (2022–2026). His industry experience includes:
+* **Skyclad Ventures** — Software Engineer Intern (backend engineering, distributed services, product scale).
+* **Bloop** — Software Engineer Intern (features and system reliability).
+* **Meteorite** — Frontend Developer Intern (responsive component architectures).
+
+Review the complete timeline in his [experience section](#experience).`;
+  }
+
+  if (
+    q.includes("exorcist") ||
+    q.includes("handle") ||
+    q.includes("github") ||
+    q.includes("leetcode") ||
+    q.includes("linkedin") ||
+    q.includes("social")
+  ) {
+    return `**exorcist09** is Adarsh's universal online developer handle. You can find his profiles here:
+* **GitHub**: [github.com/exorcist09](https://github.com/exorcist09)
+* **LeetCode**: [leetcode.com/u/exorcist09](https://leetcode.com/u/exorcist09/)
+* **LinkedIn**: [linkedin.com/in/adarsh-verma-exorcist09](https://www.linkedin.com/in/adarsh-verma-exorcist09/)
+
+*(Note: Adarsh does not use Twitter/X).*`;
+  }
+
+  return `Adarsh Verma is a Software Engineer specializing in backend architectures, distributed systems, and AI-powered applications.
+
+Would you like to explore his [featured projects](/work), read about his [experience](#experience), or [book an intro call](/work-together)?`;
+}
