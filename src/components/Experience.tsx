@@ -20,22 +20,22 @@ export default function Experience() {
       id="experience"
       className="py-20 w-full max-w-[760px] mx-auto px-5 sm:px-6"
     >
-      {/* Consistent Left-Aligned Header + Right-Aligned Toggle (kept on same row on mobile) */}
-      <div className="flex flex-row items-end justify-between gap-3 sm:gap-6 mb-8 text-left">
-        <div className="flex-1 min-w-0 pr-2 sm:pr-0">
+      {/* Header + Toggle: On mobile, switcher is on the below row on the right side (matching wireframe) */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 mb-8 text-left">
+        <div>
           <span className="text-[11px] font-mono-custom tracking-[0.2em] uppercase text-[#8A8A85]">
             EXPERIENCE & Education 
           </span>
           <h2 className="mt-1.5 text-2xl sm:text-3xl font-semibold tracking-tight text-[#EDEDEA]">
             where I have stayed
           </h2>
-          <p className="mt-1 text-xs sm:text-sm text-[#8A8A85] hidden xs:block sm:block">
+          <p className="mt-1 text-xs sm:text-sm text-[#8A8A85]">
             Work history, timeline, and core product engineering roles.
           </p>
         </div>
 
-        {/* Toggle Pill + Active Pill Fill: Aligned to extreme right on the same row */}
-        <div className="relative flex items-center shrink-0 self-end">
+        {/* Toggle Pill: On mobile, aligned to extreme right on the below row */}
+        <div className="flex justify-end sm:self-auto shrink-0 pt-1 sm:pt-0">
           <div className="relative flex items-center p-1 rounded-full bg-[#121212] border border-white/[0.08] shadow-inner">
             <button
               onClick={() => setActiveTab("timeline")}

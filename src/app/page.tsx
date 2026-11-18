@@ -29,29 +29,35 @@ export default function Home() {
         {/* Section 1: Hero / About */}
         <Hero />
 
+        {/* Dotted Divider for each section (Mobile Screen Only) */}
+        <SectionDivider className="sm:hidden" />
+
         {/* Plus Divider Frame holding Work, Experience, Stack, and Freelance */}
         <PlusFrame>
           {/* Section 2: Work / Projects */}
           <Work />
 
-          {/* Dotted Grid Matrix Divider with Edge Plus Markers */}
+          {/* Dotted Grid Matrix Divider - Visible on big screen as earlier & on mobile */}
           <SectionDivider />
 
           {/* Section 3: Experience & Education (List + Drag Timeline) */}
           <Experience />
 
-          {/* Dotted Grid Matrix Divider with Edge Plus Markers */}
+          {/* Dotted Grid Matrix Divider - Visible on big screen as earlier & on mobile */}
           <SectionDivider />
 
           {/* Section 4: Skills / Stack */}
           <Stack />
 
-          {/* Dotted Grid Matrix Divider with Edge Plus Markers */}
+          {/* Dotted Grid Matrix Divider - Visible on big screen as earlier & on mobile */}
           <SectionDivider />
 
           {/* Section 5: Freelance & Advisory */}
           <Freelance />
         </PlusFrame>
+
+        {/* Dotted Divider for each section (Mobile Screen Only) */}
+        <SectionDivider className="sm:hidden" />
 
         {/* Section 6: Contact & Wordmark Type-Erase */}
         <Contact />

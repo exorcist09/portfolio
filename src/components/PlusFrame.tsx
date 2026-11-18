@@ -8,9 +8,10 @@ export default function PlusFrame({ children }: { children: React.ReactNode }) {
       {/* ============================================================== */}
       {/* TOP HORIZONTAL LINE                                            */}
       {/* Overshoots past left & right vertical lines, fading on ends   */}
+      {/* Hidden on mobile screen (hash top line removed), kept on sm+  */}
       {/* ============================================================== */}
       <div
-        className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[calc(100%+160px)] sm:w-[calc(100%+260px)] md:w-[calc(100%+360px)] h-[1px] bg-white/[0.12] z-20"
+        className="hidden sm:block pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 sm:w-[calc(100%+260px)] md:w-[calc(100%+360px)] h-[1px] bg-white/[0.12] z-20"
         style={{
           maskImage:
             "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
@@ -23,9 +24,10 @@ export default function PlusFrame({ children }: { children: React.ReactNode }) {
       {/* ============================================================== */}
       {/* BOTTOM HORIZONTAL LINE                                         */}
       {/* Overshoots past left & right vertical lines, fading on ends   */}
+      {/* Hidden on mobile screen (hash bottom line removed), kept on sm+ */}
       {/* ============================================================== */}
       <div
-        className="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 w-[calc(100%+160px)] sm:w-[calc(100%+260px)] md:w-[calc(100%+360px)] h-[1px] bg-white/[0.12] z-20"
+        className="hidden sm:block pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 sm:w-[calc(100%+260px)] md:w-[calc(100%+360px)] h-[1px] bg-white/[0.12] z-20"
         style={{
           maskImage:
             "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",

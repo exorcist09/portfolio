@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, FileDown, Clock, Cloud, Mail, Circle } from "lucide-react";
 import { siteContent } from "@/data/content";
 import { avatarBase64 } from "@/data/avatarBase64";
-import AgentModal from "./AgentModal";
+import OrbAssistant from "./orb/OrbAssistant";
 import ResumeModal from "./ResumeModal";
 
 export default function Hero() {
@@ -160,8 +160,8 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      {/* Talk to Agent Modal */}
-      <AgentModal isOpen={isAgentOpen} onClose={() => setIsAgentOpen(false)} />
+      {/* AI Assistant Modal Window (Same sleek experience on mobile as desktop) */}
+      <OrbAssistant isOpen={isAgentOpen} onClose={() => setIsAgentOpen(false)} />
 
       {/* Resume Preview Dialog */}
       <ResumeModal
