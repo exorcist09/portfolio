@@ -115,8 +115,8 @@ const fragmentShader = /* glsl */ `
 
     // 2. Rotating S-curve plasma chamber
     vec3 pRot = rotMat * p1;
-    float wave = 0.36 * sin(pRot.x * 2.1 + pRot.z * 1.4 + uTime * 0.85)
-               + 0.14 * cos(pRot.z * 2.8 - pRot.x * 1.2 + uTime * 0.5);
+    float wave = 0.36 * sin(pRot.x * 2.1 + pRot.z * 1.4 + uTime * 0.45)
+               + 0.14 * cos(pRot.z * 2.8 - pRot.x * 1.2 + uTime * 0.25);
     float sPos = pRot.y - wave;
 
     float chamber = smoothstep(-0.25, 0.4, sPos);
@@ -198,7 +198,7 @@ export default function OrbCanvas({
   useEffect(() => {
     if (pulseTrigger > 0) {
       pulseRef.current = 1.0;
-      spinBoostRef.current = 4.2;
+      spinBoostRef.current = 2.0;
     }
   }, [pulseTrigger]);
 
@@ -337,7 +337,8 @@ export default function OrbCanvas({
       const delta = Math.min((time - lastTimeRef.current) / 1000, 0.1);
       lastTimeRef.current = time;
 
-      const targetSpeed = isHoveredRef.current ? 1.85 : 0.78;
+      // Calmer, gentler rotation speed (idle ~0.30 rad/s, hover ~0.70 rad/s)
+      const targetSpeed = isHoveredRef.current ? 0.70 : 0.30;
       spinBoostRef.current *= Math.pow(0.12, delta);
       const speed = targetSpeed + spinBoostRef.current;
       rotationRef.current += speed * delta;

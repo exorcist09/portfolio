@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowUp, RotateCcw } from "lucide-react";
 import Link from "next/link";
-import { siteContent } from "@/data/content";
 
 interface OrbAssistantProps {
   isOpen: boolean;
@@ -15,22 +14,106 @@ interface ChatMessage {
   id: string;
   sender: "user" | "orb";
   text: string;
-  linkText?: string;
-  linkHref?: string;
-  afterLinkText?: string;
   followUps?: string[];
 }
 
 const INITIAL_PROMPTS = [
   "Which project should I start with?",
-  "What do you do best?",
-  "What's your design + code background?",
+  "What does Adarsh do best?",
+  "What's Adarsh's background?",
   "How do I book a call with Adarsh?",
 ];
+
+function MarkdownText({ text }: { text: string }) {
+  const lines = text.split("\n");
+
+  const parseInline = (str: string) => {
+    const parts: (string | React.ReactNode)[] = [];
+    const regex =
+      /(\*\*([^*]+)\*\*|\[([^\]]+)\]\((https?:\/\/[^\s)]+|\/[^\s)]*)\)|(https?:\/\/[^\s]+))/g;
+    let match: RegExpExecArray | null;
+    let lastIndex = 0;
+    let key = 0;
+
+    while ((match = regex.exec(str)) !== null) {
+      if (match.index > lastIndex) {
+        parts.push(str.slice(lastIndex, match.index));
+      }
+
+      if (match[2]) {
+        // **bold**
+        parts.push(
+          <strong key={key++} className="font-semibold text-white">
+            {match[2]}
+          </strong>
+        );
+      } else if (match[3] && match[4]) {
+        // [title](url)
+        const isExternal = match[4].startsWith("http");
+        parts.push(
+          <Link
+            key={key++}
+            href={match[4]}
+            target={isExternal ? "_blank" : undefined}
+            rel={isExternal ? "noreferrer" : undefined}
+            className="underline underline-offset-2 decoration-white/40 hover:decoration-white text-white font-medium transition-colors"
+          >
+            {match[3]}
+          </Link>
+        );
+      } else if (match[5]) {
+        // raw url
+        parts.push(
+          <a
+            key={key++}
+            href={match[5]}
+            target="_blank"
+            rel="noreferrer"
+            className="underline underline-offset-2 decoration-white/40 hover:decoration-white text-white font-medium transition-colors break-all"
+          >
+            {match[5]}
+          </a>
+        );
+      }
+      lastIndex = regex.lastIndex;
+    }
+
+    if (lastIndex < str.length) {
+      parts.push(str.slice(lastIndex));
+    }
+
+    return parts.length > 0 ? parts : str;
+  };
+
+  return (
+    <div className="space-y-1.5 leading-relaxed text-[13.5px] text-[#EDEDEA]">
+      {lines.map((line, idx) => {
+        const trimmed = line.trim();
+        if (!trimmed) {
+          return <div key={idx} className="h-1" />;
+        }
+
+        // Bullet point: starts with * or -
+        if (/^(\*|-)\s+/.test(trimmed)) {
+          const content = trimmed.replace(/^(\*|-)\s+/, "");
+          return (
+            <div key={idx} className="flex items-start gap-2 pl-0.5">
+              <span className="inline-block h-1.5 w-1.5 rounded-full mt-2 shrink-0 bg-white/60" />
+              <span className="flex-1">{parseInline(content)}</span>
+            </div>
+          );
+        }
+
+        return <p key={idx}>{parseInline(line)}</p>;
+      })}
+    </div>
+  );
+}
 
 export default function OrbAssistant({ isOpen, onClose }: OrbAssistantProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const modalContainerRef = useRef<HTMLDivElement>(null);
   const scrollableContentRef = useRef<HTMLDivElement>(null);
 
@@ -133,7 +216,7 @@ export default function OrbAssistant({ isOpen, onClose }: OrbAssistantProps) {
     };
   }, [isOpen]);
 
-  // Smooth scroll within chatbox when new messages arrive
+  // Smooth scroll within chatbox when new messages arrive or loading changes
   useEffect(() => {
     if (scrollableContentRef.current) {
       scrollableContentRef.current.scrollTo({
@@ -141,19 +224,20 @@ export default function OrbAssistant({ isOpen, onClose }: OrbAssistantProps) {
         behavior: "smooth",
       });
     }
-  }, [messages]);
+  }, [messages, isLoading]);
 
   const handleReset = () => {
     setMessages([]);
     setInput("");
+    setIsLoading(false);
     if (scrollableContentRef.current) {
       scrollableContentRef.current.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
-  const handleSend = (userText: string, fromSuggestion: boolean = false) => {
+  const handleSend = async (userText: string, fromSuggestion: boolean = false) => {
     const trimmed = userText.trim();
-    if (!trimmed) return;
+    if (!trimmed || isLoading) return;
 
     const userMsg: ChatMessage = {
       id: Date.now().toString(),
@@ -161,118 +245,139 @@ export default function OrbAssistant({ isOpen, onClose }: OrbAssistantProps) {
       text: trimmed,
     };
 
-    setMessages((prev) => [...prev, userMsg]);
+    const newMessages = [...messages, userMsg];
+    setMessages(newMessages);
     setInput("");
+    setIsLoading(true);
 
-    // Generate response matching the reference style in the user wireframe
-    setTimeout(() => {
-      const q = trimmed.toLowerCase();
-      let orbReply: ChatMessage;
+    // Contextual follow-up suggestions for "Keep exploring"
+    const q = trimmed.toLowerCase();
+    let candidateFollowUps: string[] = [];
+    if (q.includes("best") || q.includes("what do you do")) {
+      candidateFollowUps = [
+        "Which project should I start with?",
+        "What's Adarsh's background?",
+        "How do I book a call with Adarsh?",
+      ];
+    } else if (q.includes("project") || q.includes("start with")) {
+      candidateFollowUps = [
+        "What does Adarsh do best?",
+        "What's Adarsh's background?",
+        "How do I book a call with Adarsh?",
+      ];
+    } else if (q.includes("background") || q.includes("experience")) {
+      candidateFollowUps = [
+        "What does Adarsh do best?",
+        "Which project should I start with?",
+        "How do I book a call with Adarsh?",
+      ];
+    } else if (
+      q.includes("call") ||
+      q.includes("book") ||
+      q.includes("hire") ||
+      q.includes("contact")
+    ) {
+      candidateFollowUps = [
+        "What does Adarsh do best??",
+        "Which project should I start with?",
+        "What's Adarsh's background?",
+      ];
+    } else {
+      candidateFollowUps = [
+        "Which project should I start with?",
+        "What does Adarsh do best?",
+        "What's Adarsh's background?",
+        "How do I book a call with Adarsh?",
+      ];
+    }
 
-      // Candidate suggestions tailored to the subject matter
-      let candidateFollowUps: string[] = [];
-      if (q.includes("best") || q.includes("what do you do")) {
-        candidateFollowUps = [
-          "Which project should I start with?",
-          "What's your design + code background?",
-          "How do I book a call with Adarsh?",
-        ];
-      } else if (q.includes("project") || q.includes("start with")) {
-        candidateFollowUps = [
-          "What do you do best?",
-          "What's your design + code background?",
-          "How do I book a call with Adarsh?",
-        ];
-      } else if (q.includes("background") || q.includes("experience")) {
-        candidateFollowUps = [
-          "What do you do best?",
-          "Which project should I start with?",
-          "How do I book a call with Adarsh?",
-        ];
-      } else if (
-        q.includes("call") ||
-        q.includes("book") ||
-        q.includes("hire") ||
-        q.includes("contact")
-      ) {
-        candidateFollowUps = [
-          "What do you do best?",
-          "Which project should I start with?",
-          "What's your design + code background?",
-        ];
-      } else {
-        candidateFollowUps = [
-          "Which project should I start with?",
-          "What do you do best?",
-          "What's your design + code background?",
-          "How do I book a call with Adarsh?",
-        ];
+    const followUps = fromSuggestion
+      ? candidateFollowUps.filter((item) => item.toLowerCase() !== q)
+      : undefined;
+
+    try {
+      // Build conversation payload for the API route
+      const payload = newMessages.map((m) => ({
+        role: m.sender === "user" ? ("user" as const) : ("assistant" as const),
+        content: m.text,
+      }));
+
+      const res = await fetch("/api/orb", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messages: payload,
+        }),
+      });
+
+      let responseText = "";
+      if (res.ok) {
+        const data = await res.json().catch(() => null);
+        responseText = data?.message || "";
       }
 
-      // "Keep exploring" only appears when user clicked a suggested prompt
-      const followUps = fromSuggestion
-        ? candidateFollowUps.filter((item) => item.toLowerCase() !== q)
-        : undefined;
-
-      if (q.includes("best") || q.includes("what do you do")) {
-        orbReply = {
-          id: (Date.now() + 1).toString(),
-          sender: "orb",
-          text: "Adarsh is best at bridging high-performance systems with robust backend architectures — from distributed Node.js/Python microservices to real-time WebSockets and responsive interfaces. You can see the range in ",
-          linkText: "his work",
-          linkHref: "/work",
-          afterLinkText: ".",
-          followUps,
-        };
-      } else if (q.includes("project") || q.includes("start with")) {
-        orbReply = {
-          id: (Date.now() + 1).toString(),
-          sender: "orb",
-          text: "Start with NexMeet (real-time WebRTC conferencing) or DocuFlow (AI document intelligence with vector search). Both demonstrate full-stack execution and responsive UI systems. Explore all in ",
-          linkText: "his projects",
-          linkHref: "/work",
-          afterLinkText: ".",
-          followUps,
-        };
-      } else if (q.includes("background") || q.includes("experience")) {
-        orbReply = {
-          id: (Date.now() + 1).toString(),
-          sender: "orb",
-          text: "Adarsh is a Software Engineer who builds scalable products, intuitive web applications, and high-throughput backends. Review his full timeline in ",
-          linkText: "his experience",
-          linkHref: "#experience",
-          afterLinkText: ".",
-          followUps,
-        };
-      } else if (
-        q.includes("call") ||
-        q.includes("book") ||
-        q.includes("hire") ||
-        q.includes("contact")
-      ) {
-        orbReply = {
-          id: (Date.now() + 1).toString(),
-          sender: "orb",
-          text: "You can book a direct 15-minute intro call or send a project inquiry right from ",
-          linkText: "work together",
-          linkHref: "/work-together?from=assistant",
-          afterLinkText: `. You can also email directly at ${siteContent.email}.`,
-          followUps,
-        };
-      } else {
-        orbReply = {
-          id: (Date.now() + 1).toString(),
-          sender: "orb",
-          text: "I can help you explore Adarsh's featured work, tech stack, or schedule an introductory call. Discover more in ",
-          linkText: "his work",
-          linkHref: "/work",
-          afterLinkText: ".",
-          followUps,
-        };
+      if (!responseText) {
+        // Fallback response if API key is not configured or error occurs
+        if (q.includes("best") || q.includes("what do you do")) {
+          responseText =
+            "Adarsh is best at bridging high-performance systems with robust backend architectures — from distributed Node.js/Python microservices to real-time WebSockets and responsive interfaces. You can see the range in [his work](/work).";
+        } else if (q.includes("project") || q.includes("start with")) {
+          responseText =
+            "Start with [Kairo](/work/kairo) (visual workflow automation engine) or [KAI](/work/kai) (agentic AI reasoning engine). Both demonstrate deep full-stack execution and scalable system architectures. You can explore all in [his projects](/work).";
+        } else if (q.includes("background") || q.includes("experience")) {
+          responseText =
+            "Adarsh is a Software Engineer who builds scalable products, intuitive web applications, and high-throughput backends. Review his full timeline in [his experience](#experience).";
+        } else if (
+          q.includes("call") ||
+          q.includes("book") ||
+          q.includes("schedule") ||
+          q.includes("hire") ||
+          q.includes("contact")
+        ) {
+          responseText =
+            "You can book a direct 15-minute intro call on the [Work Together page](/work-together?from=assistant) or via his calendar at https://cal.com/adarsh-verma/intro. You can also email him directly at vermaadarsh1024@gmail.com.";
+        } else if (
+          q.includes("calculator") ||
+          (q.includes("write") && q.includes("code"))
+        ) {
+          responseText =
+            "I'm specifically focused on Adarsh's portfolio, projects, and engineering background! While I can't write general code here, you can explore Adarsh's GitHub at https://github.com/exorcist09 to see his real-world implementations. Would you like to check out any of his projects?";
+        } else if (
+          q.includes("exorcist") ||
+          q.includes("leetcode") ||
+          q.includes("handle") ||
+          q.includes("profiles")
+        ) {
+          responseText =
+            "**exorcist09** is Adarsh's universal online developer handle! You can find him across the web here:\n\n- **GitHub**: [github.com/exorcist09](https://github.com/exorcist09) — Repositories and open-source contributions\n- **LeetCode**: [leetcode.com/u/exorcist09](https://leetcode.com/u/exorcist09/) — Algorithmic problem solving and data structures\n- **LinkedIn**: [linkedin.com/in/adarsh-verma-exorcist09](https://www.linkedin.com/in/adarsh-verma-exorcist09/) — Professional experience";
+        } else {
+          responseText =
+            "I know Adarsh's work, background, and technical projects. Ask me about his full-stack applications, skills, or how he builds software!";
+        }
       }
+
+      const orbReply: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        sender: "orb",
+        text: responseText,
+        followUps,
+      };
 
       setMessages((prev) => [...prev, orbReply]);
-    }, 280);
+    } catch (err) {
+      console.error("Orb API query failed:", err);
+      const fallbackReply: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        sender: "orb",
+        text: "I lost connection for a second. Please try asking again!",
+        followUps,
+      };
+      setMessages((prev) => [...prev, fallbackReply]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -340,7 +445,7 @@ export default function OrbAssistant({ isOpen, onClose }: OrbAssistantProps) {
                     <div>
                       {/* Bold Header */}
                       <h2 className="text-xl sm:text-[22px] font-bold text-white tracking-tight">
-                        Hi, I&apos;m Orb.
+                        HI, I&apos;m Orb.
                       </h2>
 
                       {/* Clean Intro Paragraph (No typewriter delay) */}
@@ -385,19 +490,7 @@ export default function OrbAssistant({ isOpen, onClose }: OrbAssistantProps) {
                         ) : (
                           /* Orb Response: Clean prose directly on card background */
                           <div className="pt-2 text-left">
-                            <p className="text-[13.5px] text-[#EDEDEA] leading-relaxed font-normal">
-                              {m.text}
-                              {m.linkText && m.linkHref && (
-                                <Link
-                                  href={m.linkHref}
-                                  onClick={onClose}
-                                  className="underline underline-offset-2 decoration-white/40 hover:decoration-white text-white font-medium transition-colors"
-                                >
-                                  {m.linkText}
-                                </Link>
-                              )}
-                              {m.afterLinkText}
-                            </p>
+                            <MarkdownText text={m.text} />
 
                             {/* Divider & Keep Exploring Suggestions (Only rendered if followUps exist) */}
                             {m.followUps && m.followUps.length > 0 && (
@@ -428,6 +521,18 @@ export default function OrbAssistant({ isOpen, onClose }: OrbAssistantProps) {
                         )}
                       </div>
                     ))}
+
+                    {/* Loading / Thinking Indicator */}
+                    {isLoading && (
+                      <div className="pt-2 text-left flex items-center gap-2 text-[#A1A1AA] text-xs">
+                        <span>Orb is thinking</span>
+                        <span className="flex gap-1 items-center">
+                          <span className="h-1.5 w-1.5 rounded-full bg-white/70 animate-bounce [animation-delay:-0.3s]" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-white/70 animate-bounce [animation-delay:-0.15s]" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-white/70 animate-bounce" />
+                        </span>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -445,14 +550,15 @@ export default function OrbAssistant({ isOpen, onClose }: OrbAssistantProps) {
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    placeholder="Ask about Adarsh's work..."
-                    className="w-full bg-transparent text-[13px] text-[#EDEDEA] placeholder:text-[#71717A] focus:outline-none"
+                    placeholder="Ask Orb about Adarsh's work..."
+                    disabled={isLoading}
+                    className="w-full bg-transparent text-[13px] text-[#EDEDEA] placeholder:text-[#71717A] focus:outline-none disabled:opacity-50"
                   />
 
                   {/* Send Button */}
                   <button
                     type="submit"
-                    disabled={!input.trim()}
+                    disabled={!input.trim() || isLoading}
                     className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/25 disabled:opacity-25 text-white flex items-center justify-center transition-all cursor-pointer shrink-0"
                     aria-label="Send query"
                   >
