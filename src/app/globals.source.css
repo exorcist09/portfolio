@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Victor+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Caveat:wght@400..700&family=Pixelify+Sans:wght@500;600;700&family=Silkscreen&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-light: var(--accent-light);
+}
+
+@layer base {
+  :root {
+    /* Primary Accent Color - change this 1 variable to change the theme across all pages */
+    --accent: #EA580C; /* Dark Orange */
+    --accent-hover: #C2410C; /* Deep Orange */
+    --accent-light: #FB923C; /* Bright Orange */
+    --accent-glow: rgba(234, 88, 12, 0.25);
+    --accent-border: rgba(234, 88, 12, 0.4);
+
+    --bg-primary: #050505;
+    --text-primary: #EDEDEA;
+    --text-muted: #8A8A85;
+    --border-dim: rgba(255, 255, 255, 0.08);
+    --border-active: rgba(255, 255, 255, 0.16);
+    --accent-amber: var(--accent);
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --default-font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  *,
+  *::before,
+  *::after {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  html,
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    overflow-x: hidden;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font-family: inherit;
+  }
+}
+
+/* Hide orb overlay during initial loader screen */
+html[data-site-loading="true"] [data-orb-container] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.font-sans {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+.font-mono-custom {
+  font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", monospace !important;
+}
+
+.font-handwriting {
+  font-family: 'Caveat', cursive, sans-serif !important;
+}
+
+.font-pixel {
+  font-family: 'Silkscreen', 'Pixelify Sans', ui-monospace, monospace !important;
+}
+
+.font-victor {
+  font-family: 'Victor Mono', 'JetBrains Mono', ui-monospace, monospace !important;
+}
+
+/* Hide scrollbars for clean timeline drag & marquees */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Elegant dark-mode scrollbar for chatbox message stream */
+.chat-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
+.chat-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.chat-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 9999px;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.32);
+}
+
+/* Keyframes for calm, slow smooth infinite marquees */
+@keyframes marquee-left {
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-right {
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.animate-marquee-slow-left {
+  display: flex;
+  width: max-content;
+  animation: marquee-left 55s linear infinite;
+}
+
+.animate-marquee-slow-right {
+  display: flex;
+  width: max-content;
+  animation: marquee-right 65s linear infinite;
+}
+
+.animate-marquee-slow-left:hover,
+.animate-marquee-slow-right:hover {
+  animation-play-state: paused;
+}
+
+/* Global Accent Color Utilities (driven by the single --accent variable) */
+.text-accent {
+  color: var(--accent) !important;
+}
+
+.hover\:text-accent-light:hover {
+  color: var(--accent-light) !important;
+}
+
+.bg-accent {
+  background-color: var(--accent) !important;
+}
+
+.hover\:bg-accent-hover:hover {
+  background-color: var(--accent-hover) !important;
+}
+
+.border-accent {
+  border-color: var(--accent) !important;
+}
+
+.border-accent-subtle {
+  border-color: var(--accent-border) !important;
+}
+
+.focus\:border-accent:focus {
+  border-color: var(--accent) !important;
+}
+
+.selection-accent::selection,
+.selection-accent *::selection {
+  background-color: var(--accent-glow) !important;
+  color: var(--accent) !important;
+}
